@@ -1,0 +1,184 @@
+module: ietf-tpm-remote-attestation
+  +--ro rats-support-structures
+     +--ro supported-algos*   uint16
+     +--ro tpms* [tpm_name]
+     |  +--ro tpm_name              string
+     |  +--ro tpm-physical-index?   int32 {ietfhw:entity-mib}?
+     |  +--ro certificates* []
+     |     +--ro certificate
+     |        +--ro certificate-name?    string
+     |        +--ro certificate-type?    enumeration
+     |        +--ro certificate-value?   ietfct:end-entity-cert-cms
+     +--ro compute-nodes* [node-name]
+        +--ro node-name              string
+        +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
+
+  rpcs:
+    +---x tpm12-challenge-response-attestation
+    |  +---w input
+    |  |  +---w tpm1-attestation-challenge
+    |  |     +---w pcr-indices*            uint8
+    |  |     +---w nonce-value             binary
+    |  |     +---w TPM_SIG_SCHEME-value    uint8
+    |  |     +---w (key-identifier)?
+    |  |     |  +--:(public-key)
+    |  |     |  |  +---w pub-key-id?       binary
+    |  |     |  +--:(TSS_UUID)
+    |  |     |     +---w TSS_UUID-value
+    |  |     |        +---w ulTimeLow?       uint32
+    |  |     |        +---w usTimeMid?       uint16
+    |  |     |        +---w usTimeHigh?      uint16
+    |  |     |        +---w bClockSeqHigh?   uint8
+    |  |     |        +---w bClockSeqLow?    uint8
+    |  |     |        +---w rgbNode*         uint8
+    |  |     +---w add-version?            boolean
+    |  |     +---w tpm_name?               string
+    |  |     +---w tpm-physical-index?     int32 {ietfhw:entity-mib}?
+    |  +--ro output
+    |     +--ro tpm12-attestation-response* [tpm_name]
+    |        +--ro tpm_name                     string
+    |        +--ro tpm-physical-index?          int32 {ietfhw:entity-mib}?
+    |        +--ro up-time?                     uint32
+    |        +--ro node-name?                   string
+    |        +--ro node-physical-index?         int32 {ietfhw:entity-mib}?
+    |        +--ro fixed?                       binary
+    |        +--ro external-data?               binary
+    |        +--ro signature-size?              uint32
+    |        +--ro signature?                   binary
+    |        +--ro (tpm12-quote)
+    |           +--:(tpm12-quote1)
+    |           |  +--ro version* []
+    |           |  |  +--ro major?      uint8
+    |           |  |  +--ro minor?      uint8
+    |           |  |  +--ro revMajor?   uint8
+    |           |  |  +--ro revMinor?   uint8
+    |           |  +--ro digest-value?          binary
+    |           |  +--ro TPM_PCR_COMPOSITE* []
+    |           |     +--ro pcr-indices*       uint8
+    |           |     +--ro value-size?        uint32
+    |           |     +--ro tpm12-pcr-value*   binary
+    |           +--:(tpm12-quote2)
+    |              +--ro tag?                   uint8
+    |              +--ro pcr-indices*           uint8
+    |              +--ro locality-at-release?   uint8
+    |              +--ro digest-at-release?     binary
+    +---x tpm20-challenge-response-attestation
+    |  +---w input
+    |  |  +---w tpm20-attestation-challenge
+    |  |  |  +---w pcr-list* []
+    |  |  |  |  +---w pcr
+    |  |  |  |     +---w pcr-indices*                  uint8
+    |  |  |  |     +---w (algo-registry-type)
+    |  |  |  |        +--:(tcg)
+    |  |  |  |        |  +---w tcg-hash-algo-id?       uint16
+    |  |  |  |        +--:(ietf)
+    |  |  |  |           +---w ietf-ni-hash-algo-id?   uint8
+    |  |  |  +---w nonce-value                   binary
+    |  |  |  +---w (signature-identifier-type)
+    |  |  |  |  +--:(TPM_ALG_ID)
+    |  |  |  |  |  +---w TPM_ALG_ID-value?       uint16
+    |  |  |  |  +--:(COSE_Algorithm)
+    |  |  |  |     +---w COSE_Algorithm-value?   int32
+    |  |  |  +---w (key-identifier)?
+    |  |  |     +--:(public-key)
+    |  |  |     |  +---w pub-key-id?             binary
+    |  |  |     +--:(uuid)
+    |  |  |        +---w uuid-value?             binary
+    |  |  +---w tpms* [tpm_name]
+    |  |     +---w tpm_name              string
+    |  |     +---w tpm-physical-index?   int32 {ietfhw:entity-mib}?
+    |  +--ro output
+    |     +--ro tpm20-attestation-response* [tpm_name]
+    |        +--ro tpm_name               string
+    |        +--ro tpm-physical-index?    int32 {ietfhw:entity-mib}?
+    |        +--ro up-time?               uint32
+    |        +--ro node-name?             string
+    |        +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
+    |        +--ro tpms-attest
+    |        |  +--ro pcrdigest?                   binary
+    |        |  +--ro tpms-attest-result?          binary
+    |        |  +--ro tpms-attest-result-length?   uint32
+    |        +--ro tpmt-signature?        binary
+    +---x basic-trust-establishment
+    |  +---w input
+    |  |  +---w nonce-value                   binary
+    |  |  +---w (signature-identifier-type)
+    |  |  |  +--:(TPM_ALG_ID)
+    |  |  |  |  +---w TPM_ALG_ID-value?       uint16
+    |  |  |  +--:(COSE_Algorithm)
+    |  |  |     +---w COSE_Algorithm-value?   int32
+    |  |  +---w tpm_name?                     string
+    |  |  +---w tpm-physical-index?           int32 {ietfhw:entity-mib}?
+    |  |  +---w certificate-name?             string
+    |  +--ro output
+    |     +--ro attestation-certificates* [tpm_name]
+    |        +--ro tpm_name                   string
+    |        +--ro tpm-physical-index?        int32 {ietfhw:entity-mib}?
+    |        +--ro up-time?                   uint32
+    |        +--ro node-name?                 string
+    |        +--ro node-physical-index?       int32 {ietfhw:entity-mib}?
+    |        +--ro certificate-name?          string
+    |        +--ro attestation-certificate?   ietfct:end-entity-cert-cms
+    |        +--ro (key-identifier)?
+    |           +--:(public-key)
+    |           |  +--ro pub-key-id?          binary
+    |           +--:(uuid)
+    |              +--ro uuid-value?          binary
+    +---x log-retrieval
+       +---w input
+       |  +---w log-selector* [node-name]
+       |  |  +---w node-name                 string
+       |  |  +---w node-physical-index?      int32 {ietfhw:entity-mib}?
+       |  |  +---w (index-type)?
+       |  |     +--:(last-entry)
+       |  |     |  +---w last-entry-value?   binary
+       |  |     +--:(index)
+       |  |     |  +---w index-number?       uint64
+       |  |     +--:(timestamp)
+       |  |        +---w timestamp?          yang:date-and-time
+       |  +---w log-type              identityref
+       |  +---w pcr-list* []
+       |  |  +---w pcr
+       |  |     +---w pcr-indices*                  uint8
+       |  |     +---w (algo-registry-type)
+       |  |        +--:(tcg)
+       |  |        |  +---w tcg-hash-algo-id?       uint16
+       |  |        +--:(ietf)
+       |  |           +---w ietf-ni-hash-algo-id?   uint8
+       |  +---w log-entry-quantity?   uint16
+       +--ro output
+          +--ro system-event-logs
+             +--ro node-data* [node-name tpm_name]
+                +--ro node-name              string
+                +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
+                +--ro up-time?               uint32
+                +--ro tpm_name               string
+                +--ro tpm-physical-index?    int32 {ietfhw:entity-mib}?
+                +--ro log-result
+                   +--ro (log-type)
+                      +--:(bios)
+                      |  +--ro bios-event-logs
+                      |     +--ro bios-event-entry* [event-number]
+                      |        +--ro event-number    uint32
+                      |        +--ro event-type?     uint32
+                      |        +--ro pcr-index?      uint16
+                      |        +--ro digest-list* []
+                      |        |  +--ro (algo-registry-type)
+                      |        |  |  +--:(tcg)
+                      |        |  |  |  +--ro tcg-hash-algo-id?       uint16
+                      |        |  |  +--:(ietf)
+                      |        |  |     +--ro ietf-ni-hash-algo-id?   uint8
+                      |        |  +--ro digest*                       binary
+                      |        +--ro event-size?     uint32
+                      |        +--ro event-data*     uint8
+                      +--:(ima)
+                         +--ro ima-event-logs
+                            +--ro ima-event-entry* [event-number]
+                               +--ro event-number               uint64
+                               +--ro ima-template?              string
+                               +--ro filename-hint?             string
+                               +--ro filedata-hash?             binary
+                               +--ro template-hash-algorithm?   string
+                               +--ro template-hash?             binary
+                               +--ro pcr-index?                 uint16
+                               +--ro signature?                 binary
