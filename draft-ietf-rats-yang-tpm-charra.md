@@ -75,7 +75,7 @@ author:
 normative:
   RFC2119:
   RFC8174:
-  RFC6991: ietf-yang-types 
+  RFC6991: ietf-yang-types
   RFC8348: ietf-hardware
   I-D.ietf-netconf-crypto-types: ietf-crypto-types
   I-D.birkholz-rats-reference-interaction-model: rats-interaction-models
@@ -100,7 +100,7 @@ This document is based on the terminology defined in the {{-rats-architecture}} 
 
 # The YANG Module for Basic Remote Attestation Procedures
 
-One or more TPM 2.0 MUST be embedded in the composite device that is providing attestation evidence via the YANG module defined in this document. The ietf-basic-remote-attestation YANG module enables a composite device to take on the role of Claimant and Attester in accordance with the Remote Attestation Procedures (RATS) architecture {{-rats-architecture}} and the corresponding challenge-response interaction model defined in the {{-rats-interaction-models}} document. A fresh nonce with an appropriate amount of entropy MUST be supplied by the YANG client in order to enable a proof-of-freshness with respect to the attestation evidence provided by the attester running the YANG datastore. The functions of this YANG module are restricted to 0-1 TPM 2.0 per hardware component.
+One or more TPMs MUST be embedded in the composite device that is providing attestation evidence via the YANG module defined in this document. The ietf-basic-remote-attestation YANG module enables a composite device to take on the role of Claimant and Attester in accordance with the Remote Attestation Procedures (RATS) architecture {{-rats-architecture}} and the corresponding challenge-response interaction model defined in the {{-rats-interaction-models}} document. A fresh nonce with an appropriate amount of entropy MUST be supplied by the YANG client in order to enable a proof-of-freshness with respect to the attestation evidence provided by the attester running the YANG datastore. The functions of this YANG module are restricted to 0-1 TPMs per hardware component.
 
 ## Tree Diagram
 
@@ -110,7 +110,7 @@ One or more TPM 2.0 MUST be embedded in the composite device that is providing a
 
 ## YANG Module
 
-This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, and {{-ietf-crypto-types}}. 
+This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, and {{-ietf-crypto-types}}.
 
 ~~~ YANG
 <CODE BEGINS> file ietf-tpm-remote-attestation@2019-01-07.yang
