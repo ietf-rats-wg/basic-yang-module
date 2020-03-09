@@ -72,11 +72,11 @@ module ietf-tpm-remote-attestation {
       mandatory true;
       description
         "Unfortunately, both IETF and TCG have registries here.
-        Choose your weapon wisely.";
+         Choose your weapon wisely.";
       case tcg {
         description
-          "you chose the east door, the tcg space opens up to
-          you.";
+          "You chose the east door, the tcg space opens up to
+           you.";
         leaf tcg-hash-algo-id {
           type uint16;
           description
@@ -86,8 +86,8 @@ module ietf-tpm-remote-attestation {
       }
       case ietf {
         description
-          "you chose the west door, the ietf space opens up to
-          you.";
+          "You chose the west door, the ietf space opens up to
+           you.";
         leaf ietf-ni-hash-algo-id {
           type uint8;
           description
@@ -107,7 +107,7 @@ module ietf-tpm-remote-attestation {
       container hash-digest {
         description
           "A hash value based on a hash algorithm registered by an
-          SDO.";
+           SDO.";
         uses hash-algo;
         leaf hash-value {
           type binary;
@@ -126,20 +126,22 @@ module ietf-tpm-remote-attestation {
       mandatory true;
       description
         "This nonce SHOULD be generated via a registered
-        cryptographic-strength algorithm. In consequence, the length
-        of the nonce depends on the hash algorithm used. The algorithm
-        used in this case is independent from the hash algorithm used to
-        create the hash-value in the response of the attestor.";
+         cryptographic-strength algorithm. In consequence,
+         the length of the nonce depends on the hash algorithm
+         used. The algorithm used in this case is independent
+         from the hash algorithm used to create the hash-value
+         in the response of the attestor.";
     }
   }
 
   grouping tpm12-pcr-selection {
     description
       "A Verifier can request one or more PCR values using its
-      individually created Attestation Key Certificate (AC).
-      The corresponding selection filter is represented in this grouping.
-      Requesting a PCR value that is not in scope of the AC used, detailed
-      exposure via error msg should be avoided.";
+       individually created Attestation Key Certificate (AC).
+       The corresponding selection filter is represented in this
+       grouping.
+       Requesting a PCR value that is not in scope of the AC used,
+       detailed exposure via error msg should be avoided.";
     leaf-list pcr-indices {
       type uint8;
       description
@@ -151,17 +153,17 @@ module ietf-tpm-remote-attestation {
   grouping tpm20-pcr-selection {
     description
       "A Verifier can request one or more PCR values uses its
-      individually created AC. The corresponding selection filter is
-      represented in this grouping. Requesting a PCR value that is not
-      in scope of the AC used, detailed exposure via error msg should
-      be avoided.";
+       individually created AC. The corresponding selection filter is
+       represented in this grouping. Requesting a PCR value that is not
+       in scope of the AC used, detailed exposure via error msg should
+       be avoided.";
     list pcr-list {
       description
         "For each PCR in this list an individual list of banks
-        (hash-algo) can be requested. It depends on the datastore, if
-        every bank in this grouping is included per PCR (crude), or if
+         (hash-algo) can be requested. It depends on the datastore, if
+         every bank in this grouping is included per PCR (crude), or if
          each requested bank set is returned for each PCR individually
-        (elegant).";
+         (elegant).";
       container pcr {
         description
           "The composite of a PCR number and corresponding bank
@@ -180,24 +182,24 @@ module ietf-tpm-remote-attestation {
   grouping pcr-selector {
     description
       "A Verifier can request the generation of an attestation
-      certificate (a signed public attestation key
-      (non-migratable, tpm-resident) wrt one or more PCR values.
-      The corresponding creation input is represented in this grouping.
-      Requesting a PCR value that is not supported results in an error,
-      detailed exposure via error msg should be avoided.";
+       certificate (a signed public attestation key
+       (non-migratable, tpm-resident) wrt one or more PCR values.
+       The corresponding creation input is represented in this grouping.
+       Requesting a PCR value that is not supported results in an error,
+       detailed exposure via error msg should be avoided.";
     list pcr-list {
       description
         "For each PCR in this list an individual hash-algo can be
-        requested.";
+         requested.";
       container pcr {
         description
           "The composite of a PCR number and corresponding bank
-          numbers.";
+           numbers.";
         leaf-list pcr-index {
            type uint8;
            description
              "The numbers of the PCRs that are associated with
-             the created key. At the moment the highest number is 32";
+              the created key. At the moment the highest number is 32";
         }
         uses hash-algo;
       }
@@ -211,10 +213,10 @@ module ietf-tpm-remote-attestation {
       type uint8;
       mandatory true;
       description
-        "Selects the signature scheme that is used to sign the TPM quote
-        information response. Allowed values can be found in the table at
-        the bottom of page 32 in the TPM 1.2 Structures specification
-        (Level 2 Revision 116, 1 March 2011).";
+        "Selects the signature scheme that is used to sign the TPM
+         Quote information response. Allowed values can be found in
+         the table at the bottom of page 32 in the TPM 1.2 Structures
+         specification (Level 2 Revision 116, 1 March 2011).";
     }
   }
 
@@ -225,12 +227,12 @@ module ietf-tpm-remote-attestation {
       mandatory true;
       description
         "There are multiple ways to reference a signature type.
-        This used to select the signature algo to sign the quote
-        information response.";
+         This used to select the signature algo to sign the quote
+         information response.";
       case TPM_ALG_ID {
         description
           "This references the indices of table 9 in the TPM 2.0
-          structure specification.";
+           structure specification.";
         leaf TPM_ALG_ID-value {
           type uint16;
           description
@@ -240,8 +242,8 @@ module ietf-tpm-remote-attestation {
       case COSE_Algorithm {
         description
           "This references the IANA COSE Algorithms Registry indices.
-          Every index of this registry to be used must be mapable to a
-          TPM_ALG_ID value.";
+           Every index of this registry to be used must be mapable to a
+           TPM_ALG_ID value.";
         leaf COSE_Algorithm-value {
           type int32;
           description
@@ -257,7 +259,7 @@ module ietf-tpm-remote-attestation {
     choice key-identifier {
       description
         "Identifier for the attestation key to use for signing
-        attestation evidence.";
+         attestation evidence.";
       case public-key {
         leaf pub-key-id {
           type binary;
@@ -268,15 +270,15 @@ module ietf-tpm-remote-attestation {
       case TSS_UUID {
         description
           "Use a YANG agent generated (and maintained) attestation
-          key UUID that complies with the TSS_UUID datatype of the TCG
-          Software Stack (TSS) Specification, Version 1.10 Golden,
-          August 20, 2003.";
+           key UUID that complies with the TSS_UUID datatype of the TCG
+           Software Stack (TSS) Specification, Version 1.10 Golden,
+           August 20, 2003.";
         container TSS_UUID-value {
           description
             "A detailed structure that is used to create the
-            TPM 1.2 native TSS_UUID as defined in the TCG Software
-            Stack (TSS) Specification, Version 1.10 Golden,
-            August 20, 2003.";
+             TPM 1.2 native TSS_UUID as defined in the TCG Software
+             Stack (TSS) Specification, Version 1.10 Golden,
+             August 20, 2003.";
           leaf ulTimeLow {
             type uint32;
             description
@@ -291,13 +293,13 @@ module ietf-tpm-remote-attestation {
             type uint16;
             description
               "The high field of the timestamp multiplexed with the
-              version number.";
+               version number.";
           }
           leaf bClockSeqHigh {
             type uint8;
             description
               "The high field of the clock sequence multiplexed with
-              the variant.";
+               the variant.";
           }
           leaf bClockSeqLow {
             type uint8;
@@ -320,7 +322,7 @@ module ietf-tpm-remote-attestation {
     choice key-identifier {
       description
         "Identifier for the attestation key to use for signing
-        attestation evidence.";
+         attestation evidence.";
       case public-key {
         leaf pub-key-id {
           type binary;
@@ -331,7 +333,7 @@ module ietf-tpm-remote-attestation {
       case uuid {
         description
           "Use a YANG agent generated (and maintained) attestation
-          key UUID.";
+           key UUID.";
         leaf uuid-value {
           type binary;
           description
@@ -387,20 +389,20 @@ module ietf-tpm-remote-attestation {
   grouping tpm12-pcr-info-short {
     description
       "This structure is for defining a digest at release when the only
-      information that is necessary is the release configuration.";
+       information that is necessary is the release configuration.";
     uses tpm12-pcr-selection;
     leaf locality-at-release {
       type uint8;
       description
-        ".This SHALL be the locality modifier required to release the
-        information (TPM 1.2 type TPM_LOCALITY_SELECTION)";
+        "This SHALL be the locality modifier required to release the
+         information (TPM 1.2 type TPM_LOCALITY_SELECTION)";
     }
     leaf digest-at-release {
       type binary;
         description
           "This SHALL be the digest of the PCR indices and PCR values
-          to verify when revealing auth data (TPM 1.2 type
-          TPM_COMPOSITE_HASH).";
+           to verify when revealing auth data (TPM 1.2 type
+           TPM_COMPOSITE_HASH).";
     }
   }
 
@@ -411,30 +413,30 @@ module ietf-tpm-remote-attestation {
     list version {
       description
         "This indicates the version of the structure
-        (TPM 1.2 type TPM_STRUCT_VER). This MUST be 1.1.0.0.";
+         (TPM 1.2 type TPM_STRUCT_VER). This MUST be 1.1.0.0.";
       leaf major {
         type uint8;
         description
           "Indicates the major version of the structure.
-          MUST be 0x01.";
+           MUST be 0x01.";
       }
       leaf minor {
         type uint8;
         description
           "Indicates the minor version of the structure.
-          MUST be 0x01.";
+           MUST be 0x01.";
       }
       leaf revMajor {
         type uint8;
         description
-         "Indicates the rev major version of the structure.
-         MUST be 0x00.";
+          "Indicates the rev major version of the structure.
+           MUST be 0x00.";
       }
       leaf revMinor {
         type uint8;
         description
           "Indicates the rev minor version of the structure.
-          MUST be 0x00.";
+           MUST be 0x00.";
       }
     }
   }
@@ -446,7 +448,7 @@ module ietf-tpm-remote-attestation {
       type binary;
       description
         "This SHALL always be the string ‘QUOT’ or ‘QUO2’
-        (length is 4 bytes).";
+         (length is 4 bytes).";
     }
     leaf external-data {
       type binary;
@@ -468,23 +470,23 @@ module ietf-tpm-remote-attestation {
   grouping tpm12-quote-info {
     description
       "This structure provides the mechanism for the TPM to quote the
-      current values of a list of PCRs (as used by the TPM_Quote2
-      command).";
+       current values of a list of PCRs (as used by the TPM_Quote2
+       command).";
     uses tpm12-version;
     leaf digest-value {
       type binary;
       description
         "This SHALL be the result of the composite hash algorithm using
-        the current values of the requested PCR indices
-        (TPM 1.2 type TPM_COMPOSITE_HASH.)";
+         the current values of the requested PCR indices
+         (TPM 1.2 type TPM_COMPOSITE_HASH.)";
     }
   }
 
   grouping tpm12-quote-info2 {
     description
       "This structure provides the mechanism for the TPM to quote the
-      current values of a list of PCRs
-     (as used by the TPM_Quote2 command).";
+       current values of a list of PCRs
+       (as used by the TPM_Quote2 command).";
     leaf tag {
       type uint8;
       description
@@ -504,13 +506,13 @@ module ietf-tpm-remote-attestation {
         type uint32;
         description
           "This SHALL be the size of the 'tpm12-pcr-value' field
-          (not the number of PCRs).";
+           (not the number of PCRs).";
       }
       leaf-list tpm12-pcr-value {
         type binary;
         description
           "The list of TPM_PCRVALUEs from each PCR selected in sequence
-          of tpm12-pcr-selection.";
+           of tpm12-pcr-selection.";
       }
       list version-info {
         description
@@ -519,8 +521,8 @@ module ietf-tpm-remote-attestation {
           type uint16;
           description
             "The TPM 1.2 version and revision
-            (TPM 1.2 type TPM_STRUCTURE_TAG).
-            This MUST be TPM_CAP_VERSION_INFO (0x0030)";
+             (TPM 1.2 type TPM_STRUCTURE_TAG).
+             This MUST be TPM_CAP_VERSION_INFO (0x0030)";
         }
         uses tpm12-version;
         leaf spec-level {
@@ -532,7 +534,7 @@ module ietf-tpm-remote-attestation {
           type uint8;
           description
             "A number indicating the errata version of the
-            specification.";
+             specification.";
         }
         leaf tpm-vendor-id {
           type binary;
@@ -556,7 +558,7 @@ module ietf-tpm-remote-attestation {
   grouping tpm12-pcr-composite {
     description
       "The actual values of the selected PCRs (a list of TPM_PCRVALUEs
-      (binary)and associated metadata for TPM 1.2.";
+       (binary) and associated metadata for TPM 1.2.";
     list TPM_PCR_COMPOSITE {
       description
         "The TPM 1.2 TPM_PCRVALUEs for the pcr-indices.";
@@ -565,13 +567,13 @@ module ietf-tpm-remote-attestation {
         type uint32;
         description
           "This SHALL be the size of the 'tpm12-pcr-value' field
-          (not the number of PCRs).";
+           (not the number of PCRs).";
       }
       leaf-list tpm12-pcr-value {
         type binary;
         description
           "The list of TPM_PCRVALUEs from each PCR selected in sequence
-          of tpm12-pcr-selection.";
+           of tpm12-pcr-selection.";
       }
     }
   }
@@ -619,7 +621,7 @@ module ietf-tpm-remote-attestation {
   grouping boot-event-log {
     description
       "Defines an event log corresponding to the event that extended the
-      PCR";
+       PCR";
     leaf event-number {
       type uint32;
       description
@@ -652,7 +654,7 @@ module ietf-tpm-remote-attestation {
     leaf-list event-data {
       type uint8;
       description
-        "the event data size determined by event-size";
+        "The event data size determined by event-size";
     }
   }
 
@@ -668,7 +670,7 @@ module ietf-tpm-remote-attestation {
       type string;
       description
         "Name of the template used for event logs
-        for e.g. ima, ima-ng, ima-sig";
+         for e.g. ima, ima-ng, ima-sig";
     }
     leaf filename-hint {
       type string;
@@ -709,15 +711,15 @@ module ietf-tpm-remote-attestation {
 
   grouping bios-event-log {
     description
-    "Measurement log created by the BIOS/UEFI.";
-    list bios-event-entry {
+      "Measurement log created by the BIOS/UEFI.";
+       list bios-event-entry {
       key event-number;
-       description
-       "Ordered list of TCG described event log
-        that extended the PCRs in the order they
-        were logged";
-        uses boot-event-log;
-     }
+        description
+          "Ordered list of TCG described event log
+           that extended the PCRs in the order they
+           were logged";
+      uses boot-event-log;
+    }
   }
 
   grouping ima-event-log {
@@ -744,7 +746,7 @@ module ietf-tpm-remote-attestation {
         container bios-event-logs {
           description
             "This is an index referencing the TCG Algorithm
-            Registry based on TPM_ALG_ID.";
+             Registry based on TPM_ALG_ID.";
           uses bios-event-log;
         }
       }
@@ -754,7 +756,7 @@ module ietf-tpm-remote-attestation {
         container ima-event-logs {
           description
             "This is an index referencing the TCG Algorithm
-            Registry based on TPM_ALG_ID.";
+             Registry based on TPM_ALG_ID.";
           uses ima-event-log;
         }
       }
@@ -806,8 +808,8 @@ module ietf-tpm-remote-attestation {
           mandatory true;
           description
             "Either a tpm12-quote-info or tpm12-quote-info2, depending
-            on whether TPM_Quote or TPM_Quote2 was used
-            (cf. input field add-verson).";
+             on whether TPM_Quote or TPM_Quote2 was used
+             (cf. input field add-verson).";
           case tpm12-quote1 {
             description
               "BIOS/UEFI event logs";
@@ -861,7 +863,6 @@ module ietf-tpm-remote-attestation {
         uses tpm-identifier;
         uses node-uptime;
         uses compute-node-identifier;
-
         leaf quote {
           type binary;
           description
@@ -916,7 +917,7 @@ module ietf-tpm-remote-attestation {
          type string;
          description
            "An arbitrary name for the identity certificate chain
-           requested.";
+            requested.";
       }
     }
     output {
@@ -932,13 +933,13 @@ module ietf-tpm-remote-attestation {
           type string;
           description
             "An arbitrary name for this identity certificate or
-            certificate chain.";
+             certificate chain.";
         }
         leaf attestation-certificate {
           type ietfct:end-entity-cert-cms;
           description
             "The binary signed certificate chain data for this identity
-            certificate.";
+             certificate.";
         }
         uses tpm20-attestation-key-identifier;
       }
@@ -948,8 +949,8 @@ module ietf-tpm-remote-attestation {
   rpc log-retrieval {
     description
       "Logs Entries are either identified via indices or via providing
-      the last line received. The number of lines returned can be
-      limited. The type of log is a choice that can be augmented.";
+       the last line received. The number of lines returned can be
+       limited. The type of log is a choice that can be augmented.";
     input {
       list log-selector {
         key "node-id tpm-name";
@@ -967,10 +968,10 @@ module ietf-tpm-remote-attestation {
               type binary;
               description
                 "Content of an log event which matches 1:1 with a
-                unique event record contained within the log.  Log
-                entries subsequent to this will be passed to the
-                requester.  Note: if log entry values are not unique,
-                this MUST return an error.";
+                 unique event record contained within the log.  Log
+                 entries subsequent to this will be passed to the
+                 requester.  Note: if log entry values are not unique,
+                 this MUST return an error.";
             }
           }
           case index {
@@ -979,10 +980,10 @@ module ietf-tpm-remote-attestation {
             leaf last-index-number {
               type uint64;
               description
-                "The last numeric index number of a log entry.  Zero means
-                to start at the beginning of the log.   Entries
-                subsequent to this will be passed to the
-                requester.";
+                "The last numeric index number of a log entry.
+                 Zero means to start at the beginning of the log.
+                 Entries subsequent to this will be passed to the
+                 requester.";
             }
           }
           case timestamp {
@@ -990,7 +991,7 @@ module ietf-tpm-remote-attestation {
               type yang:date-and-time;
               description
                 "Timestamp from which to start the extraction.  The next
-                log entry subsequent to this timestamp is to be sent.";
+                 log entry subsequent to this timestamp is to be sent.";
             }
             description
               "Timestamp from which to start the extraction.";
@@ -1022,7 +1023,7 @@ module ietf-tpm-remote-attestation {
           container log-result {
             description
               "The requested entries of the corresponding log.";
-            uses event-logs;
+               uses event-logs;
           }
         }
       }
@@ -1059,7 +1060,7 @@ module ietf-tpm-remote-attestation {
       leaf node-location {
         type string;
         description
-  "Location of the compute node, such as slot number.";
+          "Location of the compute node, such as slot number.";
       }
       list tpms {
         key tpm-name;
