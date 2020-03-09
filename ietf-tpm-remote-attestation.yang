@@ -28,9 +28,10 @@ module ietf-tpm-remote-attestation {
     Author  : Guy Fedorkow <gfedorkow@juniper.net>";
 
   description
-    "A YANG module to enable a TPM 2.0 based remote attestation
-     procedure using a challenge-response interaction model and 
-     the TPM 2.0 Quote primitive operation.
+    "A YANG module to enable a TPM 1.2 and TPM 2.0 based
+     remote attestation procedure using a challenge-response
+     interaction model and the TPM 1.2 and TPM 2.0 Quote
+     primitive operations.
 
      Copyright (c) 2020 IETF Trust and the persons identified
      as authors of the code. All rights reserved.
@@ -347,7 +348,7 @@ module ietf-tpm-remote-attestation {
     leaf tpm-name {
       type string;
       description
-        "Name of the TPM or All";
+        "Name value of a single TPM or 'All'";
     }
     leaf tpm-physical-index {
       if-feature ietfhw:entity-mib;
@@ -788,19 +789,19 @@ module ietf-tpm-remote-attestation {
             "Whether or not to include TPM_CAP_VERSION_INFO; if true,
              then TPM_Quote2 must be used to create the response.";
         }
-        uses tpm-name;
+        uses tpm-identifier;
       }
     }
     output {
       list tpm12-attestation-response {
-        key tpm_name;
+        key tpm-name;
         description
           "The binary output of TPM 1.2 TPM_Quote/TPM_Quote2, including
            the PCR selection and other associated attestation evidence
            metadata";
-        uses tpm-name;
+        uses tpm-identifier;
         uses node-uptime;
-        uses compute-node;
+        uses compute-node-identifier;
         uses tpm12-quote-info-common;
         choice tpm12-quote {
           mandatory true;
@@ -894,11 +895,11 @@ module ietf-tpm-remote-attestation {
 	    }
 	  }
 	}
-        
-        leaf pcr-digest-algo-in-quote {
+        container pcr-digest-algo-in-quote {
           uses hash-algo;
           description
-            "The hash algorithm for PCR value digest in quote.";
+            "The hash algorithm for PCR value digest in
+             Quote output.";
         }
       }
     }
@@ -1012,13 +1013,13 @@ module ietf-tpm-remote-attestation {
         description
           "The requested data of the measurement event logs";
         list node-data {
-          key "node-name tpm_name";
+          key "node-id tpm-name";
           description
             "Event logs of a node in a distributed system
              identified by the node name";
-          uses compute-node;
+          uses compute-node-identifier;
           uses node-uptime;
-          uses tpm-name;
+          uses tpm-identifier;
           container log-result {
             description
               "The requested entries of the corresponding log.";
