@@ -1,7 +1,7 @@
 module ietf-tpm-remote-attestation {
   namespace "urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation";
   prefix "yang-rats-charra";
-  
+
   import ietf-yang-types {
     prefix yang;
   }
@@ -11,7 +11,7 @@ module ietf-tpm-remote-attestation {
   import ietf-crypto-types {
       prefix ietfct;
   }
-  
+
   organization
    "IETF RATS (Remote ATtestation procedureS) Working Group";
 
@@ -64,7 +64,7 @@ module ietf-tpm-remote-attestation {
   /*****************/
   /*   Groupings   */
   /*****************/
-  
+
   grouping hash-algo {
     description
       "A selector for the hashing algorithm";
@@ -97,7 +97,7 @@ module ietf-tpm-remote-attestation {
       }
     }
   }
-  
+
   grouping hash {
     description
       "The hash value including hash-algo identifier";
@@ -117,7 +117,7 @@ module ietf-tpm-remote-attestation {
       }
     }
   }
-  
+
   grouping nonce {
     description
       "A nonce to show freshness and counter replays.";
@@ -462,7 +462,7 @@ module ietf-tpm-remote-attestation {
       type binary;
       description
         "Signature over SHA-1 hash of tpm12-quote-info2'.";
-    } 
+    }
   }
 
   grouping tpm12-quote-info {
@@ -683,7 +683,7 @@ module ietf-tpm-remote-attestation {
     leaf filedata-hash-algorithm {
       type string;
       description
-	"Algorithm used for filedata-hash";
+        "Algorithm used for filedata-hash";
     }
     leaf template-hash-algorithm {
       type string;
@@ -765,7 +765,6 @@ module ietf-tpm-remote-attestation {
   /*   RPC operations   */
   /**********************/
 
-
   rpc tpm12-challenge-response-attestation {
     description
       "This RPC accepts the input for TSS TPM 1.2 commands of the
@@ -839,17 +838,17 @@ module ietf-tpm-remote-attestation {
            remote attestation. Corresponding values are based on
            TPM 2.0 structure definitions";
         uses nonce;
-	list challenge-objects {
-	  key "node-id tpm-name";
-	  description
-	    "Nodes to fetch attestation information, PCR selection 
-	     and AK identifier.";
-	  uses compute-node-identifier;
-	  uses tpm-identifier;
-	  uses tpm20-pcr-selection;
-	  uses tpm20-signature-scheme;
-	  uses tpm20-attestation-key-identifier;
-	}
+        list challenge-objects {
+          key "node-id tpm-name";
+          description
+            "Nodes to fetch attestation information, PCR selection
+             and AK identifier.";
+          uses compute-node-identifier;
+          uses tpm-identifier;
+          uses tpm20-pcr-selection;
+          uses tpm20-signature-scheme;
+          uses tpm20-attestation-key-identifier;
+        }
       }
     }
     output {
@@ -857,7 +856,7 @@ module ietf-tpm-remote-attestation {
         key "node-id tpm-name";
         description
           "The binary output of TPM2b_Quote in one TPM chip of the
-           node which identified by node-id. An TPMS_ATTEST structure 
+           node which identified by node-id. An TPMS_ATTEST structure
            including a length, encapsulated in a signature";
         uses tpm-identifier;
         uses node-uptime;
@@ -866,7 +865,7 @@ module ietf-tpm-remote-attestation {
         leaf quote {
           type binary;
           description
-            "Quote data returned by TPM Quote, including PCR selection, 
+            "Quote data returned by TPM Quote, including PCR selection,
              PCR digest and etc.";
         }
         leaf quote-signature {
@@ -875,26 +874,26 @@ module ietf-tpm-remote-attestation {
             "Quote signature returned by TPM Quote.";
         }
         list pcr-bank-values {
-	  key algo-registry-type;
-	  description
-	    "PCR values in each PCR bank.";
-	  uses hash-algo;
-	  list pcr-values {
-	    key pcr-index;
-	    description
-	      "List of one PCR bank.";
-	    leaf pcr-index {
-	      type uint16;
-	      description
-	        "PCR index number.";
-	    }
-	    leaf pcr-value {
-	      type string;
-	      description
-		"PCR value.";
-	    }
-	  }
-	}
+          key algo-registry-type;
+          description
+            "PCR values in each PCR bank.";
+             uses hash-algo;
+          list pcr-values {
+            key pcr-index;
+            description
+              "List of one PCR bank.";
+            leaf pcr-index {
+              type uint16;
+              description
+                "PCR index number.";
+            }
+            leaf pcr-value {
+              type binary;
+              description
+                "PCR value.";
+            }
+          }
+        }
         container pcr-digest-algo-in-quote {
           uses hash-algo;
           description
@@ -934,7 +933,7 @@ module ietf-tpm-remote-attestation {
           description
             "An arbitrary name for this identity certificate or
             certificate chain.";
-        }      
+        }
         leaf attestation-certificate {
           type ietfct:end-entity-cert-cms;
           description
@@ -945,7 +944,7 @@ module ietf-tpm-remote-attestation {
       }
     }
   }
-  
+
   rpc log-retrieval {
     description
       "Logs Entries are either identified via indices or via providing
@@ -967,10 +966,10 @@ module ietf-tpm-remote-attestation {
             leaf last-entry-value {
               type binary;
               description
-                "Content of an log event which matches 1:1 with a 
-                unique event record contained within the log.  Log 
-                entries subsequent to this will be passed to the 
-                requester.  Note: if log entry values are not unique, 
+                "Content of an log event which matches 1:1 with a
+                unique event record contained within the log.  Log
+                entries subsequent to this will be passed to the
+                requester.  Note: if log entry values are not unique,
                 this MUST return an error.";
             }
           }
@@ -980,9 +979,9 @@ module ietf-tpm-remote-attestation {
             leaf last-index-number {
               type uint64;
               description
-                "The last numeric index number of a log entry.  Zero means 
+                "The last numeric index number of a log entry.  Zero means
                 to start at the beginning of the log.   Entries
-                subsequent to this will be passed to the 
+                subsequent to this will be passed to the
                 requester.";
             }
           }
@@ -996,11 +995,11 @@ module ietf-tpm-remote-attestation {
             description
               "Timestamp from which to start the extraction.";
           }
-        }      
+        }
         leaf log-entry-quantity {
           type uint16;
           description
-            "The number of log entries to be returned. If omitted, it 
+            "The number of log entries to be returned. If omitted, it
              means all of them.";
         }
         uses tpm20-pcr-selection;
@@ -1050,99 +1049,99 @@ module ietf-tpm-remote-attestation {
       key node-id;
       uses compute-node-identifier;
       description
-	"A list names of hardware componnets in this composite 
+        "A list names of hardware componnets in this composite
          device that RATS can be conducted with.";
       leaf node-name {
         type string;
-	description
-	  "Name of the compute node.";
+        description
+          "Name of the compute node.";
       }
       leaf node-location {
-	type string;
-	description
-	  "Location of the compute node, such as slot number.";
-      }    
+        type string;
+        description
+  "Location of the compute node, such as slot number.";
+      }
       list tpms {
         key tpm-name;
         uses tpm-identifier;
         description
-	  "A list of TPMs in this composite device that RATS 
+          "A list of TPMs in this composite device that RATS
            can be conducted with.";
-	leaf tpm-manufacturer {
-	  type string;
-	  description
-	    "TPM manufacturer name.";
-	}
-	leaf tpm-firmware-version {
-	  type string;
-	  description 
-	    "TPM firmware version.";
-	}
-	leaf tpm-specification-version {
-	  type string;
-	  description 
-	    "TPM1.2 or TPM2.0.";
-	}
-	leaf tpm-status {
-	  type string;
-	  description
-	    "TPM chip self-test status, normal or abnormal.";
-	}
+        leaf tpm-manufacturer {
+          type string;
+          description
+            "TPM manufacturer name.";
+        }
+        leaf tpm-firmware-version {
+          type string;
+          description
+            "TPM firmware version.";
+        }
+        leaf tpm-specification-version {
+          type string;
+          description
+            "TPM1.2 or TPM2.0.";
+        }
+        leaf tpm-status {
+          type string;
+          description
+            "TPM chip self-test status, normal or abnormal.";
+        }
         list certificates {
           description
-	    "The TPM's certificates, including EK certificates 
+            "The TPM's certificates, including EK certificates
              and AK certificates.";
-	  container certificate {
-	    description
-	      "Three types of certificates can be accessed via 
-               this statement, including Initial Attestation 
-               Key Cert, Local Attestation Key Cert or 
+          container certificate {
+            description
+              "Three types of certificates can be accessed via
+               this statement, including Initial Attestation
+               Key Cert, Local Attestation Key Cert or
                Endorsement Key Cert.";
-    	    leaf certificate-name {
-              type string;
-              description
-                "An arbitrary name for this identity certificate 
-                 or certificate chain.";
+            leaf certificate-name {
+               type string;
+               description
+                 "An arbitrary name for this identity certificate
+                  or certificate chain.";
             }
-	    leaf certificate-type {
-	      type enumeration {
-	        enum endorsement-cert {
-		  value 0;
-		  description
-		    "EK Cert type.";
-		}
-		enum initial-attestation-cert {
-		  value 1;
-		  description
-		    "IAK Cert type.";
-		}
-		enum local-attestation-cert {
-		  value 2;
-		  description
-		    "LAK Cert type.";
-		}
-	      }
-	      description
+            leaf certificate-type {
+              type enumeration {
+                enum endorsement-cert {
+                  value 0;
+                  description
+                    "EK Cert type.";
+                }
+                enum initial-attestation-cert {
+                  value 1;
+                  description
+                    "IAK Cert type.";
+                }
+                enum local-attestation-cert {
+                  value 2;
+                  description
+                    "LAK Cert type.";
+                }
+              }
+              description
                 "Type of this certificate";
-	    }
+            }
             leaf certificate-value {
               type ietfct:end-entity-cert-cms;
               description
-    	    	"The binary signed public endorsement key (EK), 
-                 attestation key(AK) and corresponding claims 
+                "The binary signed public endorsement key (EK),
+                 attestation key(AK) and corresponding claims
                  (EK,AK Certificate). In a TPM 2.0 the EK,
-                 AK Certificate resides in a well-defined NVRAM 
-                 location by the TPM vendor. Maybe certificate-value 
+                 AK Certificate resides in a well-defined NVRAM
+                 location by the TPM vendor. Maybe certificate-value
                  defined as binary type is a simple way.";
             }
-	    leaf lak-public-structure {
-	      type binary;
-	      description
-		"Marshalled LAK public structure, used for LAK 
+            leaf lak-public-structure {
+              type binary;
+              description
+                "Marshalled LAK public structure, used for LAK
                  Certificate verification";
-    	    }
-	  }
-	}
+            }
+          }
+        }
       }
     }
   }

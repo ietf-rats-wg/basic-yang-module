@@ -113,7 +113,7 @@ module: ietf-tpm-remote-attestation
     |        |  |     +--ro ietf-ni-hash-algo-id?   uint8
     |        |  +--ro pcr-values* [pcr-index]
     |        |     +--ro pcr-index    uint16
-    |        |     +--ro pcr-value?   string
+    |        |     +--ro pcr-value?   binary
     |        +--ro pcr-digest-algo-in-quote
     |           +--ro (algo-registry-type)
     |              +--:(tcg)
