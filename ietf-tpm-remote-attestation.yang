@@ -1,6 +1,6 @@
 module ietf-tpm-remote-attestation {
   namespace "urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation";
-  prefix "yang-brat";
+  prefix "yang-rats-charra";
   
   import ietf-yang-types {
     prefix yang;
@@ -32,7 +32,7 @@ module ietf-tpm-remote-attestation {
      procedure using a challenge-response interaction model and 
      the TPM 2.0 Quote primitive operation.
 
-     Copyright (c) 2019 IETF Trust and the persons identified
+     Copyright (c) 2020 IETF Trust and the persons identified
      as authors of the code. All rights reserved.
 
      Redistribution and use in source and binary forms, with
@@ -53,11 +53,11 @@ module ietf-tpm-remote-attestation {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision "2020-01-08" {
+  revision "2020-03-09" {
     description
       "Initial version";
     reference
-      "draft-ietf-rats-tpm2-remote-attestation";
+      "draft-ietf-rats-yang-tpm-charra";
   }
 
   /*****************/
@@ -233,7 +233,7 @@ module ietf-tpm-remote-attestation {
         leaf TPM_ALG_ID-value {
           type uint16;
           description
-            "The TPM Algo ID.";
+            "The TCG Algorithm Registry ID value.";
         }
       }
       case COSE_Algorithm {
@@ -244,7 +244,7 @@ module ietf-tpm-remote-attestation {
         leaf COSE_Algorithm-value {
           type int32;
           description
-            "The TPM Algo ID.";
+            "The IANA COSE Algorithms ID value.";
         }
       }
     }
