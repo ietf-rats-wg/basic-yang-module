@@ -1,6 +1,6 @@
 module ietf-tpm-remote-attestation {
   namespace "urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation";
-  prefix "yang-rats-charra";
+  prefix "tpm";
 
   import ietf-yang-types {
     prefix yang;
@@ -42,6 +42,13 @@ module ietf-tpm-remote-attestation {
      BSD License set forth in Section 4.c of the IETF Trust's
      Legal Provisions Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
+     
+     Redistribution and use in source and binary forms, with or
+     without modification, is permitted pursuant to, and subject to
+     the license terms contained in, the Simplified BSD License set
+     forth in Section 4.c of the IETF Trust's Legal Provisions
+     Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX
      (https://www.rfc-editor.org/info/rfcXXXX); see the RFC
@@ -54,12 +61,89 @@ module ietf-tpm-remote-attestation {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision "2020-03-09" {
+  revision "2020-06-04" {
     description
       "Initial version";
     reference
       "draft-ietf-rats-yang-tpm-charra";
   }
+
+  /*****************/
+  /*   Features    */
+  /*****************/
+
+  feature TPM12 {
+    description
+      "This feature indicates that an Attester includes cryptoprocessors
+      capable of supporting the TPM 1.2 API.";
+  }
+
+  feature TPM20 {
+    description
+      "This feature indicates that an Attester includes cryptoprocessors
+      capable of supporting the TPM 2 API.";
+  }
+
+  /*****************/
+  /*   Typedefs    */
+  /*****************/
+
+  typedef pcr {
+    type uint8 {
+      range "0..31";
+    }
+    description
+      "Valid index number for a PCR.  At this point 0-31 is viable.";
+  }  
+
+  typedef compute-node-ref {
+    type leafref {
+      path "/tpm:rats-support-structures/tpm:compute-nodes/tpm:node-name";
+    }
+    description
+      "This type is used to reference a hardware node.  It is quite possible
+      this leafref will eventually point to another YANG module's node.";
+  }
+
+  /******************/
+  /*   Identities   */
+  /******************/
+
+  identity attested-event-log-type {
+    description
+      "Base identity allowing categorization of the reasons why and
+      attested measurement has been taken on an Attester.";
+  }
+
+  identity ima {
+    base attested-event-log-type;
+    description
+      "An event type recorded in IMA.";
+  }
+
+  identity bios {
+    base attested-event-log-type;
+    description
+      "An event type associated with BIOS/UEFI.";
+  }
+
+  identity cryptoprocessor {
+    description
+      "Base identity identifying a crytoprocessor.";
+  }
+
+  identity tpm12 {
+    base cryptoprocessor;
+    description
+      "A cryptoprocessor capable of supporting the TPM 1.2 API.";
+  }
+
+  identity tpm20 {
+    base cryptoprocessor;
+    description
+      "A cryptoprocessor capable of supporting the TPM 2.0 API.";
+  }
+
 
   /*****************/
   /*   Groupings   */
@@ -142,8 +226,8 @@ module ietf-tpm-remote-attestation {
        grouping.
        Requesting a PCR value that is not in scope of the AC used,
        detailed exposure via error msg should be avoided.";
-    leaf-list pcr-indices {
-      type uint8;
+    leaf-list pcr-index {
+      type pcr;
       description
         "The numbers/indexes of the PCRs. At the moment this is limited
         to 32.";
@@ -151,35 +235,6 @@ module ietf-tpm-remote-attestation {
   }
 
   grouping tpm20-pcr-selection {
-    description
-      "A Verifier can request one or more PCR values uses its
-       individually created AC. The corresponding selection filter is
-       represented in this grouping. Requesting a PCR value that is not
-       in scope of the AC used, detailed exposure via error msg should
-       be avoided.";
-    list pcr-list {
-      description
-        "For each PCR in this list an individual list of banks
-         (hash-algo) can be requested. It depends on the datastore, if
-         every bank in this grouping is included per PCR (crude), or if
-         each requested bank set is returned for each PCR individually
-         (elegant).";
-      container pcr {
-        description
-          "The composite of a PCR number and corresponding bank
-          numbers.";
-        leaf-list pcr-indices {
-           type uint8;
-           description
-             "The number of the PCR. At the moment this is limited
-             32";
-        }
-        uses hash-algo;
-      }
-    }
-  }
-
-  grouping pcr-selector {
     description
       "A Verifier can request the generation of an attestation
        certificate (a signed public attestation key
@@ -196,7 +251,7 @@ module ietf-tpm-remote-attestation {
           "The composite of a PCR number and corresponding bank
            numbers.";
         leaf-list pcr-index {
-           type uint8;
+           type pcr;
            description
              "The numbers of the PCRs that are associated with
               the created key. At the moment the highest number is 32";
@@ -210,11 +265,35 @@ module ietf-tpm-remote-attestation {
     description
       "The signature scheme used to sign the evidence via a TPM 1.2.";
     leaf TPM_SIG_SCHEME-value {
-      type uint8;
-      mandatory true;
+      type enumeration {
+        enum NONE {
+          value 1;
+          description
+            "TPM_SS_NONE.";
+        }
+        enum SHA1 {
+          value 2;
+          description
+            "TPM_SS_RSASSAPKCS1v15_SHA1";
+        }
+        enum DER {
+          value 3;
+          description
+            "TPM_SS_RSASSAPKCS1v15_DER";
+        }
+        enum INFO {
+          value 4;
+          description
+            "TPM_SS_RSASSAPKCS1v15_INFO";
+        }
+      }
+      default "NONE";
       description
         "Selects the signature scheme that is used to sign the TPM
-         Quote information response. Allowed values can be found in
+         Quote information response.";
+      reference
+        "TPM-Main-Part-2-TPM-Structures_v1.2_rev116_01032011.pdf
+         Allowed values can be found in
          the table at the bottom of page 32 in the TPM 1.2 Structures
          specification (Level 2 Revision 116, 1 March 2011).";
     }
@@ -234,9 +313,189 @@ module ietf-tpm-remote-attestation {
           "This references the indices of table 9 in the TPM 2.0
            structure specification.";
         leaf TPM_ALG_ID-value {
-          type uint16;
+          type enumeration {
+            enum RSA {
+              value 1;
+              description
+                "RFC 3447 - the RSA algorithm";
+            }
+            enum SHA1 {
+              value 4;
+              description
+                "ISO/IEC 10118-3 - SHA1 algorithm";
+            }
+            enum HMAC {
+              value 5;
+              description
+                "ISO/IEC 9797-2 - Hash Message Authentication Code (HMAC) 
+                algorithm";
+            }
+            enum AES {
+              value 6;
+              description
+                "ISO/IEC 18033-3 - the AES algorithm";
+            }
+            enum MGF1 {
+              value 7;
+              description
+                "IEEE Std 1363a -2004 - hash-based mask-generation function";
+            }
+            enum KEYEDHASH {
+              value 8;
+              description
+                "TPM2 KEYEDHASH - an encryption or signing algorithm using 
+                a keyed hash";
+            }
+            enum XOR {
+              value 10;
+              description
+                "TPM2 XOR";
+            }
+            enum SHA256 {
+              value 11;
+              description
+                "ISO/IEC 10118-3 - the SHA 256 algorithm";
+            }
+            enum SHA384 {
+              value 12;
+              description
+                "ISO/IEC 10118-3 - the SHA 384 algorithm";
+            }
+            enum SHA512 {
+              value 13;
+              description
+                "ISO/IEC 10118-3 - the SHA 512 algorithm";
+            }
+            enum NULL {
+              value 16;
+              description
+                "TPM2 NULL";
+            }
+            enum SM3_256 {
+              value 18;
+              description
+                "GM/T 0004-2012 - SM3_256";
+            }
+            enum SM4 {
+              value 19;
+              description
+                "GM/T 0004-2012 - SM4 symmetric block cipher";
+            }
+            enum RSASSA {
+              value 20;
+              description
+                "RFC 3447 - defined in section 8.2 (RSASSAPKCS1-v1_5)";
+            }
+            enum RSAES {
+              value 21;
+              description
+                "RFC 3447 - defined in section 7.2 (RSAES-PKCS1-v1_5)";
+            }
+            enum RSAPSS {
+              value 22;
+              description
+                "RFC 3447 - defined in section 8.1 (RSASSA PSS)";
+            }
+            enum OAEP {
+              value 23;
+              description
+                "RFC 3447 - defined in section 7.1 (RSASSA OAEP)";
+            }
+            enum ECDSA {
+              value 24;
+              description
+                "ISO/IEC 14888-3 - elliptic curve cryptography (ECC)";
+            }            
+            enum ECDH {
+              value 25;
+              description
+                "NIST SP800-56A - secret sharing using ECC";
+            }
+            enum ECDAA {
+              value 26;
+              description
+                "TPM2 - elliptic-curve based anonymous signing scheme";
+            }
+            enum SM2 {
+              value 27;
+              description
+                "A GM/T 0003.1–2012, GM/T 0003.2–2012, GM/T 0003.3–2012,
+                GM/T 0003.5–2012   SM2";
+            }
+            enum ECSCHNORR {
+              value 28;
+              description
+                "TPM2 - elliptic-curve based Schnorr signature";
+            }
+            enum ECMQV {
+              value 29;
+              description
+                "NIST SP800-56A - two-phase elliptic-curve key";
+            }
+            enum KDF1_SP800_56A {
+              value 32;
+              description
+                "NIST SP800-56A - concatenation key derivation function,
+                (approved alternative1) section 5.8.1";
+            }
+            enum KDF2 {
+              value 33;
+              description
+                "IEEE 1363a-2004 - key derivation function KDF2 section 13.2";
+            }
+            enum KDF1_SP800_108 {
+              value 34;
+              description
+                "NIST SP800-108 - Section 5.1 KDF in Counter Mode";
+            }            
+            enum ECC {
+              value 35;
+              description
+                "ISO/IEC 15946-1 - prime field ECC";
+            }
+            enum SYMCIPHER {
+              value 37;
+              description
+                "TPM2 - object type for a symmetric block cipher";
+            }            
+            enum CAMELLIA {
+              value 38;
+              description
+                "ISO/IEC 18033-3 - the  Camellia algorithm";
+            }
+            enum CTR {
+              value 64;
+              description
+                "ISO/IEC 10116 - Counter mode";
+            }
+            enum OFB {
+              value 65;
+              description
+                "ISO/IEC 10116 - Output Feedback mode";
+            }
+            enum CBC {
+              value 66;
+              description
+                "ISO/IEC 10116 - Cipher Block Chaining mode";
+            }
+            enum CFB {
+              value 67;
+              description
+                "ISO/IEC 10116 - Cipher Feedback mode";
+            }
+            enum ECB {
+              value 68;
+              description
+                "ISO/IEC 10116 - Electronic Codebook mode";
+            }
+          }
+          default "RSA";
           description
-            "The TCG Algorithm Registry ID value.";
+            "Selects the signature scheme that is used to sign the TPM
+             Quote information response.";
+          reference
+            "TPM-Rev-2.0-Part-2-Structures-01.38.pdf
+            The TCG Algorithm Registry ID value. Table 9";     
         }
       }
       case COSE_Algorithm {
@@ -248,6 +507,9 @@ module ietf-tpm-remote-attestation {
           type int32;
           description
             "The IANA COSE Algorithms ID value.";
+          reference
+            "https://www.iana.org/assignments/cose/cose.xhtml#algorithms";
+            /* Need to decide if these become enums. */
         }
       }
     }
@@ -343,27 +605,30 @@ module ietf-tpm-remote-attestation {
     }
   }
 
-  grouping tpm-identifier {
+  grouping tpm-path {
     description
-      "In a system with multiple-TPMs get the data from a specific TPM
-       identified by the name and physical-index.";
-    leaf tpm-name {
+      "Path to a unique TPM on a device.  This can change agross reboots.";
+    leaf tpm-path {
       type string;
-      description
-        "Name value of a single TPM or 'All'";
-    }
-    leaf tpm-physical-index {
-      if-feature ietfhw:entity-mib;
-      type int32 {
-        range "1..2147483647";
-      }
       config false;
       description
-        "The entPhysicalIndex for the TPM.";
-      reference
-        "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
+        "Path to a unique TPM on a device.  This can change agross reboots.";
     }
   }
+  grouping tpm-path-selector {
+    description
+      "Path to a unique TPM on a device.";
+    leaf-list tpm-path {
+      type string;
+      config false;
+      description
+        "Path to one or more unique TPMs on a device.  If this object exists, 
+        a selection should pull only the objects related to these TPM(s).  If 
+        it does not exist, all qualifying TPMs that are 'hardware-based'
+        equals true on the device are selected.";
+    }
+  }
+ 
   grouping compute-node-identifier {
     description
       "In a distributed system with multiple compute nodes
@@ -399,10 +664,10 @@ module ietf-tpm-remote-attestation {
     }
     leaf digest-at-release {
       type binary;
-        description
-          "This SHALL be the digest of the PCR indices and PCR values
-           to verify when revealing auth data (TPM 1.2 type
-           TPM_COMPOSITE_HASH).";
+      description
+        "This SHALL be the digest of the PCR indices and PCR values
+         to verify when revealing auth data (TPM 1.2 type
+         TPM_COMPOSITE_HASH).";
     }
   }
 
@@ -447,7 +712,7 @@ module ietf-tpm-remote-attestation {
     leaf fixed {
       type binary;
       description
-        "This SHALL always be the string ‘QUOT’ or ‘QUO2’
+        "This SHALL always be the string 'QUOT' or 'QUO2'
          (length is 4 bytes).";
     }
     leaf external-data {
@@ -588,29 +853,87 @@ module ietf-tpm-remote-attestation {
     }
   }
 
-  identity log-type {
+  grouping tpm12-attestation {
     description
-      "The type of logs available.";
+      "Contains an instance of TPM1.2 style signed cryptoprocessor 
+      measurements.  It is supplemented by unsigned Attester information.";
+    uses tpm-path;
+    uses node-uptime;
+    uses compute-node-identifier;
+    uses tpm12-quote-info-common;
+    choice tpm12-quote {
+      mandatory true;
+      description
+        "Either a tpm12-quote-info or tpm12-quote-info2, depending
+         on whether TPM_Quote or TPM_Quote2 was used
+         (cf. input field add-verson).";
+      case tpm12-quote1 {
+        description
+          "BIOS/UEFI event logs";
+        uses tpm12-quote-info;
+        uses tpm12-pcr-composite;
+      }
+      case tpm12-quote2 {
+        description
+          "BIOS/UEFI event logs";
+        uses tpm12-quote-info2;
+      }
+    }
   }
 
-  identity bios {
-    base log-type;
+  grouping tpm20-attestation {
     description
-      "Measurement log created by the BIOS/UEFI.";
-  }
+      "Contains an instance of TPM2 style signed cryptoprocessor 
+      measurements.  It is supplemented by unsigned Attester information.";
 
-  identity ima {
-    base log-type;
-    description
-      "Measurement log created by IMA.";
-  }
+    uses tpm-path;
+    uses node-uptime;
+    uses compute-node-identifier;
+    leaf quote {
+      type binary;
+      description
+        "Quote data returned by TPM Quote, including PCR selection,
+         PCR digest and etc.";
+    }
+    leaf quote-signature {
+      type binary;
+      description
+        "Quote signature returned by TPM Quote.";
+    }
+    list pcr-bank-values {
+      description
+        "PCR values in each PCR bank.";  /* THIS IS NOT CORRECT */
+      uses hash-algo;
+      list pcr-values {
+        key pcr-index;
+        description
+          "List of one PCR bank.";
+        leaf pcr-index {
+          type uint16;
+          description
+            "PCR index number.";
+        }
+        leaf pcr-value {
+          type binary;
+          description
+            "PCR value.";
+        }
+      }
+    }
+    container pcr-digest-algo-in-quote {
+      uses hash-algo;
+      description
+        "The hash algorithm for PCR value digest in Quote output.";
+    }
+  }  
+
 
   grouping log-identifier {
     description
       "Identifier for type of log to be retrieved.";
     leaf log-type {
       type identityref {
-        base log-type;
+        base attested-event-log-type;
       }
       mandatory true;
       description
@@ -736,7 +1059,7 @@ module ietf-tpm-remote-attestation {
   grouping event-logs {
     description
       "A selector for the log and its type.";
-    choice log-type {
+    choice attested-event-log-type {
       mandatory true;
       description
         "Event log type determines the event logs content.";
@@ -768,6 +1091,7 @@ module ietf-tpm-remote-attestation {
   /**********************/
 
   rpc tpm12-challenge-response-attestation {
+    if-feature "TPM12";
     description
       "This RPC accepts the input for TSS TPM 1.2 commands of the
        managed device. ComponentIndex from the hardware manager YANG
@@ -790,43 +1114,25 @@ module ietf-tpm-remote-attestation {
             "Whether or not to include TPM_CAP_VERSION_INFO; if true,
              then TPM_Quote2 must be used to create the response.";
         }
-        uses tpm-identifier;
+        uses tpm-path-selector;
+          /* if this scheme is desired, we should define XPATH to limit 
+           selection to just 'tpm-path' that are '../tpm-specification-version' 
+           equals 'TPM12' and where '../hardware-based' equals 'true' */
       }
     }
     output {
       list tpm12-attestation-response {
-        key tpm-name;
         description
           "The binary output of TPM 1.2 TPM_Quote/TPM_Quote2, including
            the PCR selection and other associated attestation evidence
            metadata";
-        uses tpm-identifier;
-        uses node-uptime;
-        uses compute-node-identifier;
-        uses tpm12-quote-info-common;
-        choice tpm12-quote {
-          mandatory true;
-          description
-            "Either a tpm12-quote-info or tpm12-quote-info2, depending
-             on whether TPM_Quote or TPM_Quote2 was used
-             (cf. input field add-verson).";
-          case tpm12-quote1 {
-            description
-              "BIOS/UEFI event logs";
-            uses tpm12-quote-info;
-            uses tpm12-pcr-composite;
-          }
-          case tpm12-quote2 {
-            description
-              "BIOS/UEFI event logs";
-            uses tpm12-quote-info2;
-          }
-        }
+        uses tpm12-attestation;   
       }
     }
   }
 
   rpc tpm20-challenge-response-attestation {
+    if-feature "TPM20";
     description
       "This RPC accepts the input for TSS TPM 2.0 commands of the
        managed device. ComponentIndex from the hardware manager YANG
@@ -841,78 +1147,48 @@ module ietf-tpm-remote-attestation {
            TPM 2.0 structure definitions";
         uses nonce;
         list challenge-objects {
-          key "node-id tpm-name";
           description
             "Nodes to fetch attestation information, PCR selection
              and AK identifier.";
-          uses compute-node-identifier;
-          uses tpm-identifier;
           uses tpm20-pcr-selection;
           uses tpm20-signature-scheme;
           uses tpm20-attestation-key-identifier;
+          uses tpm-path-selector;
+          /* if this scheme is desired, we should define XPATH to limit 
+           selection to just 'tpm-path' that are '../tpm-specification-version' 
+           equals 'TPM2' and where '../hardware-based' equals 'true' */
         }
       }
     }
     output {
       list tpm20-attestation-response {
-        key "node-id tpm-name";
+        unique "tpm-path";   /* should have XPATH making this mandatory 
+                                when there is more than one list entry */
         description
           "The binary output of TPM2b_Quote in one TPM chip of the
            node which identified by node-id. An TPMS_ATTEST structure
            including a length, encapsulated in a signature";
-        uses tpm-identifier;
-        uses node-uptime;
-        uses compute-node-identifier;
-        leaf quote {
-          type binary;
-          description
-            "Quote data returned by TPM Quote, including PCR selection,
-             PCR digest and etc.";
-        }
-        leaf quote-signature {
-          type binary;
-          description
-            "Quote signature returned by TPM Quote.";
-        }
-        list pcr-bank-values {
-          key algo-registry-type;
-          description
-            "PCR values in each PCR bank.";
-             uses hash-algo;
-          list pcr-values {
-            key pcr-index;
-            description
-              "List of one PCR bank.";
-            leaf pcr-index {
-              type uint16;
-              description
-                "PCR index number.";
-            }
-            leaf pcr-value {
-              type binary;
-              description
-                "PCR value.";
-            }
-          }
-        }
-        container pcr-digest-algo-in-quote {
-          uses hash-algo;
-          description
-            "The hash algorithm for PCR value digest in
-             Quote output.";
-        }
+        
+        uses tpm20-attestation;
       }
     }
   }
 
-  rpc basic-trust-establishment {
+  rpc basic-trust-establishment {   
+    /* verify RPC supports TPM1.2, we likely need some XPATH protections */
     description
       "This RPC creates a tpm-resident, non-migratable key to be used
        in TPM_Quote commands, an attestation certificate.";
     input {
       uses nonce;
       uses tpm20-signature-scheme;
-      uses tpm-identifier;
+      leaf-list tpm-path {
+        type string;
+        description
+          "Path to a unique TPM on a device.  If there are no elements in the
+          leaf-list, all TPMs which are 'hardware-based' should have keys 
+          established.";
+      }  
       leaf certificate-name {
          type string;
          description
@@ -922,19 +1198,9 @@ module ietf-tpm-remote-attestation {
     }
     output {
       list attestation-certificates {
-        key tpm-name;
         description
           "Attestation Certificate data from a TPM identified by the TPM
            name";
-        uses tpm-identifier;
-        uses node-uptime;
-        uses compute-node-identifier;
-        leaf certificate-name {
-          type string;
-          description
-            "An arbitrary name for this identity certificate or
-             certificate chain.";
-        }
         leaf attestation-certificate {
           type ietfct:end-entity-cert-cms;
           description
@@ -953,11 +1219,9 @@ module ietf-tpm-remote-attestation {
        limited. The type of log is a choice that can be augmented.";
     input {
       list log-selector {
-        key "node-id tpm-name";
         description
           "Selection of log entries to be reported.";
-        uses compute-node-identifier;
-        uses tpm-identifier;
+        uses tpm-path-selector;
         choice index-type {
           description
             "Last log entry received, log index number, or timestamp.";
@@ -1003,7 +1267,6 @@ module ietf-tpm-remote-attestation {
             "The number of log entries to be returned. If omitted, it
              means all of them.";
         }
-        uses tpm20-pcr-selection;
       }
       uses log-identifier;
     }
@@ -1013,26 +1276,25 @@ module ietf-tpm-remote-attestation {
         description
           "The requested data of the measurement event logs";
         list node-data {
-          key "node-id tpm-name";
+          unique "tpm-path";
           description
             "Event logs of a node in a distributed system
              identified by the node name";
-          uses compute-node-identifier;
           uses node-uptime;
-          uses tpm-identifier;
+          uses tpm-path;
           container log-result {
             description
               "The requested entries of the corresponding log.";
-               uses event-logs;
+            uses event-logs;
           }
         }
       }
     }
   }
 
-  /*********************************/
-  /*   Protocol accessible nodes   */
-  /*********************************/
+  /**************************************/
+  /*   Config & Oper accessible nodes   */
+  /**************************************/
 
   container rats-support-structures {
     config false;
@@ -1041,17 +1303,17 @@ module ietf-tpm-remote-attestation {
        parties to discover the information necessary to use the
        remote attestation RPCs appropriately.";
     leaf-list supported-algos {
-      type uint16;
+      type uint16;   /* Likely needs to be ENUM */
       description
         "Supported TPM_ALG_ID values for the TPM in question.
-         Will include ComponentIndex soon.";
+         Will include ComponentIndex soon.";  
     }
     list compute-nodes {
       key node-id;
       uses compute-node-identifier;
       description
-        "A list names of hardware componnets in this composite
-         device that RATS can be conducted with.";
+        "A list names of hardware components in this composite
+         device that RATS can be conducted with."; 
       leaf node-name {
         type string;
         description
@@ -1062,85 +1324,121 @@ module ietf-tpm-remote-attestation {
         description
           "Location of the compute node, such as slot number.";
       }
-      list tpms {
-        key tpm-name;
-        uses tpm-identifier;
+    }
+    list tpms {
+      key tpm-name;
+      unique "tpm-path";
+      description
+        "A list of TPMs in this composite device that RATS
+         can be conducted with.";   
+      leaf tpm-name {
+        type string;
+        config false;
         description
-          "A list of TPMs in this composite device that RATS
-           can be conducted with.";
-        leaf tpm-manufacturer {
-          type string;
-          description
-            "TPM manufacturer name.";
+          "Unique system generated name for a TPM on a device.  This must be
+          consistent across reboots.";
+      }
+      leaf tpm-physical-index {
+        if-feature ietfhw:entity-mib;
+        type int32 {
+          range "1..2147483647";
         }
-        leaf tpm-firmware-version {
-          type string;
-          description
-            "TPM firmware version.";
+        description
+          "The entPhysicalIndex for the TPM.";
+        reference
+          "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
+      } 
+      uses tpm-path;
+      leaf hardware-based {
+        type boolean;
+        description
+          "Answers the question: is this TPM is a hardware based TPM?";
+      }
+      leaf compute-node {
+        when "../../compute-nodes";
+        mandatory true;
+        type compute-node-ref;
+        description
+          "When there is more that one TPM, this indicates for which 
+          compute node this TPM services.";
+      }
+      leaf tpm-manufacturer {
+        type string;
+        description
+          "TPM manufacturer name.";
+      }
+      leaf tpm-firmware-version {
+        type string;
+        description
+          "TPM firmware version.";
+      }
+      leaf tpm-specification-version {
+        type identityref {
+          base cryptoprocessor;
         }
-        leaf tpm-specification-version {
-          type string;
+        config false;
+        mandatory true;
+        description
+          "Identifies the cryptoprocessor API set supported";
+      }
+      leaf tpm-status {
+        type string;
+        config false;
+        description
+          "TPM chip self-test status, normal or abnormal.";
+      }
+      list certificates {
+        description
+          "The TPM's certificates, including EK certificates
+           and AK certificates.";
+        container certificate {
           description
-            "TPM1.2 or TPM2.0.";
-        }
-        leaf tpm-status {
-          type string;
-          description
-            "TPM chip self-test status, normal or abnormal.";
-        }
-        list certificates {
-          description
-            "The TPM's certificates, including EK certificates
-             and AK certificates.";
-          container certificate {
+            "Three types of certificates can be accessed via
+             this statement, including Initial Attestation
+             Key Cert, Local Attestation Key Cert or
+             Endorsement Key Cert.";
+          leaf certificate-name {
+            type string;
             description
-              "Three types of certificates can be accessed via
-               this statement, including Initial Attestation
-               Key Cert, Local Attestation Key Cert or
-               Endorsement Key Cert.";
-            leaf certificate-name {
-               type string;
-               description
-                 "An arbitrary name for this identity certificate
-                  or certificate chain.";
-            }
-            leaf certificate-type {
-              type enumeration {
-                enum endorsement-cert {
-                  value 0;
-                  description
-                    "EK Cert type.";
-                }
-                enum initial-attestation-cert {
-                  value 1;
-                  description
-                    "IAK Cert type.";
-                }
-                enum local-attestation-cert {
-                  value 2;
-                  description
-                    "LAK Cert type.";
-                }
+              "An arbitrary name for this identity certificate
+               or certificate chain.";
+          }
+          leaf certificate-type {
+            type enumeration {
+              enum endorsement-cert {
+                value 0;
+                description
+                  "EK Cert type.";
               }
-              description
-                "Type of this certificate";
+              enum initial-attestation-cert {
+                value 1;
+                description
+                  "IAK Cert type.";
+              }
+              enum local-attestation-cert {
+                value 2;
+                description
+                  "LAK Cert type.";
+              }
             }
-            leaf certificate-value {
-              type ietfct:end-entity-cert-cms;
-              description
-                "The binary signed public endorsement key (EK),
-                 attestation key(AK) and corresponding claims
-                 (EK,AK Certificate). In a TPM 2.0 the EK,
-                 AK Certificate resides in a well-defined NVRAM
-                 location by the TPM vendor. Maybe certificate-value
-                 defined as binary type is a simple way.";
-            }
-            leaf lak-public-structure {
-              type binary;
-              description
-                "Marshalled LAK public structure, used for LAK
-                 Certificate verification";
-            }
+            description
+              "Type of this certificate";
+          }
+          leaf certificate-value {
+            type ietfct:end-entity-cert-cms;
+            description
+              "The binary signed public endorsement key (EK),
+               attestation key(AK) and corresponding claims
+               (EK,AK Certificate). In a TPM 2.0 the EK,
+               AK Certificate resides in a well-defined NVRAM
+               location by the TPM vendor. Maybe certificate-value
+               defined as binary type is a simple way.";
+          }
+          leaf lak-public-structure {
+            type binary;
+            description
+              "Marshalled LAK public structure, used for LAK
+               Certificate verification";
           }
         }
       }
