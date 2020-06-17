@@ -6,10 +6,16 @@ module ietf-tpm-remote-attestation {
     prefix yang;
   }
   import ietf-hardware {
-      prefix ietfhw;
+    prefix ietfhw;
   }
   import ietf-crypto-types {
-      prefix ietfct;
+    prefix ct;
+  }
+  import ietf-keystore {
+    prefix ks;
+  }
+  import ietf-asymmetric-algs {
+    prefix aa;
   }
 
   organization
@@ -61,7 +67,7 @@ module ietf-tpm-remote-attestation {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision "2020-06-05" {
+  revision "2020-06-18" {
     description
       "Initial version";
     reference
@@ -104,6 +110,7 @@ module ietf-tpm-remote-attestation {
       "This type is used to reference a hardware node.  It is quite possible
       this leafref will eventually point to another YANG module's node.";
   }
+
 
   /******************/
   /*   Identities   */
@@ -149,245 +156,33 @@ module ietf-tpm-remote-attestation {
   /*   Groupings   */
   /*****************/
   
-  grouping TPM2_ALG_ID {
+  grouping TPM2_Algo {
     description
       "The signature scheme that is used to sign the TPM2 Quote 
       information response.";
-    leaf TPM2_ALG_ID {
-      type enumeration {
-        enum RSA {
-          value 1;
-          description
-            "RFC 3447 - the RSA algorithm";
-        }
-          enum SHA1 {
-          value 4;
-          description
-            "ISO/IEC 10118-3 - SHA1 algorithm";
-        }
-        enum HMAC {
-          value 5;
-          description
-            "ISO/IEC 9797-2 - Hash Message Authentication Code (HMAC) 
-            algorithm";
-        }
-        enum AES {
-          value 6;
-          description
-            "ISO/IEC 18033-3 - the AES algorithm";
-        }
-        enum MGF1 {
-          value 7;
-          description
-            "IEEE Std 1363a -2004 - hash-based mask-generation function";
-        }
-        enum KEYEDHASH {
-          value 8;
-          description
-            "TPM2 KEYEDHASH - an encryption or signing algorithm using 
-            a keyed hash";
-          }
-        enum XOR {
-          value 10;
-          description
-              "TPM2 XOR";
-        }
-        enum SHA256 {
-            value 11;
-          description
-            "ISO/IEC 10118-3 - the SHA 256 algorithm";
-        }
-        enum SHA384 {
-          value 12;
-          description
-            "ISO/IEC 10118-3 - the SHA 384 algorithm";
-        }
-        enum SHA512 {
-          value 13;
-          description
-            "ISO/IEC 10118-3 - the SHA 512 algorithm";
-        }
-        enum NULL {
-          value 16;
-          description
-            "TPM2 NULL";
-        }
-        enum SM3_256 {
-          value 18;
-          description
-            "GM/T 0004-2012 - SM3_256";
-        }
-        enum SM4 {
-          value 19;
-          description
-            "GM/T 0004-2012 - SM4 symmetric block cipher";
-        }
-          enum RSASSA {
-          value 20;
-          description
-            "RFC 3447 - defined in section 8.2 (RSASSAPKCS1-v1_5)";
-        }
-        enum RSAES {
-          value 21;
-          description
-            "RFC 3447 - defined in section 7.2 (RSAES-PKCS1-v1_5)";
-        }
-        enum RSAPSS {
-          value 22;
-          description
-            "RFC 3447 - defined in section 8.1 (RSASSA PSS)";
-        }
-        enum OAEP {
-          value 23;
-          description
-            "RFC 3447 - defined in section 7.1 (RSASSA OAEP)";
-        }
-        enum ECDSA {
-          value 24;
-          description
-            "ISO/IEC 14888-3 - elliptic curve cryptography (ECC)";
-        }            
-        enum ECDH {
-          value 25;
-          description
-            "NIST SP800-56A - secret sharing using ECC";
-        }
-        enum ECDAA {
-          value 26;
-          description
-            "TPM2 - elliptic-curve based anonymous signing scheme";
-        }
-        enum SM2 {
-          value 27;
-          description
-            "A GM/T 0003.1–2012, GM/T 0003.2–2012, GM/T 0003.3–2012,
-            GM/T 0003.5–2012   SM2";
-        }
-        enum ECSCHNORR {
-          value 28;
-          description
-            "TPM2 - elliptic-curve based Schnorr signature";
-        }
-        enum ECMQV {
-          value 29;
-          description
-            "NIST SP800-56A - two-phase elliptic-curve key";
-        }
-        enum KDF1_SP800_56A {
-          value 32;
-          description
-            "NIST SP800-56A - concatenation key derivation function,
-            (approved alternative1) section 5.8.1";
-        }
-        enum KDF2 {
-          value 33;
-          description
-            "IEEE 1363a-2004 - key derivation function KDF2 section 13.2";
-        }
-        enum KDF1_SP800_108 {
-          value 34;
-          description
-            "NIST SP800-108 - Section 5.1 KDF in Counter Mode";
-        }            
-        enum ECC {
-          value 35;
-          description
-            "ISO/IEC 15946-1 - prime field ECC";
-        }
-        enum SYMCIPHER {
-          value 37;
-          description
-            "TPM2 - object type for a symmetric block cipher";
-        }            
-        enum CAMELLIA {
-          value 38;
-          description
-            "ISO/IEC 18033-3 - the  Camellia algorithm";
-        }
-        enum CTR {
-          value 64;
-          description
-            "ISO/IEC 10116 - Counter mode";
-        }
-        enum OFB {
-          value 65;
-          description
-            "ISO/IEC 10116 - Output Feedback mode";
-        }
-        enum CBC {
-          value 66;
-          description
-            "ISO/IEC 10116 - Cipher Block Chaining mode";
-        }
-        enum CFB {
-          value 67;
-          description
-            "ISO/IEC 10116 - Cipher Feedback mode";
-        }
-        enum ECB {
-          value 68;
-          description
-            "ISO/IEC 10116 - Electronic Codebook mode";
-        }
+    leaf TPM2_Algo {
+      type identityref {
+        base aa:tpm2-asymmetric-algorithm;
       }
-      default "RSA";
       description
         "The signature scheme that is used to sign the TPM
-         Quote information response.";
-      reference
-        "TPM-Rev-2.0-Part-2-Structures-01.38.pdf
-        The TCG Algorithm Registry ID value. Table 9";     
-    }
-  }
-  
-
-  grouping hash-algo {
-    description
-      "A selector for the hashing algorithm";
-    choice algo-registry-type {
-      mandatory true;
-      description
-        "Unfortunately, both IETF and TCG have registries here.
-         Choose your weapon wisely.";
-      case tcg {
-        description
-          "You chose the east door, the tcg space opens up to
-           you.";
-        uses TPM2_ALG_ID;
-      }
-      case ietf {
-        description
-          "You chose the west door, the ietf space opens up to
-           you.";
-        leaf ietf-ni-hash-algo-id {
-          type uint8;
-          description
-            "This is an index referencing the Named Information
-             Hash Algorithm Registry.";
-        }
-      }
+         Quote information response.";    
     }
   }
 
-  grouping hash {
+  grouping TPM12_Algo {
     description
-      "The hash value including hash-algo identifier";
-    list hash-digests {
-      description
-        "The list of hashes.";
-      container hash-digest {
-        description
-          "A hash value based on a hash algorithm registered by an
-           SDO.";
-        uses hash-algo;
-        leaf hash-value {
-          type binary;
-          description
-            "The binary representation of the hash value.";
-        }
+      "The signature scheme that is used to sign the TPM2 Quote 
+      information response.";
+    leaf TPM12_Algo {
+      type identityref {
+        base aa:tpm12-asymmetric-algorithm;
       }
+      description
+        "The signature scheme that is used to sign the TPM1.2
+         Quote information response.";    
     }
-  }
+  }  
 
   grouping nonce {
     description
@@ -441,77 +236,7 @@ module ietf-tpm-remote-attestation {
              "The numbers of the PCRs that are associated with 
              the created key.";
         }
-        uses hash-algo;
-      }
-    }
-  }
-
-  grouping tpm12-signature-scheme {
-    description
-      "The signature scheme used to sign the evidence via a TPM 1.2.";
-    leaf TPM_SIG_SCHEME-value {
-      type enumeration {
-        enum NONE {
-          value 1;
-          description
-            "TPM_SS_NONE.";
-        }
-        enum SHA1 {
-          value 2;
-          description
-            "TPM_SS_RSASSAPKCS1v15_SHA1";
-        }
-        enum DER {
-          value 3;
-          description
-            "TPM_SS_RSASSAPKCS1v15_DER";
-        }
-        enum INFO {
-          value 4;
-          description
-            "TPM_SS_RSASSAPKCS1v15_INFO";
-        }
-      }
-      default "NONE";
-      description
-        "Selects the signature scheme that is used to sign the TPM
-         Quote information response.";
-      reference
-        "TPM-Main-Part-2-TPM-Structures_v1.2_rev116_01032011.pdf
-         Allowed values can be found in
-         the table at the bottom of page 32 in the TPM 1.2 Structures
-         specification (Level 2 Revision 116, 1 March 2011).";
-    }
-  }
-
-  grouping tpm20-signature-scheme {
-    description
-      "The signature scheme used to sign the evidence.";
-    choice signature-identifier-type {
-      mandatory true;
-      description
-        "There are multiple ways to reference a signature type.
-         This used to select the signature algo to sign the quote
-         information response.";
-      case TPM_ALG_ID {
-        description
-          "This references the indices of table 9 in the TPM 2.0
-           structure specification.";
-        uses TPM2_ALG_ID; 
-      }
-      case COSE_Algorithm {
-        description
-          "This references the IANA COSE Algorithms Registry indices.
-           Every index of this registry to be used must be mapable to a
-           TPM2_ALG_ID value.";
-        leaf COSE_Algorithm-value {
-          type int32;
-          description
-            "The IANA COSE Algorithms ID value.";
-          reference
-            "https://www.iana.org/assignments/cose/cose.xhtml#algorithms";
-            /* Need to decide if these become enums. */
-        }
+        uses TPM2_Algo;
       }
     }
   }
@@ -794,7 +519,7 @@ module ietf-tpm-remote-attestation {
         description
           "An optional output parameter from a TPM 1.2 TPM_Quote2.";
         leaf tag {
-          type uint16;
+          type uint16;  /* This should be converted into an ENUM */
           description
             "The TPM 1.2 version and revision
              (TPM 1.2 type TPM_STRUCTURE_TAG).
@@ -911,15 +636,17 @@ module ietf-tpm-remote-attestation {
         "Quote signature returned by TPM Quote.";
     }
     list pcr-bank-values {
+      /* This often should not be necessary for TPM2, as the information
+         if validated will need to be coming from the 'quote' leaf       */
       description
-        "PCR values in each PCR bank.";  /* THIS IS NOT CORRECT */
-      uses hash-algo;
+        "PCR values in each PCR bank.";  
+      uses TPM2_Algo;
       list pcr-values {
         key pcr-index;
         description
           "List of one PCR bank.";
         leaf pcr-index {
-          type uint16;
+          type pcr;
           description
             "PCR index number.";
         }
@@ -931,7 +658,7 @@ module ietf-tpm-remote-attestation {
       }
     }
     container pcr-digest-algo-in-quote {
-      uses hash-algo;
+      uses TPM2_Algo;
       description
         "The hash algorithm for PCR value digest in Quote output.";
     }
@@ -966,13 +693,21 @@ module ietf-tpm-remote-attestation {
           "log event type";
     }
     leaf pcr-index {
-      type uint16;
+      type pcr;
       description
         "Defines the PCR index that this event extended";
     }
     list digest-list {
-      description "Hash of event data";
-      uses hash-algo;
+      description 
+        "Hash of event data";
+      leaf hash-algo {
+        type identityref {
+          base aa:asymmetric-algorithm-type;
+        }
+        description
+          "The hash scheme that is used to compress the event data in each of
+          the leaf-list digest items.";    
+      }   
       leaf-list digest {
         type binary;
         description
@@ -1031,7 +766,7 @@ module ietf-tpm-remote-attestation {
         "hash(filedata-hash, filename-hint)";
     }
     leaf pcr-index {
-      type uint16;
+      type pcr;
       description
         "Defines the PCR index that this event extended";
     }
@@ -1116,7 +851,7 @@ module ietf-tpm-remote-attestation {
            TPM 1.2 structure definitions";
         uses tpm12-pcr-selection;
         uses nonce;
-        uses tpm12-signature-scheme;
+        uses TPM12_Algo;
         uses tpm12-attestation-key-identifier;
         leaf add-version {
           type boolean;
@@ -1161,7 +896,7 @@ module ietf-tpm-remote-attestation {
             "Nodes to fetch attestation information, PCR selection
              and AK identifier.";
           uses tpm20-pcr-selection;
-          uses tpm20-signature-scheme;
+          uses TPM2_Algo;
           uses tpm20-attestation-key-identifier;
           uses tpm-name-selector;
           /* if this scheme is desired, we should define XPATH to limit 
@@ -1185,21 +920,25 @@ module ietf-tpm-remote-attestation {
   }
 
   rpc basic-trust-establishment {   
-    /* verify RPC supports TPM1.2, we likely need some XPATH protections */
     description
       "This RPC creates a tpm-resident, non-migratable key to be used
        in TPM_Quote commands, an attestation certificate.";
     input {
       uses nonce;
-      uses tpm20-signature-scheme;
+      uses TPM2_Algo;
       leaf-list tpm-name {
+        when "not(../certificate-name)";  /* ensures both are not populated */
         type string;
         description
           "Path to a unique TPM on a device.  If there are no elements in the
           leaf-list, all TPMs which are 'hardware-based' should have keys 
           established.";
       }  
-      uses certificate-name;
+      uses certificate-name {
+        description
+          "It is possible to request a new certificate using the old one as a 
+          reference.";
+      }
     }
     output {
       list attestation-certificates {
@@ -1207,7 +946,7 @@ module ietf-tpm-remote-attestation {
           "Attestation Certificate data from a TPM identified by the TPM
            name";
         leaf attestation-certificate {
-          type ietfct:end-entity-cert-cms;
+          type ct:end-entity-cert-cms;
           description
             "The binary signed certificate chain data for this identity
              certificate.";
@@ -1308,10 +1047,11 @@ module ietf-tpm-remote-attestation {
        remote attestation RPCs appropriately.";
     leaf-list supported-algos {
       config true;
-      type uint16;   /* Likely needs to be ENUM */
+      type identityref {
+        base aa:asymmetric-algorithm-type;
+      }
       description
-        "Supported TPM_ALG_ID values for the TPM in question.
-         Will include ComponentIndex soon.";  
+        "Supported algorithms values for an Attester.";  
     }
     list compute-nodes {
       config false;
@@ -1403,55 +1143,45 @@ module ietf-tpm-remote-attestation {
           "The TPM's certificates, including EK certificates
            and AK certificates.";
         list certificate {
-          key "certificate-name";
           config true;
+          key "certificate-name";          
           description
             "Three types of certificates can be accessed via
              this statement, including Initial Attestation
              Key Cert, Local Attestation Key Cert or
              Endorsement Key Cert.";
-          leaf certificate-name {
-            type string;
+          uses certificate-name;      
+          leaf certificate-ref {
+            type leafref {
+              path "/ks:keystore/ks:asymmetric-keys/ks:asymmetric-key"
+                 + "/ks:certificates/ks:certificate/ks:name";
+            }
             description
-              "An arbitrary name for this identity certificate
-               or certificate chain.";
+              "A reference to a specific certificate of an
+               asymmetric key in the Keystore.";
+               /* Note: It is also possible to import a grouping which allows 
+               local definition via an imported keystore schema. */
           }
           leaf certificate-type {
             type enumeration {
               enum endorsement-cert {
                 value 0;
                 description
-                  "EK Cert type.";
+                  "Endorsement Key (EK) Certificate type.";
               }
               enum initial-attestation-cert {
                 value 1;
                 description
-                  "IAK Cert type.";
+                  "Initial Attestation key (IAK) Certificate type.";
               }
               enum local-attestation-cert {
                 value 2;
                 description
-                  "LAK Cert type.";
+                  "Local Attestation Key (LAK) Certificate type.";
               }
             }
             description
               "Type of this certificate";
-          }
-          leaf certificate-value {
-            type ietfct:end-entity-cert-cms;
-            description
-              "The binary signed public endorsement key (EK),
-               attestation key(AK) and corresponding claims
-               (EK,AK Certificate). In a TPM 2.0 the EK,
-               AK Certificate resides in a well-defined NVRAM
-               location by the TPM vendor. Maybe certificate-value
-               defined as binary type is a simple way.";
-          }
-          leaf lak-public-structure {
-            type binary;
-            description
-              "Marshalled LAK public structure, used for LAK
-               Certificate verification";
           }
         }
       }
