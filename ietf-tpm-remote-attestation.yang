@@ -67,7 +67,7 @@ module ietf-tpm-remote-attestation {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision "2020-06-18" {
+  revision "2020-06-23" {
     description
       "Initial version";
     reference
@@ -218,25 +218,24 @@ module ietf-tpm-remote-attestation {
 
   grouping tpm20-pcr-selection {
     description
-      "A Verifier can request the generation of an attestation
-       certificate (a signed public attestation key
-       (non-migratable, tpm-resident) wrt one or more PCR values.
-       The corresponding creation input is represented in this grouping.
-       Requesting a PCR value that is not supported results in an error,
-       detailed exposure via error msg should be avoided.";
+      "A Verifier can acquire one or more PCR values, which are hashed 
+       together in a TPM2B_DIGEST coming from the TPM2.  The selection 
+       list of desired PCRs and the Hash Algorithm is represented in this 
+       grouping.";
     list pcr-list {
+      key "TPM2_Algo";
       description
-        "For each PCR in this list an individual hash-algo can be requested.";
-      container pcr {
+        "Specifies the list of PCRs and Hash Algorithms used for the   
+        latest returned TPM2B_DIGEST.";
+      reference
+        "https://www.trustedcomputinggroup.org/wp-content/uploads/
+         TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
+      uses tpm:TPM2_Algo;
+      leaf-list pcr-index {
+        type tpm:pcr;
         description
-          "The composite of a PCR number and corresponding bank numbers.";
-        leaf-list pcr-index {
-           type pcr;
-           description
-             "The numbers of the PCRs that are associated with 
-             the created key.";
-        }
-        uses TPM2_Algo;
+          "The numbers of the PCRs that are associated with 
+          the created key.";
       }
     }
   }
