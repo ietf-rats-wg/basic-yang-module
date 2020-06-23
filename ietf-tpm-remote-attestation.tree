@@ -75,10 +75,9 @@ module: ietf-tpm-remote-attestation
     |  |  +---w tpm20-attestation-challenge
     |  |     +---w nonce-value          binary
     |  |     +---w challenge-objects* []
-    |  |        +---w pcr-list* []
-    |  |        |  +---w pcr
-    |  |        |     +---w pcr-index*   pcr
-    |  |        |     +---w TPM2_Algo?   identityref
+    |  |        +---w pcr-list* [TPM2_Algo]
+    |  |        |  +---w TPM2_Algo    identityref
+    |  |        |  +---w pcr-index*   tpm:pcr
     |  |        +---w TPM2_Algo?          identityref
     |  |        +---w (key-identifier)?
     |  |        |  +--:(public-key)
