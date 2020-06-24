@@ -126,9 +126,9 @@ Cryptographic algorithm types were initially included within -v14 NETCONF's iana
 
 ~~~~ YANG
 <CODE BEGINS> ietf-asymmetric-algs@2020-06-12.yang
-{::include ietf-asymmetric-algs.yang}
+{::include ietf-asymmetric-algs@2020-06-12.yang}
 <CODE ENDS>
-~~~~ 
+~~~~
 
 
 
