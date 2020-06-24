@@ -108,15 +108,29 @@ One or more TPMs MUST be embedded in the composite device that is providing atte
 {::include ietf-tpm-remote-attestation.tree}
 ~~~
 
-## YANG Module
+## YANG Modules
 
-This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, and {{-ietf-crypto-types}}.
+
+### ietf-tpm-remote-attestation
+This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, {{-ietf-crypto-types}}, ietf-asymmetric-algs.yang.
 
 ~~~ YANG
-<CODE BEGINS> file ietf-tpm-remote-attestation@2019-01-07.yang
+<CODE BEGINS> file ietf-tpm-remote-attestation@2020-06-23.yang
 {::include ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
+
+##  ietf-asymmetric-algs
+
+Cryptographic algorithm types were initially included within -v14 NETCONF's iana-crypto-types.yang.  Unfortunately all this content including the algorithms needed here failed to make the -v15 used WGLC.   Therefore a modified version of this draft is included here.  Perhaps someone will steward this list as a separate draft.
+
+~~~~ YANG
+<CODE BEGINS> ietf-asymmetric-algs@2020-06-12.yang
+{::include ietf-asymmetric-algs.yang}
+<CODE ENDS>
+~~~~ 
+
+
 
 #  IANA considerations
 
@@ -133,6 +147,16 @@ There are always some.
 Not yet.
 
 #  Change Log
+
+Changes from version 01 to version 02:
+
+* Extracted Crypto-types into a separate YANG file
+* Mades the algorithms explicit, not strings
+* Hash Algo as key the selected TPM2 PCRs
+* PCR numbers are their own type
+* Eliminated nested keys for node-id plus tpm-name
+* Eliminated TPM-Name of "ALL"
+* Added TPM-Path
 
 Changes from version 00 to version 01:
 
