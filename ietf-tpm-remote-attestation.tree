@@ -25,23 +25,26 @@ module: ietf-tpm-remote-attestation
   rpcs:
     +---x tpm12-challenge-response-attestation {TPM12}?
     |  +---w input
-    |  |  +---w tpm1-attestation-challenge
+    |  |  +---w tpm12-attestation-challenge
     |  |     +---w pcr-index*              pcr
     |  |     +---w nonce-value             binary
     |  |     +---w TPM12_Algo?             identityref
-    |  |     +---w (key-identifier)?
-    |  |     |  +--:(public-key)
-    |  |     |  |  +---w pub-key-id?       binary
-    |  |     |  +--:(TSS_UUID)
-    |  |     |     +---w TSS_UUID-value
-    |  |     |        +---w ulTimeLow?       uint32
-    |  |     |        +---w usTimeMid?       uint16
-    |  |     |        +---w usTimeHigh?      uint16
-    |  |     |        +---w bClockSeqHigh?   uint8
-    |  |     |        +---w bClockSeqLow?    uint8
-    |  |     |        +---w rgbNode*         uint8
     |  |     +---w add-version?            boolean
-    |  |     +---w tpm-name*               string
+    |  |     +---w (identifier)?
+    |  |        +--:(tpm-name)
+    |  |        |  +---w tpm-name*               string
+    |  |        +--:(key-id)
+    |  |           +---w (key-identifier)?
+    |  |              +--:(public-key)
+    |  |              |  +---w pub-key-id?       binary
+    |  |              +--:(TSS_UUID)
+    |  |                 +---w TSS_UUID-value
+    |  |                    +---w ulTimeLow?       uint32
+    |  |                    +---w usTimeMid?       uint16
+    |  |                    +---w usTimeHigh?      uint16
+    |  |                    +---w bClockSeqHigh?   uint8
+    |  |                    +---w bClockSeqLow?    uint8
+    |  |                    +---w rgbNode*         uint8
     |  +--ro output
     |     +--ro tpm12-attestation-response* []
     |        +--ro certificate-name?            string
@@ -79,12 +82,15 @@ module: ietf-tpm-remote-attestation
     |  |        |  +---w TPM2_Algo    identityref
     |  |        |  +---w pcr-index*   tpm:pcr
     |  |        +---w TPM2_Algo?          identityref
-    |  |        +---w (key-identifier)?
-    |  |        |  +--:(public-key)
-    |  |        |  |  +---w pub-key-id?   binary
-    |  |        |  +--:(uuid)
-    |  |        |     +---w uuid-value?   binary
-    |  |        +---w tpm-name*           string
+    |  |        +---w (identifier)?
+    |  |           +--:(tpm-name)
+    |  |           |  +---w tpm-name*           string
+    |  |           +--:(key-id)
+    |  |              +---w (key-identifier)?
+    |  |                 +--:(public-key)
+    |  |                 |  +---w pub-key-id?   binary
+    |  |                 +--:(uuid)
+    |  |                    +---w uuid-value?   binary
     |  +--ro output
     |     +--ro tpm20-attestation-response* []
     |        +--ro certificate-name?           string

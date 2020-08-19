@@ -841,7 +841,7 @@ module ietf-tpm-remote-attestation {
        module to refer to dedicated TPM in composite devices,
        e.g. smart NICs, is still a TODO.";
     input {
-      container tpm1-attestation-challenge {
+      container tpm12-attestation-challenge {
         description
           "This container includes every information element defined
            in the reference challenge-response interaction model for
@@ -850,17 +850,26 @@ module ietf-tpm-remote-attestation {
         uses tpm12-pcr-selection;
         uses nonce;
         uses TPM12_Algo;
-        uses tpm12-attestation-key-identifier;
         leaf add-version {
           type boolean;
           description
             "Whether or not to include TPM_CAP_VERSION_INFO; if true,
              then TPM_Quote2 must be used to create the response.";
         }
-        uses tpm-name-selector;
-          /* if this scheme is desired, we should define XPATH to limit 
-           selection to just 'tpm-name' that are '../tpm-specification-version' 
-           equals 'TPM12' and where '../hardware-based' equals 'true' */
+        choice identifier {
+          description
+            "Identifier of the TPMs to be challenged.";
+          case tpm-name {
+            uses tpm-name-selector;
+              /* if this scheme is desired, we should define XPATH
+               to limit selection to just 'tpm-name' that are
+               '../tpm-specification-version' equals 'TPM12' and
+               where '../hardware-based' equals 'true' */
+          }
+          case key-id {
+            uses tpm12-attestation-key-identifier;
+          }
+        }
       }
     }
     output {
@@ -895,11 +904,20 @@ module ietf-tpm-remote-attestation {
              and AK identifier.";
           uses tpm20-pcr-selection;
           uses TPM2_Algo;
-          uses tpm20-attestation-key-identifier;
-          uses tpm-name-selector;
-          /* if this scheme is desired, we should define XPATH to limit 
-           selection to just 'tpm-name' that are '../tpm-specification-version' 
-           equals 'TPM2' and where '../hardware-based' equals 'true' */
+          choice identifier {
+            description
+              "Identifier of the TPMs to be challenged.";
+            case tpm-name {
+              uses tpm-name-selector;
+              /* if this scheme is desired, we should define XPATH
+               to limit selection to just 'tpm-name' that are
+               '../tpm-specification-version' equals 'TPM2' and
+               where '../hardware-based' equals 'true' */
+            }
+            case key-id {
+              uses tpm20-attestation-key-identifier;
+            }
+          }
         }
       }
     }
