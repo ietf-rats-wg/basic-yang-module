@@ -133,6 +133,12 @@ module ietf-tpm-remote-attestation {
       "An event type associated with BIOS/UEFI.";
   }
 
+  identity netequip-boot {
+    base attested-event-log-type;
+    description
+      "An event type associated with Network Equipment Boot.";
+  }
+
   identity cryptoprocessor {
     description
       "Base identity identifying a crytoprocessor.";
@@ -724,6 +730,53 @@ module ietf-tpm-remote-attestation {
     }
   }
 
+  grouping netequip-boot-event {
+    description
+      "Defines an hash log extend event for Network Equipment Boot.";
+    leaf event-number {
+      type uint64;
+      description
+        "Unique number for this event for sequencing";
+    }
+
+    leaf filename-hint {
+      type string;
+      description
+        "File that was measured";
+    }
+
+    leaf filedata-hash {
+      type binary;
+      description
+        "Hash of filedata";
+    }
+
+    leaf filedata-hash-algorithm {
+      type string;
+      description
+        "Algorithm used for filedata-hash.";
+      }
+
+    leaf file-version {
+      type string;
+      description
+        "File version information.";
+    }
+
+    leaf file-type {
+      type string;
+      description
+        "Indicating at which boot stage the file is loaded,
+         such as BIOS, BootLoader, etc.";
+    }
+
+    leaf pcr-index {
+      type pcr;
+      description
+        "Defines the PCR index that this event extended";
+    }
+  }
+
   grouping ima-event {
     description
       "Defines an hash log extend event for IMA measurements";
@@ -788,6 +841,16 @@ module ietf-tpm-remote-attestation {
     }
   }
 
+  grouping network-equipment-boot-event-log {
+    list boot-event-entry {
+      key event-number;
+      description
+        "Ordered list of Network Equipment Boot event logs
+         by event-number.";
+      uses netequip-boot-event;
+    }
+  }
+
   grouping ima-event-log {
     list ima-event-entry {
       key event-number;
@@ -811,9 +874,17 @@ module ietf-tpm-remote-attestation {
           "BIOS/UEFI event logs";
         container bios-event-logs {
           description
-            "This is an index referencing the TCG Algorithm
-             Registry based on TPM_ALG_ID.";
+            "BIOS/UEFI event logs";
           uses bios-event-log;
+        }
+      }
+      case netequip-boot {
+        description
+          "Network Equipment Boot event logs";
+        container boot-event-logs {
+          description
+            "Network equipment boot event logs.";
+          uses network-equipment-boot-event-log;
         }
       }
       case ima {
@@ -821,8 +892,7 @@ module ietf-tpm-remote-attestation {
           "IMA event logs";
         container ima-event-logs {
           description
-            "This is an index referencing the TCG Algorithm
-             Registry based on TPM_ALG_ID.";
+            "IMA event logs";
           uses ima-event-log;
         }
       }
