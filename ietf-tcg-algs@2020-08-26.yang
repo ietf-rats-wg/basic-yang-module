@@ -213,7 +213,8 @@ module ietf-tcg-algs {
       "The AES algorithm with various key sizes";
     reference  
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 18033-3";    
+      ISO/IEC 18033-3. ALG_ID: 0x0006";    
+
   }
 
   identity TPM_ALG_MGF1 {
