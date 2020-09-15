@@ -690,7 +690,8 @@ module ietf-tcg-algs {
       "Edwards-curve Digital Signature Algorithm (PureEdDSA)";
     reference  
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      RFC 8032";    
+      RFC 8032. ALG_ID: 0x0060";    
+
   }
 
 }
