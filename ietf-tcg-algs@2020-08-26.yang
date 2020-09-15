@@ -637,7 +637,8 @@ module ietf-tcg-algs {
       "Galois/Counter Mode (GCM)";
     reference  
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST SP800-38D";    
+      NIST SP800-38D. ALG_ID: 0x0051";    
+
   }
   
   identity TPM_ALG_KW {
