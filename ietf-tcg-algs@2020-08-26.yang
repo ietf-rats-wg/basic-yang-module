@@ -351,7 +351,9 @@ module ietf-tcg-algs {
     description
       "Padding algorithm defined in section 8.1 (RSASSA PSS)";
     reference  
-      "TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017";   
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017.
+      ALG_ID: 0x0016";   
+
   }
 
   identity TPM_ALG_OAEP {
