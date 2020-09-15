@@ -201,7 +201,8 @@ module ietf-tcg-algs {
       "Hash Message Authentication Code (HMAC) algorithm";
     reference  
       "TCG_Algorithm_Registry_r1p32_pub Table 3, 
-      ISO/IEC 9797-2 and RFC2014";    
+      ISO/IEC 9797-2 and RFC2014. ALG_ID: 0x0005";    
+
   }
       
   identity TPM_ALG_AES  {
