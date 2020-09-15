@@ -160,7 +160,8 @@ module ietf-tcg-algs {
       "RSA algorithm";
     reference  
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and 
-      RFC 8017";    
+      RFC 8017. ALG_ID: 0x0001";    
+
   }
 
   identity TPM_ALG_TDES {
