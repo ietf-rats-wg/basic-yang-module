@@ -664,7 +664,8 @@ module ietf-tcg-algs {
       "AES Key Wrap with Padding (KWP)";
     reference  
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST SP800-38F";    
+      NIST SP800-38F. ALG_ID: 0x0053";    
+
   }
   
   identity TPM_ALG_EAX  {
