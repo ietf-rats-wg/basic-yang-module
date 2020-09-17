@@ -32,7 +32,7 @@ module ietf-tcg-algs {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision 2020-08-26 {
+  revision 2020-09-17 {
     description
       "Initial version";
     reference
@@ -102,14 +102,14 @@ module ietf-tcg-algs {
       "TCG_Algorithm_Registry_r1p32_pub Table 2";
   }
 
-  identity anonymous-signing {
+  identity anonymous_signing {
     description
       "A TCG recognized anonymous signing algorithm.";
     reference
       "TCG_Algorithm_Registry_r1p32_pub Table 2";
   }
 
-  identity encryption-mode {
+  identity encryption_mode {
     description
       "A TCG recognized encryption mode.";
     reference
@@ -123,7 +123,7 @@ module ietf-tcg-algs {
       "TCG_Algorithm_Registry_r1p32_pub Table 2";
   }
   
-  identity object-type {
+  identity object_type {
     description
       "A TCG recognized object type.";
     reference
@@ -155,7 +155,7 @@ module ietf-tcg-algs {
     base tpm12;  
     base tpm2;
     base asymmetric;
-    base object-type;
+    base object_type;
     description
       "RSA algorithm";
     reference  
@@ -237,7 +237,7 @@ module ietf-tcg-algs {
     if-feature "TPM20";
     base tpm2;
     base hash;
-    base object-type;   
+    base object_type;   
     description
       "An encryption or signing algorithm using a keyed hash.  These 
       may use XOR for encryption or an HMAC for signing and may
@@ -351,7 +351,7 @@ module ietf-tcg-algs {
     if-feature "TPM20";
     base tpm2;
     base asymmetric;
-    base encryption-mode;
+    base encryption_mode;
     description
       "Signature algorithm defined in section 7.2 (RSAES-PKCS1-v1_5)";
     reference  
@@ -377,7 +377,7 @@ module ietf-tcg-algs {
     if-feature "TPM20";
     base tpm2;
     base asymmetric;
-    base encryption-mode;
+    base encryption_mode;
     description
       "Padding algorithm defined in section 7.1 (RSASSA OAEP)";
     reference  
@@ -417,7 +417,7 @@ module ietf-tcg-algs {
     base tpm2;
     base asymmetric;
     base signing;
-    base anonymous-signing;
+    base anonymous_signing;
     description
       "Elliptic-curve based anonymous signing scheme";
     reference  
@@ -431,7 +431,7 @@ module ietf-tcg-algs {
     base tpm2;
     base asymmetric;
     base signing;
-    base encryption-mode;
+    base encryption_mode;
     base method;
     description
       "SM2 – depending on context, either an elliptic-curve based,
@@ -511,7 +511,7 @@ module ietf-tcg-algs {
     if-feature "TPM20";
     base tpm2;
     base asymmetric;
-    base object-type;
+    base object_type;
     description
       "Prime field ECC";
     reference  
@@ -596,7 +596,7 @@ module ietf-tcg-algs {
     if-feature "TPM20";
     base tpm2;
     base symmetric;
-    base encryption-mode;
+    base encryption_mode;
     description
       "Counter mode";
     reference  
@@ -608,7 +608,7 @@ module ietf-tcg-algs {
   identity TPM_ALG_OFB {
     base tpm2;
     base symmetric;
-    base encryption-mode;
+    base encryption_mode;
     description
       "Output Feedback mode";
     reference  
@@ -621,7 +621,7 @@ module ietf-tcg-algs {
     if-feature "TPM20";
     base tpm2;
     base symmetric;
-    base encryption-mode;
+    base encryption_mode;
     description
       "Cipher Block Chaining mode";
     reference  
@@ -634,7 +634,7 @@ module ietf-tcg-algs {
     if-feature "TPM20";
     base tpm2;
     base symmetric;
-    base encryption-mode;
+    base encryption_mode;
     description
       "Cipher Feedback mode";
     reference  
@@ -647,7 +647,7 @@ module ietf-tcg-algs {
     if-feature "TPM20";
     base tpm2;
     base symmetric;
-    base encryption-mode;
+    base encryption_mode;
     description
       "Electronic Codebook mode";
     reference  
@@ -661,7 +661,7 @@ module ietf-tcg-algs {
     base tpm2;
     base symmetric;
     base signing;
-    base encryption-mode;
+    base encryption_mode;
     description
       "Counter with Cipher Block Chaining-Message Authentication 
       Code (CCM)";
@@ -676,7 +676,7 @@ module ietf-tcg-algs {
     base tpm2;
     base symmetric;
     base signing;
-    base encryption-mode;
+    base encryption_mode;
     description
       "Galois/Counter Mode (GCM)";
     reference  
@@ -690,7 +690,7 @@ module ietf-tcg-algs {
     base tpm2;
     base symmetric;
     base signing;
-    base encryption-mode;
+    base encryption_mode;
     description
       "AES Key Wrap (KW)";
     reference  
@@ -704,7 +704,7 @@ module ietf-tcg-algs {
     base tpm2;
     base symmetric;
     base signing;
-    base encryption-mode;
+    base encryption_mode;
     description
       "AES Key Wrap with Padding (KWP)";
     reference  
@@ -718,7 +718,7 @@ module ietf-tcg-algs {
     base tpm2;
     base symmetric;
     base signing;
-    base encryption-mode;
+    base encryption_mode;
     description
       "Authenticated-Encryption Mode";
     reference  
