@@ -64,7 +64,7 @@ module ietf-tpm-remote-attestation {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision "2020-08-27" {
+  revision "2020-09-17" {
     description
       "Initial version";
     reference
@@ -109,22 +109,28 @@ module ietf-tpm-remote-attestation {
   /*   Identities   */
   /******************/
 
-  identity attested-event-log-type {
+  identity attested_event_log_type {
     description
       "Base identity allowing categorization of the reasons why and
       attested measurement has been taken on an Attester.";
   }
 
   identity ima {
-    base attested-event-log-type;
+    base attested_event_log_type;
     description
       "An event type recorded in IMA.";
   }
 
   identity bios {
-    base attested-event-log-type;
+    base attested_event_log_type;
     description
       "An event type associated with BIOS/UEFI.";
+  }
+
+  identity netequip_boot {
+    base attested_event_log_type;
+    description
+      "An event type associated with Network Equipment Boot.";
   }
 
   identity cryptoprocessor {
@@ -155,7 +161,10 @@ module ietf-tpm-remote-attestation {
       information response.";
     leaf TPM20-asymmetric-signing-algo {
       must "/tpm:rats-support-structures/tpm:attester-supported-algos"
-         + "/tpm:tpm20-asymmetric-signing";
+         + "/tpm:tpm20-asymmetric-signing" {
+         error-message "Not a platform supported " + 
+                       "TPM20-asymmetric-signing-algo";
+      }
       type identityref {
         base taa:asymmetric;
       }
@@ -169,11 +178,14 @@ module ietf-tpm-remote-attestation {
 
   grouping TPM12-asymmetric-signing-algo {
     description
-      "The signature scheme that is used to sign the TPM2 Quote 
+      "The signature scheme that is used to sign the TPM12 Quote 
       information response.";
     leaf TPM12-asymmetric-signing-algo {
       must "/tpm:rats-support-structures/tpm:attester-supported-algos"
-         + "/tpm:tpm12-asymmetric-signing";
+         + "/tpm:tpm12-asymmetric-signing" {
+         error-message "Not a platform supported " + 
+                       "TPM12-asymmetric-signing-algo";
+      }   
       type identityref {
         base taa:asymmetric;
       }
@@ -191,7 +203,9 @@ module ietf-tpm-remote-attestation {
       must be from the list of platform supported options.";
     leaf TPM20-hash-algo {
       must "/tpm:rats-support-structures/tpm:attester-supported-algos"
-         + "/tpm:tpm20-hash";
+         + "/tpm:tpm20-hash" {
+         error-message "Not a platform supported TPM20-hash-algo";
+      }
       type identityref {
         base taa:hash;
       }
@@ -207,7 +221,9 @@ module ietf-tpm-remote-attestation {
       "The cryptographic algorithm used to hash the TPM1.2 PCRs.";
     leaf TPM12-hash-algo {
       must "/tpm:rats-support-structures/tpm:attester-supported-algos"
-         + "/tpm:tpm12-hash";
+         + "/tpm:tpm12-hash" {
+         error-message "Not a platform supported TPM12-hash-algo";
+      }
       type identityref {
         base taa:hash;
       }
@@ -382,13 +398,13 @@ module ietf-tpm-remote-attestation {
           "Indicates the minor version of the structure.
            MUST be 0x01.";
       }
-      leaf revMajor {
+      leaf rev-Major {
         type uint8;
         description
           "Indicates the rev major version of the structure.
            MUST be 0x00.";
       }
-      leaf revMinor {
+      leaf rev-Minor {
         type uint8;
         description
           "Indicates the rev minor version of the structure.
@@ -635,7 +651,7 @@ module ietf-tpm-remote-attestation {
       "Identifier for type of log to be retrieved.";
     leaf log-type {
       type identityref {
-        base attested-event-log-type;
+        base attested_event_log_type;
       }
       mandatory true;
       description
@@ -691,6 +707,19 @@ module ietf-tpm-remote-attestation {
     }
   }
 
+  grouping bios-event-log {
+    description
+      "Measurement log created by the BIOS/UEFI.";
+    list bios-event-entry {
+      key event-number;
+        description
+          "Ordered list of TCG described event log
+           that extended the PCRs in the order they
+           were logged";
+      uses boot-event-log;
+    }
+  }
+
   grouping ima-event {
     description
       "Defines an hash log extend event for IMA measurements";
@@ -742,34 +771,74 @@ module ietf-tpm-remote-attestation {
     }
   }
 
-  grouping bios-event-log {
-    description
-      "Measurement log created by the BIOS/UEFI.";
-       list bios-event-entry {
-      key event-number;
-        description
-          "Ordered list of TCG described event log
-           that extended the PCRs in the order they
-           were logged";
-      uses boot-event-log;
-    }
-  }
-
   grouping ima-event-log {
+    description
+      "Measurement log created by IMA.";
     list ima-event-entry {
       key event-number;
       description
       "Ordered list of ima event logs by event-number";
        uses ima-event;
     }
+  }
+
+  grouping netequip-boot-event {
     description
-      "Measurement log created by IMA.";
+      "Defines an hash log extend event for Network Equipment Boot.";
+    leaf event-number {
+      type uint64;
+      description
+        "Unique number for this event for sequencing";
+    }
+    leaf filename-hint {
+      type string;
+      description
+        "File that was measured";
+    }
+    leaf filedata-hash {
+      type binary;
+      description
+        "Hash of filedata";
+    }
+    leaf filedata-hash-algorithm {
+      type string;
+      description
+        "Algorithm used for filedata-hash.";
+      }
+    leaf file-version {
+      type string;
+      description
+        "File version information.";
+    }
+    leaf file-type {
+      type string;
+      description
+        "Indicating at which boot stage the file is loaded,
+         such as BIOS, BootLoader, etc.";
+    }
+    leaf pcr-index {
+      type pcr;
+      description
+        "Defines the PCR index that this event extended";
+    }
+  }
+
+  grouping network-equipment-boot-event-log {
+    description
+      "Measurement log created by Network Equipment Boot.";
+    list boot-event-entry {
+      key event-number;
+      description
+        "Ordered list of Network Equipment Boot event logs
+         by event-number.";
+      uses netequip-boot-event;
+    }
   }
 
   grouping event-logs {
     description
       "A selector for the log and its type.";
-    choice attested-event-log-type {
+    choice attested_event_log_type {
       mandatory true;
       description
         "Event log type determines the event logs content.";
@@ -778,19 +847,26 @@ module ietf-tpm-remote-attestation {
           "BIOS/UEFI event logs";
         container bios-event-logs {
           description
-            "This is an index referencing the TCG Algorithm
-             Registry based on TPM_ALG_ID.";
+            "BIOS/UEFI event logs";
           uses bios-event-log;
         }
       }
       case ima {
         description
-          "IMA event logs";
+          "IMA event logs.";
         container ima-event-logs {
           description
-            "This is an index referencing the TCG Algorithm
-             Registry based on TPM_ALG_ID.";
+            "IMA event logs.";
           uses ima-event-log;
+        }
+      }
+      case netequip_boot {
+        description
+          "Network Equipment Boot event logs";
+        container boot-event-logs {
+          description
+            "Network equipment boot event logs.";
+          uses network-equipment-boot-event-log;
         }
       }
     }
@@ -1030,7 +1106,8 @@ module ietf-tpm-remote-attestation {
           type boolean;
           config false;
           description
-            "Answers the question: is this TPM is a hardware based TPM?";
+            "Answers the question: is this TPM is a hardware based 
+            TPM?";
         }
         leaf tpm-physical-index {
           if-feature ietfhw:entity-mib;
@@ -1076,16 +1153,15 @@ module ietf-tpm-remote-attestation {
             to eliminate YANG warnings related NMDA.";
         }
         uses TPM12-hash-algo {
-          if-feature "taa:TPM12";
+          when "tpm-firmware-version = 'tpm12'";
           refine TPM12-hash-algo {
-            must "../tpm-firmware-version = 'tpm12'";
             description
               "The hash algorithm used for PCRs on this TPM1.2 
               compliant cryptoprocessor.";
           }
         }      
         list tpm20-pcr-bank {
-          must "../tpm-firmware-version = 'tpm20'";
+          when "../tpm-firmware-version = 'tpm20'";
           key "TPM20-hash-algo";
           description
             "Specifies the list of PCRs that should be extracted for
@@ -1096,7 +1172,9 @@ module ietf-tpm-remote-attestation {
           leaf TPM20-hash-algo {
             must "/tpm:rats-support-structures"
                + "/tpm:attester-supported-algos"
-               + "/tpm:tpm20-hash";
+               + "/tpm:tpm20-hash" {
+              error-message "Not a platform supported TPM20-hash-algo";
+            }
             type identityref {
               base taa:hash;
             }
@@ -1131,8 +1209,9 @@ module ietf-tpm-remote-attestation {
             }
           }
           config false;
+          mandatory true;
           description
-            "TPM chip self-test status, normal or abnormal.";
+            "TPM chip self-test status.";
         }
         container certificates {
           description
@@ -1226,7 +1305,7 @@ module ietf-tpm-remote-attestation {
           base taa:hash;
         }
         description
-          "Platform supported TPM12 hash algorithms.";  
+          "Platform supported TPM20 hash algorithms.";  
       }          
     }
   }
