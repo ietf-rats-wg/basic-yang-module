@@ -64,7 +64,7 @@ module ietf-tpm-remote-attestation {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision "2020-09-17" {
+  revision "2020-09-18" {
     description
       "Initial version";
     reference
@@ -132,24 +132,6 @@ module ietf-tpm-remote-attestation {
     description
       "An event type associated with Network Equipment Boot.";
   }
-
-  identity cryptoprocessor {
-    description
-      "Base identity identifying a crytoprocessor.";
-  }
-
-  identity tpm12 {
-    base cryptoprocessor;
-    description
-      "A cryptoprocessor capable of supporting the TPM 1.2 API.";
-  }
-
-  identity tpm20 {
-    base cryptoprocessor;
-    description
-      "A cryptoprocessor capable of supporting the TPM 2.0 API.";
-  }
-
 
   /*****************/
   /*   Groupings   */
@@ -262,6 +244,14 @@ module ietf-tpm-remote-attestation {
        Requesting a PCR value that is not in scope of the AC used,
        detailed exposure via error msg should be avoided.";
     leaf-list pcr-index {
+      /*  the following XPATH must be updated to ensure that only
+            selectable PCRs are allowed in the RPC
+      must "/tpm:rats-support-structures/tpm:tpms" +
+           "/tpm:tpm[tpm-name = current()]" +
+           "/tpm:tpm[TPM12-pcrs = current()]" {
+        error-message "Acquiring this PCR index is not supported";
+      }
+      */
       type pcr;
       description
         "The numbers/indexes of the PCRs. At the moment this is limited
@@ -285,6 +275,14 @@ module ietf-tpm-remote-attestation {
          TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
       uses TPM20-hash-algo;
       leaf-list pcr-index {
+        /*  the following XPATH must be updated to ensure that only
+            selectable PCRs are allowed in the RPC
+        must "/tpm:rats-support-structures/tpm:tpms" +
+             "/tpm:tpm[tpm-name = current()]" +
+             "/tpm:tpm20-pcr-bank[pcr-index = current()]" {
+          error-message "Acquiring this PCR index is not supported";
+        }
+        */
         type tpm:pcr;
         description
           "The numbers of the PCRs that which are being tracked
@@ -305,7 +303,7 @@ module ietf-tpm-remote-attestation {
 
   grouping tpm-name {
     description
-      "Path to a unique TPM on a device.";
+      "A unique TPM on a device.";
     leaf tpm-name {
       type string;
       description
@@ -901,7 +899,7 @@ module ietf-tpm-remote-attestation {
         }
         leaf-list certificate-name {
           must "/tpm:rats-support-structures/tpm:tpms" +
-               "/tpm:tpm[tpm:tpm-firmware-version='tpm12']" +
+               "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']" +
                "/tpm:certificates/" +
                "/tpm:certificate[certificate-name-ref=current()]" {
             error-message "Not an available TPM1.2 AIK certificate."; 
@@ -947,7 +945,7 @@ module ietf-tpm-remote-attestation {
         uses tpm20-pcr-selection;
         leaf-list certificate-name {
           must "/tpm:rats-support-structures/tpm:tpms" +
-               "/tpm:tpm[tpm:tpm-firmware-version='tpm20']" +
+               "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']" +
                "/tpm:certificates/" +
                "/tpm:certificate[certificate-name-ref=current()]" {
             error-message "Not an available TPM2.0 AIK certificate."; 
@@ -1144,28 +1142,38 @@ module ietf-tpm-remote-attestation {
         }
         leaf tpm-firmware-version {
           type identityref {
-            base cryptoprocessor;
+            base taa:cryptoprocessor;
           }       
           mandatory true;
           description
             "Identifies the cryptoprocessor API set supported.  This 
-            cannot be configured.  However it is not shown as such 
+            cannot be configured.  However it is referenced via XPATH
+            as part of configuration, so is shown as 'rw' 
             to eliminate YANG warnings related NMDA.";
         }
         uses TPM12-hash-algo {
-          when "tpm-firmware-version = 'tpm12'";
+          when "tpm-firmware-version = 'taa:tpm12'";
           refine TPM12-hash-algo {
             description
-              "The hash algorithm used for PCRs on this TPM1.2 
-              compliant cryptoprocessor.";
+              "The hash algorithm overwrites the default used for PCRs 
+              on this TPM1.2 compliant cryptoprocessor.";
           }
-        }      
+        } 
+        leaf-list TPM12-pcrs {
+          when "../tpm-firmware-version = 'taa:tpm12'";
+          type pcr;
+          description
+            "The PCRs which may be extracted from this TPM1.2 
+            compliant cryptoprocessor.";
+        }           
         list tpm20-pcr-bank {
-          when "../tpm-firmware-version = 'tpm20'";
+          when "../tpm-firmware-version = 'taa:tpm20'";
           key "TPM20-hash-algo";
           description
-            "Specifies the list of PCRs that should be extracted for
-            a specific Hash Algorithm.";
+            "Specifies the list of PCRs that may be extracted for
+            a specific Hash Algorithm on this TPM2 compliant 
+            cryptoprocessor.  A bank is a set of PCRs which are 
+            extended using a particular hash algorithm.";
           reference
             "https://www.trustedcomputinggroup.org/wp-content/uploads/
              TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
@@ -1185,9 +1193,7 @@ module ietf-tpm-remote-attestation {
           leaf-list pcr-index {
             type tpm:pcr;
             description
-              "Defines what TPM2 Banks are available.  A bank is a set 
-              of PCRs which are extended using a particular hash 
-              algorithm.";
+              "Defines what TPM2 PCRs are available to be extracted.";
           }
         }             
         leaf tpm-status {
@@ -1273,7 +1279,8 @@ module ietf-tpm-remote-attestation {
         attesting platform.";
       leaf-list tpm12-asymmetric-signing {
         if-feature "taa:TPM12";
-        when "../../tpm:tpms/tpm:tpm[tpm:tpm-firmware-version='tpm12']";
+        when "../../tpm:tpms" +
+             "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']";
         type identityref {
           base taa:asymmetric;
         }
@@ -1282,7 +1289,8 @@ module ietf-tpm-remote-attestation {
       }
       leaf-list tpm12-hash {
         if-feature "taa:TPM12";
-        when "../../tpm:tpms/tpm:tpm[tpm:tpm-firmware-version='tpm12']";
+        when "../../tpm:tpms" +
+             "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']";
         type identityref {
           base taa:hash;
         }
@@ -1291,7 +1299,8 @@ module ietf-tpm-remote-attestation {
       }
       leaf-list tpm20-asymmetric-signing {
         if-feature "taa:TPM20";
-        when "../../tpm:tpms/tpm:tpm[tpm:tpm-firmware-version='tpm20']";
+        when "../../tpm:tpms" +
+             "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']";
         type identityref {
           base taa:asymmetric;
         }
@@ -1300,7 +1309,8 @@ module ietf-tpm-remote-attestation {
       }
       leaf-list tpm20-hash {
         if-feature "taa:TPM20";
-        when "../../tpm:tpms/tpm:tpm[tpm:tpm-firmware-version='tpm20']";
+        when "../../tpm:tpms" +
+             "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']";
         type identityref {
           base taa:hash;
         }
