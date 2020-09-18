@@ -15,11 +15,11 @@ module: ietf-tpm-remote-attestation
      |     +--ro compute-node            compute-node-ref
      |     +--ro tpm-manufacturer?       string
      |     +--rw tpm-firmware-version    identityref
-     |     +--rw TPM12-hash-algo?        identityref {taa:TPM12}?
+     |     +--rw TPM12-hash-algo?        identityref
      |     +--rw tpm20-pcr-bank* [TPM20-hash-algo]
      |     |  +--rw TPM20-hash-algo    identityref
      |     |  +--rw pcr-index*         tpm:pcr
-     |     +--ro tpm-status?             enumeration
+     |     +--ro tpm-status              enumeration
      |     +--rw certificates
      |        +--rw certificate* [certificate-name]
      |           +--rw certificate-name            string
@@ -53,10 +53,10 @@ module: ietf-tpm-remote-attestation
     |        +--ro (tpm12-quote)
     |           +--:(tpm12-quote1)
     |           |  +--ro version* []
-    |           |  |  +--ro major?      uint8
-    |           |  |  +--ro minor?      uint8
-    |           |  |  +--ro revMajor?   uint8
-    |           |  |  +--ro revMinor?   uint8
+    |           |  |  +--ro major?       uint8
+    |           |  |  +--ro minor?       uint8
+    |           |  |  +--ro rev-Major?   uint8
+    |           |  |  +--ro rev-Minor?   uint8
     |           |  +--ro digest-value?          binary
     |           |  +--ro TPM_PCR_COMPOSITE* []
     |           |     +--ro pcr-index*         pcr
@@ -107,7 +107,7 @@ module: ietf-tpm-remote-attestation
                 +--ro tpm-name?     string
                 +--ro up-time?      uint32
                 +--ro log-result
-                   +--ro (attested-event-log-type)
+                   +--ro (attested_event_log_type)
                       +--:(bios)
                       |  +--ro bios-event-logs
                       |     +--ro bios-event-entry* [event-number]
@@ -120,14 +120,24 @@ module: ietf-tpm-remote-attestation
                       |        +--ro event-size?     uint32
                       |        +--ro event-data*     uint8
                       +--:(ima)
-                         +--ro ima-event-logs
-                            +--ro ima-event-entry* [event-number]
+                      |  +--ro ima-event-logs
+                      |     +--ro ima-event-entry* [event-number]
+                      |        +--ro event-number               uint64
+                      |        +--ro ima-template?              string
+                      |        +--ro filename-hint?             string
+                      |        +--ro filedata-hash?             binary
+                      |        +--ro filedata-hash-algorithm?   string
+                      |        +--ro template-hash-algorithm?   string
+                      |        +--ro template-hash?             binary
+                      |        +--ro pcr-index?                 pcr
+                      |        +--ro signature?                 binary
+                      +--:(netequip_boot)
+                         +--ro boot-event-logs
+                            +--ro boot-event-entry* [event-number]
                                +--ro event-number               uint64
-                               +--ro ima-template?              string
                                +--ro filename-hint?             string
                                +--ro filedata-hash?             binary
                                +--ro filedata-hash-algorithm?   string
-                               +--ro template-hash-algorithm?   string
-                               +--ro template-hash?             binary
+                               +--ro file-version?              string
+                               +--ro file-type?                 string
                                +--ro pcr-index?                 pcr
-                               +--ro signature?                 binary
