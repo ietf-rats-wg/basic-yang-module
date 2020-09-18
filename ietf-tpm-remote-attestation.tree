@@ -16,6 +16,7 @@ module: ietf-tpm-remote-attestation
      |     +--ro tpm-manufacturer?       string
      |     +--rw tpm-firmware-version    identityref
      |     +--rw TPM12-hash-algo?        identityref
+     |     +--rw TPM12-pcrs*             pcr
      |     +--rw tpm20-pcr-bank* [TPM20-hash-algo]
      |     |  +--rw TPM20-hash-algo    identityref
      |     |  +--rw pcr-index*         tpm:pcr
