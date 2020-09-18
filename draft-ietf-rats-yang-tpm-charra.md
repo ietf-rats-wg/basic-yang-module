@@ -130,8 +130,6 @@ Cryptographic algorithm types were initially included within -v14 NETCONF's iana
 <CODE ENDS>
 ~~~~
 
-
-
 #  IANA considerations
 
 This document will include requests to IANA:
