@@ -120,16 +120,6 @@ module: ietf-tpm-remote-attestation
                       |        |  +--ro digest*      binary
                       |        +--ro event-size?     uint32
                       |        +--ro event-data*     uint8
-                      +--:(netequip-boot)
-                      |  +--ro boot-event-logs
-                      |     +--ro boot-event-entry* [event-number]
-                      |        +--ro event-number               uint64
-                      |        +--ro filename-hint?             string
-                      |        +--ro filedata-hash?             binary
-                      |        +--ro filedata-hash-algorithm?   string
-                      |        +--ro file-version?              string
-                      |        +--ro file-type?                 string
-                      |        +--ro pcr-index?                 pcr
                       +--:(ima)
                       |  +--ro ima-event-logs
                       |     +--ro ima-event-entry* [event-number]
