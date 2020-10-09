@@ -34,9 +34,9 @@ author:
   country: Germany
 - ins: S. Bhandari
   name: Shwetha Bhandari
-  org: Cisco Systems
-  abbrev: Cisco
-  email: shwethab@cisco.com
+  org: Thoughtspot
+  abbrev: Thoughtspot
+  email: shwetha.bhandari@thoughtspot.com
 - ins: E. Voit
   name: Eric Voit
   org: Cisco Systems
