@@ -64,7 +64,7 @@ module ietf-tpm-remote-attestation {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision "2020-12-03" {
+  revision "2020-12-09" {
     description
       "Initial version";
     reference
@@ -324,29 +324,6 @@ module ietf-tpm-remote-attestation {
         are 'hardware-based' equals true on the device are selected.";
     }
   }
- 
-  grouping compute-node-identifier {
-    description
-      "In a distributed system with multiple compute nodes
-       this is the node identified by name and physical-index.";
-    leaf node-id {
-       type string;
-       description
-         "ID of the compute node, such as Board Serial Number.";
-    }
-    leaf node-physical-index {
-      if-feature ietfhw:entity-mib;
-      type int32 {
-        range "1..2147483647";
-      }
-      config false;
-       description
-         "The entPhysicalIndex for the compute node.";
-       reference
-         "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
-    }
-  }
-
 
   grouping node-uptime {
     description
@@ -364,46 +341,14 @@ module ietf-tpm-remote-attestation {
       measurements.  It is supplemented by unsigned Attester 
       information.";
     uses node-uptime;
-    uses compute-node-identifier;
-    leaf locality-at-release {
-      type uint8;
-      description
-        "This SHALL be the locality modifier required to release the
-         information (TPM 1.2 type TPM_LOCALITY_SELECTION)";
-      reference
-        "TPM Main Part 2 TPM Structures v1.2 July 2007
-        Section 8.6";  
-    }
-    list TPM_PCR_COMPOSITE {
-      description
-        "The TPM 1.2 TPM_PCRVALUEs for the pcr-indices.";
-      reference
-        "TPM Main Part 2 TPM Structures v1.2 July 2007, Section  
-         Section 11.3 & 11.4.";
-      uses tpm12-pcr-selection;
-      leaf value-size {
-        type uint32;
-        description
-          "This SHALL be the size of the 'tpm12-pcr-value' field
-           (not the number of PCRs).";
-      }
-      leaf-list tpm12-pcr-value {
-        type binary;
-        description
-          "The list of TPM_PCRVALUEs from each PCR selected in sequence
-           of tpm12-pcr-selection.";
-      }
-    }
-    leaf signature-size {
-      type uint32;
-      description
-       "The size of TPM 1.2 'signature' value.";
-    }
-    leaf signature {
+    leaf TPM_QUOTE2 {
       type binary;
       description
-        "Signature over hash over the rest of the 
-        grouping tpm12-pcr-info'.";
+        "Result of a TPM1.2 Quote2 operation. This includes PCRs,
+        signatures, locality, the provided nonce and other data which 
+        can be further parsed to appraise the Attester.";
+      reference
+        "TPM1.2 commands rev116 July 2007, Section 16.5";  
     }
   }
 
@@ -430,8 +375,7 @@ module ietf-tpm-remote-attestation {
         generated using the key associated with the 
         certificate-name.";
     } 
-    uses node-uptime;
-    uses compute-node-identifier;    
+    uses node-uptime;  
     list unsigned-pcr-values {
       description
         "PCR values in each PCR bank. This might appear redundant with
@@ -890,10 +834,25 @@ module ietf-tpm-remote-attestation {
         key node-id;
         config false;
         min-elements 2;
-        uses compute-node-identifier;
         description
-          "A components in this composite device that RATS which 
+          "A component in this composite device that RATS which 
           supports TPM operations."; 
+        leaf node-id {
+          type string;
+          description
+            "ID of the compute node, such as Board Serial Number.";
+        }
+        leaf node-physical-index {
+          if-feature ietfhw:entity-mib;
+          type int32 {
+            range "1..2147483647";
+          }
+          config false;
+          description
+           "The entPhysicalIndex for the compute node.";
+          reference
+           "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
+        }
         leaf node-name {
           type string;
           description
