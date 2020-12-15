@@ -1,6 +1,6 @@
 module: ietf-tpm-remote-attestation
   +--rw rats-support-structures
-     +--rw compute-nodes!
+     +--rw compute-nodes {tpm:TPMs}?
      |  +--ro compute-node* [node-id]
      |     +--ro node-id                string
      |     +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
@@ -12,7 +12,7 @@ module: ietf-tpm-remote-attestation
      |     +--ro hardware-based?         boolean
      |     +--ro tpm-physical-index?     int32 {ietfhw:entity-mib}?
      |     +--ro tpm-path?               string
-     |     +--ro compute-node            compute-node-ref
+     |     +--ro compute-node            compute-node-ref {tpm:TPMs}?
      |     +--ro tpm-manufacturer?       string
      |     +--rw tpm-firmware-version    identityref
      |     +--rw TPM12-hash-algo?        identityref
@@ -38,36 +38,13 @@ module: ietf-tpm-remote-attestation
     |  |  +---w tpm12-attestation-challenge
     |  |     +---w pcr-index*          pcr
     |  |     +---w nonce-value         binary
-    |  |     +---w add-version?        boolean
     |  |     +---w certificate-name*   certificate-name-ref
+    |  |             {tpm:TPMs}?
     |  +--ro output
     |     +--ro tpm12-attestation-response* []
-    |        +--ro certificate-name?            certificate-name-ref
-    |        +--ro up-time?                     uint32
-    |        +--ro node-id?                     string
-    |        +--ro node-physical-index?         int32
-    |        |       {ietfhw:entity-mib}?
-    |        +--ro fixed?                       binary
-    |        +--ro external-data?               binary
-    |        +--ro signature-size?              uint32
-    |        +--ro signature?                   binary
-    |        +--ro (tpm12-quote)
-    |           +--:(tpm12-quote1)
-    |           |  +--ro version* []
-    |           |  |  +--ro major?       uint8
-    |           |  |  +--ro minor?       uint8
-    |           |  |  +--ro rev-Major?   uint8
-    |           |  |  +--ro rev-Minor?   uint8
-    |           |  +--ro digest-value?          binary
-    |           |  +--ro TPM_PCR_COMPOSITE* []
-    |           |     +--ro pcr-index*         pcr
-    |           |     +--ro value-size?        uint32
-    |           |     +--ro tpm12-pcr-value*   binary
-    |           +--:(tpm12-quote2)
-    |              +--ro tag?                   uint8
-    |              +--ro pcr-index*             pcr
-    |              +--ro locality-at-release?   uint8
-    |              +--ro digest-at-release?     binary
+    |        +--ro certificate-name    certificate-name-ref
+    |        +--ro up-time?            uint32
+    |        +--ro TPM_QUOTE2?         binary
     +---x tpm20-challenge-response-attestation {taa:TPM20}?
     |  +---w input
     |  |  +---w tpm20-attestation-challenge
@@ -76,14 +53,13 @@ module: ietf-tpm-remote-attestation
     |  |     |  +---w TPM20-hash-algo?   identityref
     |  |     |  +---w pcr-index*         tpm:pcr
     |  |     +---w certificate-name*      certificate-name-ref
+    |  |             {tpm:TPMs}?
     |  +--ro output
     |     +--ro tpm20-attestation-response* []
-    |        +--ro certificate-name?      certificate-name-ref
+    |        +--ro certificate-name       certificate-name-ref
     |        +--ro TPMS_QUOTE_INFO        binary
     |        +--ro quote-signature?       binary
     |        +--ro up-time?               uint32
-    |        +--ro node-id?               string
-    |        +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
     |        +--ro unsigned-pcr-values* []
     |           +--ro TPM20-hash-algo?   identityref
     |           +--ro pcr-values* [pcr-index]
