@@ -64,11 +64,21 @@ module ietf-tpm-remote-attestation {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision "2020-12-09" {
+  revision "2020-12-15" {
     description
       "Initial version";
     reference
       "draft-ietf-rats-yang-tpm-charra";
+  }
+
+  /*****************/
+  /*   Features    */
+  /*****************/
+
+  feature TPMs {
+    description
+      "The device supports the remote attestation of multiple 
+      TPM based cryptoprocessors.";
   }
 
 
@@ -298,6 +308,7 @@ module ietf-tpm-remote-attestation {
       type certificate-name-ref;
         description
           "Identifies a certificate in a keystore.";
+      mandatory true;
     }
   }
 
@@ -658,6 +669,7 @@ module ietf-tpm-remote-attestation {
         uses tpm12-pcr-selection;
         uses nonce;
         leaf-list certificate-name {
+          if-feature "tpm:TPMs";
           must "/tpm:rats-support-structures/tpm:tpms" +
                "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']" +
                "/tpm:certificates/" +
@@ -704,6 +716,7 @@ module ietf-tpm-remote-attestation {
         uses nonce;       
         uses tpm20-pcr-selection;
         leaf-list certificate-name {
+          if-feature "tpm:TPMs";
           must "/tpm:rats-support-structures/tpm:tpms" +
                "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']" +
                "/tpm:certificates/" +
@@ -825,8 +838,7 @@ module ietf-tpm-remote-attestation {
        parties to discover the information necessary to use the
        remote attestation RPCs appropriately.";
     container compute-nodes {
-      presence
-        "Indicates that more than one TPM exists on a device.";
+      if-feature "tpm:TPMs";
       description
         "Holds the set device subsystems/components in this composite
          device that support TPM operations.";
@@ -901,7 +913,7 @@ module ietf-tpm-remote-attestation {
             reboots.";
         }
         leaf compute-node {
-          when "../../../compute-nodes";
+          if-feature "tpm:TPMs";
           type compute-node-ref;
           config false;
           mandatory true;
