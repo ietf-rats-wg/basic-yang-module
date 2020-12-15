@@ -24,7 +24,7 @@ module ietf-tpm-remote-attestation {
     Author  : Eric Voit <evoit@cisco.com>
     Author  : Henk Birkholz <henk.birkholz@sit.fraunhofer.de>
     Author  : Michael Eckel <michael.eckel@sit.fraunhofer.de>
-    Author  : Shwetha Bhandari <shwethab@cisco.com>
+    Author  : Shwetha Bhandari <shwetha.bhandari@thoughtspot.com>
     Author  : Bill Sulzen <bsulzen@cisco.com>
     Author  : Liang Xia (Frank) <frank.xialiang@huawei.com>
     Author  : Tom Laffey <tom.laffey@hpe.com>
