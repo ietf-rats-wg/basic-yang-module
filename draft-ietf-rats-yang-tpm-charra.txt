@@ -5,7 +5,8 @@
 RATS Working Group                                           H. Birkholz
 Internet-Draft                                                  M. Eckel
 Intended status: Standards Track                          Fraunhofer SIT
-Expires: 26 March 2021                                       S. Bhandari
+Expires: 19 June 2021                                        S. Bhandari
+                                                             ThoughtSpot
                                                                  E. Voit
                                                                B. Sulzen
                                                                    Cisco
@@ -15,7 +16,7 @@ Expires: 26 March 2021                                       S. Bhandari
                                                                      HPE
                                                              G. Fedorkow
                                                                  Juniper
-                                                       22 September 2020
+                                                        16 December 2020
 
 
    A YANG Data Model for Challenge-Response-based Remote Attestation
@@ -52,10 +53,9 @@ Status of This Memo
 
 
 
-
-Birkholz, et al.          Expires 26 March 2021                 [Page 1]
+Birkholz, et al.          Expires 19 June 2021                  [Page 1]
 
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
 
 
    Internet-Drafts are working documents of the Internet Engineering
@@ -68,7 +68,7 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 26 March 2021.
+   This Internet-Draft will expire on 19 June 2021.
 
 Copyright Notice
 
@@ -90,17 +90,17 @@ Table of Contents
      1.1.  Requirements notation . . . . . . . . . . . . . . . . . .   3
    2.  The YANG Module for Basic Remote Attestation Procedures . . .   3
      2.1.  Tree Diagram  . . . . . . . . . . . . . . . . . . . . . .   3
-     2.2.  YANG Modules  . . . . . . . . . . . . . . . . . . . . . .   7
-       2.2.1.  ietf-tpm-remote-attestation . . . . . . . . . . . . .   7
-       2.2.2.  ietf-tcg-algs . . . . . . . . . . . . . . . . . . . .  35
-   3.  IANA considerations . . . . . . . . . . . . . . . . . . . . .  52
-   4.  Security Considerations . . . . . . . . . . . . . . . . . . .  52
-   5.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  53
-   6.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . .  53
-   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  54
-     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  54
-     7.2.  Informative References  . . . . . . . . . . . . . . . . .  55
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  55
+     2.2.  YANG Modules  . . . . . . . . . . . . . . . . . . . . . .   6
+       2.2.1.  ietf-tpm-remote-attestation . . . . . . . . . . . . .   6
+       2.2.2.  ietf-tcg-algs . . . . . . . . . . . . . . . . . . . .  30
+   3.  IANA considerations . . . . . . . . . . . . . . . . . . . . .  47
+   4.  Security Considerations . . . . . . . . . . . . . . . . . . .  47
+   5.  Acknowledgements  . . . . . . . . . . . . . . . . . . . . . .  48
+   6.  Change Log  . . . . . . . . . . . . . . . . . . . . . . . . .  48
+   7.  References  . . . . . . . . . . . . . . . . . . . . . . . . .  49
+     7.1.  Normative References  . . . . . . . . . . . . . . . . . .  49
+     7.2.  Informative References  . . . . . . . . . . . . . . . . .  50
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  51
 
 
 
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Birkholz, et al.          Expires 26 March 2021                 [Page 2]
+Birkholz, et al.          Expires 19 June 2021                  [Page 2]
 
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
 
 
 1.  Introduction
@@ -165,14 +165,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
 
 
-Birkholz, et al.          Expires 26 March 2021                 [Page 3]
+Birkholz, et al.          Expires 19 June 2021                  [Page 3]
 
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
 
 
   module: ietf-tpm-remote-attestation
     +--rw rats-support-structures
-       +--rw compute-nodes!
+       +--rw compute-nodes {tpm:TPMs}?
        |  +--ro compute-node* [node-id]
        |     +--ro node-id                string
        |     +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
@@ -184,7 +184,7 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        |     +--ro hardware-based?         boolean
        |     +--ro tpm-physical-index?     int32 {ietfhw:entity-mib}?
        |     +--ro tpm-path?               string
-       |     +--ro compute-node            compute-node-ref
+       |     +--ro compute-node            compute-node-ref {tpm:TPMs}?
        |     +--ro tpm-manufacturer?       string
        |     +--rw tpm-firmware-version    identityref
        |     +--rw TPM12-hash-algo?        identityref
@@ -210,45 +210,22 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
       |  |  +---w tpm12-attestation-challenge
       |  |     +---w pcr-index*          pcr
       |  |     +---w nonce-value         binary
-      |  |     +---w add-version?        boolean
       |  |     +---w certificate-name*   certificate-name-ref
+      |  |             {tpm:TPMs}?
       |  +--ro output
       |     +--ro tpm12-attestation-response* []
-      |        +--ro certificate-name?            certificate-name-ref
-      |        +--ro up-time?                     uint32
-      |        +--ro node-id?                     string
-      |        +--ro node-physical-index?         int32
-
-
-
-Birkholz, et al.          Expires 26 March 2021                 [Page 4]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
-      |        |       {ietfhw:entity-mib}?
-      |        +--ro fixed?                       binary
-      |        +--ro external-data?               binary
-      |        +--ro signature-size?              uint32
-      |        +--ro signature?                   binary
-      |        +--ro (tpm12-quote)
-      |           +--:(tpm12-quote1)
-      |           |  +--ro version* []
-      |           |  |  +--ro major?       uint8
-      |           |  |  +--ro minor?       uint8
-      |           |  |  +--ro rev-Major?   uint8
-      |           |  |  +--ro rev-Minor?   uint8
-      |           |  +--ro digest-value?          binary
-      |           |  +--ro TPM_PCR_COMPOSITE* []
-      |           |     +--ro pcr-index*         pcr
-      |           |     +--ro value-size?        uint32
-      |           |     +--ro tpm12-pcr-value*   binary
-      |           +--:(tpm12-quote2)
-      |              +--ro tag?                   uint8
-      |              +--ro pcr-index*             pcr
-      |              +--ro locality-at-release?   uint8
-      |              +--ro digest-at-release?     binary
+      |        +--ro certificate-name    certificate-name-ref
+      |        +--ro up-time?            uint32
+      |        +--ro TPM_QUOTE2?         binary
       +---x tpm20-challenge-response-attestation {taa:TPM20}?
+
+
+
+Birkholz, et al.          Expires 19 June 2021                  [Page 4]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
       |  +---w input
       |  |  +---w tpm20-attestation-challenge
       |  |     +---w nonce-value            binary
@@ -256,14 +233,13 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
       |  |     |  +---w TPM20-hash-algo?   identityref
       |  |     |  +---w pcr-index*         tpm:pcr
       |  |     +---w certificate-name*      certificate-name-ref
+      |  |             {tpm:TPMs}?
       |  +--ro output
       |     +--ro tpm20-attestation-response* []
-      |        +--ro certificate-name?      certificate-name-ref
+      |        +--ro certificate-name       certificate-name-ref
       |        +--ro TPMS_QUOTE_INFO        binary
       |        +--ro quote-signature?       binary
       |        +--ro up-time?               uint32
-      |        +--ro node-id?               string
-      |        +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
       |        +--ro unsigned-pcr-values* []
       |           +--ro TPM20-hash-algo?   identityref
       |           +--ro pcr-values* [pcr-index]
@@ -274,14 +250,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          |  +---w log-selector* []
          |  |  +---w tpm-name*                  string
          |  |  +---w (index-type)?
-
-
-
-Birkholz, et al.          Expires 26 March 2021                 [Page 5]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
          |  |  |  +--:(last-entry)
          |  |  |  |  +---w last-entry-value?    binary
          |  |  |  +--:(index)
@@ -306,6 +274,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
                         |        +--ro digest-list* []
                         |        |  +--ro hash-algo?   identityref
                         |        |  +--ro digest*      binary
+
+
+
+Birkholz, et al.          Expires 19 June 2021                  [Page 5]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
                         |        +--ro event-size?     uint32
                         |        +--ro event-data*     uint8
                         +--:(ima)
@@ -331,13 +307,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
                                  +--ro file-type?                 string
                                  +--ro pcr-index?                 pcr
 
-
-
-Birkholz, et al.          Expires 26 March 2021                 [Page 6]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
 2.2.  YANG Modules
 
 2.2.1.  ietf-tpm-remote-attestation
@@ -361,6 +330,13 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
    a quote of PCRs from a TPM2.0 compliant cryptoprocessor.  When one or
    more <certificate-name> is not provided, all TPM2.0 compliant
    cryptoprocessors will respond.
+
+
+
+Birkholz, et al.          Expires 19 June 2021                  [Page 6]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
 
    <log-retrieval> - Allows a Verifier to acquire the evidence which was
    extended into specific PCRs.
@@ -386,16 +362,8 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
 2.2.1.4.  YANG Module
 
-
-
-
-Birkholz, et al.          Expires 26 March 2021                 [Page 7]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
    <CODE BEGINS>
-    file ietf-tpm-remote-attestation@2020-09-18.yang
+    file ietf-tpm-remote-attestation@2020-12-09.yang
    module ietf-tpm-remote-attestation {
      namespace "urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation";
      prefix "tpm";
@@ -418,11 +386,19 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
      contact
       "WG Web  : <http://datatracker.ietf.org/wg/rats/>
+
+
+
+Birkholz, et al.          Expires 19 June 2021                  [Page 7]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
        WG List : <mailto:rats@ietf.org>
        Author  : Eric Voit <evoit@cisco.com>
        Author  : Henk Birkholz <henk.birkholz@sit.fraunhofer.de>
        Author  : Michael Eckel <michael.eckel@sit.fraunhofer.de>
-       Author  : Shwetha Bhandari <shwethab@cisco.com>
+       Author  : Shwetha Bhandari <shwetha.bhandari@thoughtspot.com>
        Author  : Bill Sulzen <bsulzen@cisco.com>
        Author  : Liang Xia (Frank) <frank.xialiang@huawei.com>
        Author  : Tom Laffey <tom.laffey@hpe.com>
@@ -442,14 +418,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
         subject to the license terms contained in, the Simplified
         BSD License set forth in Section 4.c of the IETF Trust's
         Legal Provisions Relating to IETF Documents
-
-
-
-Birkholz, et al.          Expires 26 March 2021                 [Page 8]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
         (https://trustee.ietf.org/license-info).
 
         Redistribution and use in source and binary forms, with or
@@ -470,11 +438,29 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
         (RFC 8174) when, and only when, they appear in all
         capitals, as shown here.";
 
-     revision "2020-09-18" {
+     revision "2020-12-15" {
        description
          "Initial version";
        reference
+
+
+
+Birkholz, et al.          Expires 19 June 2021                  [Page 8]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
          "draft-ietf-rats-yang-tpm-charra";
+     }
+
+     /*****************/
+     /*   Features    */
+     /*****************/
+
+     feature TPMs {
+       description
+         "The device supports the remote attestation of multiple
+         TPM based cryptoprocessors.";
      }
 
 
@@ -498,14 +484,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        description
          "This type is used to reference a hardware node.  It is quite
          possible this leafref will eventually point to another YANG
-
-
-
-Birkholz, et al.          Expires 26 March 2021                 [Page 9]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
          module's node.";
      }
 
@@ -520,6 +498,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
 
      /******************/
+
+
+
+Birkholz, et al.          Expires 19 June 2021                  [Page 9]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
      /*   Identities   */
      /******************/
 
@@ -554,14 +540,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
      grouping TPM20-asymmetric-signing-algo {
        description
          "The signature scheme that is used to sign the TPM2 Quote
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 10]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
          information response.";
        leaf TPM20-asymmetric-signing-algo {
          must "/tpm:rats-support-structures/tpm:attester-supported-algos"
@@ -576,6 +554,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
            "The signature scheme that is used to sign the TPM2.0
             Quote information response. This must be one of those
             supported by a platform.";
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 10]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
        default taa:TPM_ALG_RSA;
        }
      }
@@ -610,14 +596,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
             + "/tpm:tpm20-hash" {
             error-message "Not a platform supported TPM20-hash-algo";
          }
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 11]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
          type identityref {
            base taa:hash;
          }
@@ -632,6 +610,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        description
          "The cryptographic algorithm used to hash the TPM1.2 PCRs.";
        leaf TPM12-hash-algo {
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 11]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
          must "/tpm:rats-support-structures/tpm:attester-supported-algos"
             + "/tpm:tpm12-hash" {
             error-message "Not a platform supported TPM12-hash-algo";
@@ -666,14 +652,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
      }
 
      grouping tpm12-pcr-selection {
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 12]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
        description
          "A Verifier can request one or more PCR values using its
           individually created Attestation Key Certificate (AC).
@@ -688,6 +666,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
               "/tpm:tpm[tpm-name = current()]" +
               "/tpm:tpm[TPM12-pcrs = current()]" {
            error-message "Acquiring this PCR index is not supported";
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 12]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
          }
          */
          type pcr;
@@ -722,14 +708,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
            }
            */
            type tpm:pcr;
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 13]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
            description
              "The numbers of the PCRs that which are being tracked
              with a hash based on the TPM20-hash-algo.";
@@ -744,6 +722,15 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          type certificate-name-ref;
            description
              "Identifies a certificate in a keystore.";
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 13]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
+         mandatory true;
        }
      }
 
@@ -771,276 +758,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        }
      }
 
-     grouping compute-node-identifier {
-       description
-         "In a distributed system with multiple compute nodes
-          this is the node identified by name and physical-index.";
-       leaf node-id {
-          type string;
-          description
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 14]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
-            "ID of the compute node, such as Board Serial Number.";
-       }
-       leaf node-physical-index {
-         if-feature ietfhw:entity-mib;
-         type int32 {
-           range "1..2147483647";
-         }
-         config false;
-          description
-            "The entPhysicalIndex for the compute node.";
-          reference
-            "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
-       }
-     }
-
-     grouping tpm12-pcr-info-short {
-       description
-         "This structure is for defining a digest at release when the only
-          information that is necessary is the release configuration.";
-       uses tpm12-pcr-selection;
-       leaf locality-at-release {
-         type uint8;
-         description
-           "This SHALL be the locality modifier required to release the
-            information (TPM 1.2 type TPM_LOCALITY_SELECTION)";
-         reference
-           "TPM Main Part 2 TPM Structures v1.2 July 2007
-           Section 8.6";
-       }
-       leaf digest-at-release {
-         type binary;
-         description
-           "This SHALL be the digest of the PCR indices and PCR values
-            to verify when revealing auth data (TPM 1.2 type
-            TPM_COMPOSITE_HASH).";
-         reference
-           "TPM Main Part 2 TPM Structures v1.2 July 2007
-           Section 5.4.1.";
-       }
-     }
-
-     grouping tpm12-version {
-       description
-         "This structure provides information relative the version of
-         the TPM.";
-       list version {
-         description
-           "This indicates the version of the structure
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 15]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
-            (TPM 1.2 type TPM_STRUCT_VER). This MUST be 1.1.0.0.";
-         reference
-           "TPM Main Part 2 TPM Structures v1.2 July 2007
-           Section 5.1.";
-         leaf major {
-           type uint8;
-           description
-             "Indicates the major version of the structure.
-              MUST be 0x01.";
-         }
-         leaf minor {
-           type uint8;
-           description
-             "Indicates the minor version of the structure.
-              MUST be 0x01.";
-         }
-         leaf rev-Major {
-           type uint8;
-           description
-             "Indicates the rev major version of the structure.
-              MUST be 0x00.";
-         }
-         leaf rev-Minor {
-           type uint8;
-           description
-             "Indicates the rev minor version of the structure.
-              MUST be 0x00.";
-         }
-       }
-     }
-
-     grouping tpm12-quote-info-common {
-       description
-         "These statements are within both quote variants of the TPM 1.2";
-       reference
-         "TPM Main Part 2 TPM Structures v1.2 July 2007,
-         Section 11.3 & 11.4.";
-       leaf fixed {
-         type binary;
-         description
-           "This SHALL always be the string 'QUOT' or 'QUO2'
-            (length is 4 bytes).";
-       }
-       leaf external-data {
-         type binary;
-         description
-           "160 bits of externally supplied data, typically a nonce.";
-       }
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 16]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
-       leaf signature-size {
-         type uint32;
-         description
-          "The size of TPM 1.2 'signature' value.";
-       }
-       leaf signature {
-         type binary;
-         description
-           "Signature over hash of tpm12-quote-info2'.";
-       }
-     }
-
-     grouping tpm12-quote-info {
-       description
-         "This structure provides the mechanism for the TPM to quote the
-          current values of a list of PCRs (as used by the TPM_Quote2
-          command).";
-       uses tpm12-version;
-       leaf digest-value {
-         type binary;
-         description
-           "This SHALL be the result of the composite hash algorithm using
-            the current values of the requested PCR indices
-            (TPM 1.2 type TPM_COMPOSITE_HASH.)";
-       }
-     }
-
-     grouping tpm12-quote-info2 {
-       description
-         "This structure provides the mechanism for the TPM to quote the
-          current values of a list of PCRs
-          (as used by the TPM_Quote2 command).";
-       leaf tag {
-         type uint8;
-         description
-           "This SHALL be TPM_TAG_QUOTE_INFO2.";
-       }
-       uses tpm12-pcr-info-short;
-     }
-
-     grouping tpm12-cap-version-info {
-       description
-         "TPM returns the current version and revision of the TPM 1.2 .";
-       list TPM_PCR_COMPOSITE {
-         description
-           "The TPM 1.2 TPM_PCRVALUEs for the pcr-indices.";
-         reference
-           "TPM Main Part 2 TPM Structures v1.2 July 2007, Section 8.2";
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 17]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
-         uses tpm12-pcr-selection;
-         leaf value-size {
-           type uint32;
-           description
-             "This SHALL be the size of the 'tpm12-pcr-value' field
-              (not the number of PCRs).";
-         }
-         leaf-list tpm12-pcr-value {
-           type binary;
-           description
-             "The list of TPM_PCRVALUEs from each PCR selected in sequence
-              of tpm12-pcr-selection.";
-         }
-         list version-info {
-           description
-             "An optional output parameter from a TPM 1.2 TPM_Quote2.";
-           leaf tag {
-             type uint16;  /* This should be converted into an ENUM */
-             description
-               "The TPM 1.2 version and revision
-                (TPM 1.2 type TPM_STRUCTURE_TAG).
-                This MUST be TPM_CAP_VERSION_INFO (0x0030)";
-           }
-           uses tpm12-version;
-           leaf spec-level {
-             type uint16;
-             description
-               "A number indicating the level of ordinals supported.";
-           }
-           leaf errata-rev {
-             type uint8;
-             description
-               "A number indicating the errata version of the
-                specification.";
-           }
-           leaf tpm-vendor-id {
-             type binary;
-             description
-               "The vendor ID unique to each TPM manufacturer.";
-           }
-           leaf vendor-specific-size {
-             type uint16;
-             description
-               "The size of the vendor-specific area.";
-           }
-           leaf vendor-specific {
-             type binary;
-             description
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 18]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
-               "Vendor specific information.";
-           }
-         }
-       }
-     }
-
-     grouping tpm12-pcr-composite {
-       description
-         "The actual values of the selected PCRs (a list of TPM_PCRVALUEs
-          (binary) and associated metadata for TPM 1.2.";
-       list TPM_PCR_COMPOSITE {
-         description
-           "The TPM 1.2 TPM_PCRVALUEs for the pcr-indices.";
-         reference
-           "TPM Main Part 2 TPM Structures v1.2 July 2007, Section 8.2";
-         uses tpm12-pcr-selection;
-         leaf value-size {
-           type uint32;
-           description
-             "This SHALL be the size of the 'tpm12-pcr-value' field
-              (not the number of PCRs).";
-         }
-         leaf-list tpm12-pcr-value {
-           type binary;
-           description
-             "The list of TPM_PCRVALUEs from each PCR selected in sequence
-              of tpm12-pcr-selection.";
-         }
-       }
-     }
-
      grouping node-uptime {
        description
          "Uptime in seconds of the node.";
@@ -1057,33 +774,22 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          measurements.  It is supplemented by unsigned Attester
          information.";
        uses node-uptime;
-       uses compute-node-identifier;
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 19]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
-       uses tpm12-quote-info-common;
-       choice tpm12-quote {
-         mandatory true;
+       leaf TPM_QUOTE2 {
+         type binary;
          description
-           "Either a tpm12-quote-info or tpm12-quote-info2, depending
-            on whether TPM_Quote or TPM_Quote2 was used
-            (cf. input field add-verson).";
-         case tpm12-quote1 {
-           description
-             "BIOS/UEFI event logs";
-           uses tpm12-quote-info;
-           uses tpm12-pcr-composite;
-         }
-         case tpm12-quote2 {
-           description
-             "BIOS/UEFI event logs";
-           uses tpm12-quote-info2;
-         }
+           "Result of a TPM1.2 Quote2 operation. This includes PCRs,
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 14]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
+           signatures, locality, the provided nonce and other data which
+           can be further parsed to appraise the Attester.";
+         reference
+           "TPM1.2 commands rev116 July 2007, Section 16.5";
        }
      }
 
@@ -1111,21 +817,31 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
            certificate-name.";
        }
        uses node-uptime;
-       uses compute-node-identifier;
        list unsigned-pcr-values {
          description
+           "PCR values in each PCR bank. This might appear redundant with
+           the TPM2B_DIGEST, but that digest is calculated across multiple
+           PCRs.  Having to verify across multiple PCRs does not
+           necessarily make it easy for a Verifier to appraise just the
+           minimum set of PCR information which has changed since the last
+           received TPM2B_DIGEST.  Put another way, why should a Verifier
+           reconstruct the proper value of all PCR Quotes when only a
+           single PCR has changed?
+
+           To help this happen, if the Attester does know specific PCR
+           values, the Attester can provide these individual values via
+           'unsigned-pcr-values'.   By comparing this information to the
+           what has previously been validated, it is possible for a
+           Verifier to confirm the Attester's signature while eliminating
+           significant processing.";
 
 
 
-Birkholz, et al.          Expires 26 March 2021                [Page 20]
+Birkholz, et al.          Expires 19 June 2021                 [Page 15]
 
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
 
 
-           "PCR values in each PCR bank. This often should not be
-            necessary for TPM2, as the raw information needing
-            signature and hash validation will be coming from
-            the 'quote' leaf";
          uses TPM20-hash-algo;
          list pcr-values {
            key pcr-index;
@@ -1170,18 +886,18 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        }
        leaf event-type {
            type uint32;
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 21]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
            description
              "log event type";
        }
        leaf pcr-index {
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 16]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
          type pcr;
          description
            "Defines the PCR index that this event extended";
@@ -1226,18 +942,18 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
               were logged";
          uses boot-event-log;
        }
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 22]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
      }
 
      grouping ima-event {
        description
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 17]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
          "Defines an hash log extend event for IMA measurements";
        leaf event-number {
          type uint64;
@@ -1282,18 +998,17 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        }
        leaf signature {
          type binary;
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 23]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
          description
            "The file signature";
        }
      }
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 18]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
 
      grouping ima-event-log {
        description
@@ -1338,19 +1053,19 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          type string;
          description
            "Indicating at which boot stage the file is loaded,
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 24]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
             such as BIOS, BootLoader, etc.";
        }
        leaf pcr-index {
          type pcr;
          description
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 19]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
            "Defines the PCR index that this event extended";
        }
      }
@@ -1394,19 +1109,19 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          }
          case netequip_boot {
            description
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 25]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
              "Network Equipment Boot event logs";
            container boot-event-logs {
              description
                "Network equipment boot event logs.";
              uses network-equipment-boot-event-log;
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 20]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
            }
          }
        }
@@ -1430,16 +1145,8 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
               TPM 1.2 structure definitions";
            uses tpm12-pcr-selection;
            uses nonce;
-           leaf add-version {
-             type boolean;
-             description
-               "Whether or not to include TPM_CAP_VERSION_INFO; if true,
-                then TPM_Quote2 must be used to create the response.";
-             reference
-               "TPM Main Part 2 TPM Structures v1.2 July 2007,
-               Section 21.6";
-           }
            leaf-list certificate-name {
+             if-feature "tpm:TPMs";
              must "/tpm:rats-support-structures/tpm:tpms" +
                   "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']" +
                   "/tpm:certificates/" +
@@ -1450,14 +1157,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
              description
                "When populated, the RPC will only get a Quote for the
                TPMs associated with these certificate(s).";
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 26]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
            }
          }
        }
@@ -1471,6 +1170,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
            uses certificate-name-ref {
              description
                "Certificate associated with this tpm12-attestation.";
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 21]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
            }
            uses tpm12-attestation;
          }
@@ -1494,6 +1201,7 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
            uses nonce;
            uses tpm20-pcr-selection;
            leaf-list certificate-name {
+             if-feature "tpm:TPMs";
              must "/tpm:rats-support-structures/tpm:tpms" +
                   "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']" +
                   "/tpm:certificates/" +
@@ -1506,14 +1214,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
                  TPMs associated with the certificates.";
            }
          }
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 27]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
        }
        output {
          list tpm20-attestation-response {
@@ -1526,6 +1226,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
              description
                "Certificate associated with this tpm20-attestation.";
            }
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 22]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
            uses tpm20-attestation;
          }
        }
@@ -1562,14 +1270,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
                  "Numeric index of the last log entry retrieved, or
                   zero.";
                leaf last-index-number {
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 28]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
                  type uint64;
                  description
                    "The last numeric index number of a log entry.
@@ -1582,6 +1282,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
                leaf timestamp {
                  type yang:date-and-time;
                  description
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 23]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
                    "Timestamp from which to start the extraction.  The
                     next log entry subsequent to this timestamp is to
                     be sent.";
@@ -1618,14 +1326,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
              }
            }
          }
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 29]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
        }
      }
 
@@ -1638,9 +1338,16 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          "The datastore definition enabling verifiers or relying
           parties to discover the information necessary to use the
           remote attestation RPCs appropriately.";
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 24]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
        container compute-nodes {
-         presence
-           "Indicates that more than one TPM exists on a device.";
+         if-feature "tpm:TPMs";
          description
            "Holds the set device subsystems/components in this composite
             device that support TPM operations.";
@@ -1648,10 +1355,25 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
            key node-id;
            config false;
            min-elements 2;
-           uses compute-node-identifier;
            description
-             "A components in this composite device that RATS which
+             "A component in this composite device that
              supports TPM operations.";
+           leaf node-id {
+             type string;
+             description
+               "ID of the compute node, such as Board Serial Number.";
+           }
+           leaf node-physical-index {
+             if-feature ietfhw:entity-mib;
+             type int32 {
+               range "1..2147483647";
+             }
+             config false;
+             description
+              "The entPhysicalIndex for the compute node.";
+             reference
+              "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
+           }
            leaf node-name {
              type string;
              description
@@ -1672,16 +1394,16 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
            unique "tpm-path";
              description
               "A list of TPMs in this composite device that RATS
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 25]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
               can be conducted with.";
            uses tpm-name;
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 30]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
            leaf hardware-based {
              type boolean;
              config false;
@@ -1708,7 +1430,7 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
                reboots.";
            }
            leaf compute-node {
-             when "../../../compute-nodes";
+             if-feature "tpm:TPMs";
              type compute-node-ref;
              config false;
              mandatory true;
@@ -1728,16 +1450,16 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
              }
              mandatory true;
              description
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 26]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
                "Identifies the cryptoprocessor API set supported.  This
                cannot be configured.  However it is referenced via XPATH
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 31]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
                as part of configuration, so is shown as 'rw'
                to eliminate YANG warnings related NMDA.";
            }
@@ -1784,16 +1506,16 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
                type tpm:pcr;
                description
                  "Defines what TPM2 PCRs are available to be extracted.";
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 27]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
              }
            }
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 32]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
            leaf tpm-status {
              type enumeration {
                enum operational {
@@ -1840,16 +1562,16 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
                       + "/ks:certificates/ks:certificate/ks:name";
                  }
                  description
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 28]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
                    "A reference to a specific certificate of an
                     asymmetric key in the Keystore.";
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 33]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
                     /* Note: It is also possible to import a grouping which
                        allows local definition via an imported keystore
                        schema. */
@@ -1896,16 +1618,16 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          leaf-list tpm12-hash {
            if-feature "taa:TPM12";
            when "../../tpm:tpms" +
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 29]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
                 "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']";
            type identityref {
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 34]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
              base taa:hash;
            }
            description
@@ -1946,6 +1668,20 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
    table as a separate YANG file within this document, it is possible
    for other YANG models to leverage the contents of this model.
 
+
+
+
+
+
+
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 30]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
 2.2.2.1.  Features
 
    There are two types of features supported <TPM12> and <TPM20>.
@@ -1953,14 +1689,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
    supporting the corresponding type of TCG API is present on an
    Attester.  Most commonly, only one type of cryptoprocessor will be
    available on an Attester.
-
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 35]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
 
 2.2.2.2.  Identities
 
@@ -2002,6 +1730,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
         Copyright (c) 2020 IETF Trust and the persons identified
         as authors of the code. All rights reserved.
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 31]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
         Redistribution and use in source and binary forms, with
         or without modification, is permitted pursuant to, and
         subject to the license terms contained in, the Simplified
@@ -2010,14 +1746,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
         (https://trustee.ietf.org/license-info).
         This version of this YANG module is part of RFC XXXX
         (https://www.rfc-editor.org/info/rfcXXXX); see the RFC
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 36]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
         itself for full legal notices.
         The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
         'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
@@ -2058,6 +1786,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          types between the various algorithm types listed below */
 
      identity asymmetric {
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 32]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
        description
          "A TCG recognized asymmetric algorithm with a public and
          private key.";
@@ -2065,14 +1801,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          "http://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
          TCG_Algorithm_Registry_r1p32_pub Table 2";
      }
-
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 37]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
 
      identity symmetric {
        description
@@ -2114,6 +1842,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        description
          "A TCG recognized method such as a mask generation function.";
        reference
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 33]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
          "TCG_Algorithm_Registry_r1p32_pub Table 2";
      }
 
@@ -2122,14 +1858,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          "A TCG recognized object type.";
        reference
          "TCG_Algorithm_Registry_r1p32_pub Table 2";
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 38]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
      }
 
      identity cryptoprocessor {
@@ -2171,6 +1899,13 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
      }
 
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 34]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
      identity TPM_ALG_TDES {
        if-feature "TPM12";
        base tpm12;
@@ -2178,14 +1913,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        description
          "Block cipher with various key sizes (Triple Data Encryption
           Algorithm, commonly called Triple Data Encryption Standard)
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 39]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
           Note: was banned in TPM1.2 v94";
        reference
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and
@@ -2227,20 +1954,20 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        base tpm12;
        base symmetric;
        description
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 35]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
          "The AES algorithm with various key sizes";
        reference
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and
          ISO/IEC 18033-3. ALG_ID: 0x0006";
 
      }
-
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 40]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
 
      identity TPM_ALG_MGF1 {
        if-feature "TPM20";
@@ -2284,20 +2011,19 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and
          TCG TPM 2.0 library specification. ALG_ID: 0x000A";
 
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 36]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
      }
 
      identity TPM_ALG_SHA256 {
        if-feature "TPM20";
        base tpm20;
        base hash;
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 41]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
        description
          "The SHA 256 algorithm";
        reference
@@ -2341,19 +2067,18 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
      }
 
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 37]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
      identity TPM_ALG_SM3_256 {
        if-feature "TPM20";
        base tpm20;
        base hash;
        description
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 42]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
          "The SM3 hash algorithm.";
        reference
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and
@@ -2397,19 +2122,19 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017
          ALG_ID: 0x0015";
 
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 38]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
      }
 
      identity TPM_ALG_RSAPSS {
        if-feature "TPM20";
        base tpm20;
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 43]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
        base asymmetric;
        base signing;
        description
@@ -2453,18 +2178,19 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        base method;
        description
          "Secret sharing using ECC";
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 39]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
        reference
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and
          NIST SP800-56A and RFC 7748. ALG_ID: 0x0019";
 
      }
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 44]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
 
      identity TPM_ALG_ECDAA {
        if-feature "TPM20";
@@ -2509,19 +2235,18 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and
          TCG TPM 2.0 library specification. ALG_ID: 0x001C";
 
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 40]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
      }
 
      identity TPM_ALG_ECMQV {
        if-feature "TPM20";
        base tpm20;
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 45]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
        base asymmetric;
        base method;
        description
@@ -2565,19 +2290,19 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          "A key derivation method";
        reference
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 41]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
          NIST SP800-108 - Section 5.1 KDF. ALG_ID: 0x0022";
 
      }
 
      identity TPM_ALG_ECC {
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 46]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
        if-feature "TPM20";
        base tpm20;
        base asymmetric;
@@ -2621,19 +2346,19 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          "ISO/IEC 10118-3 - the SHA 256 algorithm";
        reference
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 42]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
          NIST PUB FIPS 202. ALG_ID: 0x0027";
 
      }
 
      identity TPM_ALG_SHA3_384 {
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 47]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
        if-feature "TPM20";
        base tpm20;
        base hash;
@@ -2677,18 +2402,19 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        base encryption_mode;
        description
          "Counter mode";
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 43]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
        reference
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and
          ISO/IEC 10116. ALG_ID: 0x0040";
 
      }
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 48]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
 
      identity TPM_ALG_OFB {
        base tpm20;
@@ -2732,19 +2458,20 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
        if-feature "TPM20";
        base tpm20;
        base symmetric;
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 44]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
        base encryption_mode;
        description
          "Electronic Codebook mode";
        reference
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and
          ISO/IEC 10116. ALG_ID: 0x0044";
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 49]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
 
      }
 
@@ -2787,6 +2514,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
          "AES Key Wrap (KW)";
        reference
          "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 45]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
          NIST SP800-38F. ALG_ID: 0x0052";
 
      }
@@ -2794,14 +2529,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
      identity TPM_ALG_KWP {
        if-feature "TPM20";
        base tpm20;
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 50]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
-
        base symmetric;
        base signing;
        base encryption_mode;
@@ -2843,20 +2570,18 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
    }
    <CODE ENDS>
 
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 46]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
    Note that not all cryptographic functions are required for use by
    ietf-tpm-remote-attestation.yang.  However the full definition of
    Table 3 of [TCG-Algos] will allow use by additional YANG
    specifications.
-
-
-
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 51]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
 
 3.  IANA considerations
 
@@ -2902,17 +2627,15 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
       does not correspond to a Attestation Identity Key (AIK) within the
       TPM.
 
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 47]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
    RPC: <tpm12-challenge-response-attestation> - Need to verify that the
    certificate is for an active AIK.
-
-
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 52]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
 
    RPC: <tpm20-challenge-response-attestation> - Need to verify that the
    certificate is for an active AIK.
@@ -2925,6 +2648,12 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
    Not yet.
 
 6.  Change Log
+
+   Changes from version 03 to version 04:
+
+   *  TPM1.2 Quote1 eliminated
+
+   *  YANG model simplifications so redundant info isn't exposed
 
    Changes from version 02 to version 03:
 
@@ -2954,6 +2683,13 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
    *  Added TPM-Path
 
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 48]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
    Changes from version 00 to version 01:
 
    *  Addressed author's comments
@@ -2961,14 +2697,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
    *  Extended complementary details about attestation-certificates
 
    *  Relabeled chunk-size to log-entry-quantity
-
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 53]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
 
    *  Relabeled location with compute-node or tpm-name where appropriate
 
@@ -3001,30 +2729,35 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
               Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
               W. Pan, "Remote Attestation Procedures Architecture", Work
               in Progress, Internet-Draft, draft-ietf-rats-architecture-
-              06, 1 September 2020, <http://www.ietf.org/internet-
-              drafts/draft-ietf-rats-architecture-06.txt>.
+              08, 8 December 2020, <http://www.ietf.org/internet-drafts/
+              draft-ietf-rats-architecture-08.txt>.
+
+
+
+
+
+
+
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 49]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
 
    [I-D.ietf-rats-tpm-based-network-device-attest]
               Fedorkow, G., Voit, E., and J. Fitzgerald-McKay, "TPM-
               based Network Device Remote Integrity Verification", Work
               in Progress, Internet-Draft, draft-ietf-rats-tpm-based-
-              network-device-attest-04, 18 September 2020,
+              network-device-attest-06, 7 December 2020,
               <http://www.ietf.org/internet-drafts/draft-ietf-rats-tpm-
-              based-network-device-attest-04.txt>.
+              based-network-device-attest-06.txt>.
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
               Requirement Levels", BCP 14, RFC 2119,
               DOI 10.17487/RFC2119, March 1997,
               <https://www.rfc-editor.org/info/rfc2119>.
-
-
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 54]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
 
    [RFC6991]  Schoenwaelder, J., Ed., "Common YANG Data Types",
               RFC 6991, DOI 10.17487/RFC6991, July 2013,
@@ -3059,6 +2792,16 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
               DOI 10.17487/RFC5246, August 2008,
               <https://www.rfc-editor.org/info/rfc5246>.
 
+
+
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 50]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
+
    [RFC6241]  Enns, R., Ed., Bjorklund, M., Ed., Schoenwaelder, J., Ed.,
               and A. Bierman, Ed., "Network Configuration Protocol
               (NETCONF)", RFC 6241, DOI 10.17487/RFC6241, June 2011,
@@ -3073,14 +2816,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
               <https://www.rfc-editor.org/info/rfc8040>.
 
 Authors' Addresses
-
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 55]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
-
 
    Henk Birkholz
    Fraunhofer SIT
@@ -3101,9 +2836,9 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
 
    Shwetha Bhandari
-   Cisco Systems
+   ThoughtSpot
 
-   Email: shwethab@cisco.com
+   Email: shwetha.bhandari@thoughtspot.com
 
 
    Eric Voit
@@ -3114,6 +2849,14 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
    Bill Sulzen
    Cisco Systems
+
+
+
+
+Birkholz, et al.          Expires 19 June 2021                 [Page 51]
+
+Internet-Draft            YANG-CHARRA for TPMs             December 2020
+
 
    Email: bsulzen@cisco.com
 
@@ -3126,16 +2869,6 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
    China
 
    Email: Frank.Xialiang@huawei.com
-
-
-
-
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 56]
-
-Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
 
    Tom Laffey
@@ -3176,17 +2909,4 @@ Internet-Draft            YANG-CHARRA for TPMs            September 2020
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-Birkholz, et al.          Expires 26 March 2021                [Page 57]
+Birkholz, et al.          Expires 19 June 2021                 [Page 52]

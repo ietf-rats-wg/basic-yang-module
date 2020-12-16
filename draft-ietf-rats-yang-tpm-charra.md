@@ -78,7 +78,7 @@ normative:
   RFC6991: ietf-yang-types
   RFC8348: ietf-hardware
   I-D.ietf-netconf-keystore: ietf-keystore
-  I-D.birkholz-rats-reference-interaction-model: rats-interaction-models
+  I-D.ietf-rats-reference-interaction-model: rats-interaction-models
   I-D.ietf-rats-architecture: rats-architecture
   I-D.ietf-rats-tpm-based-network-device-attest: RIV
 
@@ -98,10 +98,10 @@ normative:
         ins: TCG
         name: Trusted Computing Group
     date: 2013-03-15
-  TCG-Algos: 
+  TCG-Algos:
     target: hhttp://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
     title: "TCG_Algorithm_Registry_r1p32_pub"
-    
+
 informative:
   RFC6241:
   RFC8040:
@@ -141,7 +141,7 @@ This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, 
 
 #### Identities
 
-This module supports the following types of attestation event logs: \<ima\>, \<bios\>, and \<netequip_boot\>. 
+This module supports the following types of attestation event logs: \<ima\>, \<bios\>, and \<netequip_boot\>.
 
 #### RPCs
 
@@ -177,7 +177,7 @@ There are two types of features supported \<TPM12\> and \<TPM20\>. Support for e
 
 #### Identities
 
-There are three types of identities in this model.  
+There are three types of identities in this model.
 
 The first are the cryptographic functions supportable by a TPM algorithm, these include: \<asymmetric\>, \<symmetric\>, \<hash\>, \<signing\>, \<anonymous_signing\>, \<encryption_mode\>, \<method\>, and \<object_type\>.  The definitions of each of these are in Table 2 of {{TCG-Algos}}.
 
