@@ -847,7 +847,7 @@ module ietf-tpm-remote-attestation {
         config false;
         min-elements 2;
         description
-          "A component in this composite device that RATS which 
+          "A component in this composite device that 
           supports TPM operations."; 
         leaf node-id {
           type string;
