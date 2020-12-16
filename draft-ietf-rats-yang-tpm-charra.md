@@ -34,9 +34,9 @@ author:
   country: Germany
 - ins: S. Bhandari
   name: Shwetha Bhandari
-  org: Cisco Systems
-  abbrev: Cisco
-  email: shwethab@cisco.com
+  org: ThoughtSpot
+  abbrev: ThoughtSpot
+  email: shwetha.bhandari@thoughtspot.com
 - ins: E. Voit
   name: Eric Voit
   org: Cisco Systems
@@ -162,7 +162,7 @@ container \<attester-supported-algos\> - Identifies which TCG algorithms are ava
 
 #### YANG Module
 ~~~ YANG
-<CODE BEGINS> file ietf-tpm-remote-attestation@2020-09-18.yang
+<CODE BEGINS> file ietf-tpm-remote-attestation@2020-12-09.yang
 {::include ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
@@ -229,6 +229,11 @@ RPC: \<log-retrieval\> - Pulling lots of logs can chew up system resources.
 Not yet.
 
 #  Change Log
+
+Changes from version 03 to version 04:
+
+* TPM1.2 Quote1 eliminated
+* YANG model simplifications so redundant info isn't exposed
 
 Changes from version 02 to version 03:
 
