@@ -24,7 +24,7 @@ module ietf-tpm-remote-attestation {
     Author  : Eric Voit <evoit@cisco.com>
     Author  : Henk Birkholz <henk.birkholz@sit.fraunhofer.de>
     Author  : Michael Eckel <michael.eckel@sit.fraunhofer.de>
-    Author  : Shwetha Bhandari <shwethab@cisco.com>
+    Author  : Shwetha Bhandari <shwetha.bhandari@thoughtspot.com>
     Author  : Bill Sulzen <bsulzen@cisco.com>
     Author  : Liang Xia (Frank) <frank.xialiang@huawei.com>
     Author  : Tom Laffey <tom.laffey@hpe.com>
@@ -64,11 +64,21 @@ module ietf-tpm-remote-attestation {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision "2020-09-18" {
+  revision "2020-12-15" {
     description
       "Initial version";
     reference
       "draft-ietf-rats-yang-tpm-charra";
+  }
+
+  /*****************/
+  /*   Features    */
+  /*****************/
+
+  feature TPMs {
+    description
+      "The device supports the remote attestation of multiple 
+      TPM based cryptoprocessors.";
   }
 
 
@@ -298,6 +308,7 @@ module ietf-tpm-remote-attestation {
       type certificate-name-ref;
         description
           "Identifies a certificate in a keystore.";
+      mandatory true;
     }
   }
 
@@ -324,236 +335,6 @@ module ietf-tpm-remote-attestation {
         are 'hardware-based' equals true on the device are selected.";
     }
   }
- 
-  grouping compute-node-identifier {
-    description
-      "In a distributed system with multiple compute nodes
-       this is the node identified by name and physical-index.";
-    leaf node-id {
-       type string;
-       description
-         "ID of the compute node, such as Board Serial Number.";
-    }
-    leaf node-physical-index {
-      if-feature ietfhw:entity-mib;
-      type int32 {
-        range "1..2147483647";
-      }
-      config false;
-       description
-         "The entPhysicalIndex for the compute node.";
-       reference
-         "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
-    }
-  }
-
-  grouping tpm12-pcr-info-short {
-    description
-      "This structure is for defining a digest at release when the only
-       information that is necessary is the release configuration.";
-    uses tpm12-pcr-selection;
-    leaf locality-at-release {
-      type uint8;
-      description
-        "This SHALL be the locality modifier required to release the
-         information (TPM 1.2 type TPM_LOCALITY_SELECTION)";
-      reference
-        "TPM Main Part 2 TPM Structures v1.2 July 2007
-        Section 8.6";  
-    }
-    leaf digest-at-release {
-      type binary;
-      description
-        "This SHALL be the digest of the PCR indices and PCR values
-         to verify when revealing auth data (TPM 1.2 type
-         TPM_COMPOSITE_HASH).";
-      reference
-        "TPM Main Part 2 TPM Structures v1.2 July 2007
-        Section 5.4.1.";      
-    }
-  }
-
-  grouping tpm12-version {
-    description
-      "This structure provides information relative the version of
-      the TPM.";
-    list version {
-      description
-        "This indicates the version of the structure
-         (TPM 1.2 type TPM_STRUCT_VER). This MUST be 1.1.0.0.";
-      reference
-        "TPM Main Part 2 TPM Structures v1.2 July 2007
-        Section 5.1.";  
-      leaf major {
-        type uint8;
-        description
-          "Indicates the major version of the structure.
-           MUST be 0x01.";
-      }
-      leaf minor {
-        type uint8;
-        description
-          "Indicates the minor version of the structure.
-           MUST be 0x01.";
-      }
-      leaf rev-Major {
-        type uint8;
-        description
-          "Indicates the rev major version of the structure.
-           MUST be 0x00.";
-      }
-      leaf rev-Minor {
-        type uint8;
-        description
-          "Indicates the rev minor version of the structure.
-           MUST be 0x00.";
-      }
-    }
-  }
-
-  grouping tpm12-quote-info-common {
-    description
-      "These statements are within both quote variants of the TPM 1.2";
-    reference
-      "TPM Main Part 2 TPM Structures v1.2 July 2007, 
-      Section 11.3 & 11.4.";
-    leaf fixed {
-      type binary;
-      description
-        "This SHALL always be the string 'QUOT' or 'QUO2'
-         (length is 4 bytes).";
-    }
-    leaf external-data {
-      type binary;
-      description
-        "160 bits of externally supplied data, typically a nonce.";
-    }
-    leaf signature-size {
-      type uint32;
-      description
-       "The size of TPM 1.2 'signature' value.";
-    }
-    leaf signature {
-      type binary;
-      description
-        "Signature over hash of tpm12-quote-info2'.";
-    }
-  }
-
-  grouping tpm12-quote-info {
-    description
-      "This structure provides the mechanism for the TPM to quote the
-       current values of a list of PCRs (as used by the TPM_Quote2
-       command).";
-    uses tpm12-version;
-    leaf digest-value {
-      type binary;
-      description
-        "This SHALL be the result of the composite hash algorithm using
-         the current values of the requested PCR indices
-         (TPM 1.2 type TPM_COMPOSITE_HASH.)";
-    }
-  }
-
-  grouping tpm12-quote-info2 {
-    description
-      "This structure provides the mechanism for the TPM to quote the
-       current values of a list of PCRs
-       (as used by the TPM_Quote2 command).";
-    leaf tag {
-      type uint8;
-      description
-        "This SHALL be TPM_TAG_QUOTE_INFO2.";
-    }
-    uses tpm12-pcr-info-short;
-  }
-
-  grouping tpm12-cap-version-info {
-    description
-      "TPM returns the current version and revision of the TPM 1.2 .";
-    list TPM_PCR_COMPOSITE {
-      description
-        "The TPM 1.2 TPM_PCRVALUEs for the pcr-indices.";
-      reference
-        "TPM Main Part 2 TPM Structures v1.2 July 2007, Section 8.2";
-      uses tpm12-pcr-selection;
-      leaf value-size {
-        type uint32;
-        description
-          "This SHALL be the size of the 'tpm12-pcr-value' field
-           (not the number of PCRs).";
-      }
-      leaf-list tpm12-pcr-value {
-        type binary;
-        description
-          "The list of TPM_PCRVALUEs from each PCR selected in sequence
-           of tpm12-pcr-selection.";
-      }
-      list version-info {
-        description
-          "An optional output parameter from a TPM 1.2 TPM_Quote2.";
-        leaf tag {
-          type uint16;  /* This should be converted into an ENUM */
-          description
-            "The TPM 1.2 version and revision
-             (TPM 1.2 type TPM_STRUCTURE_TAG).
-             This MUST be TPM_CAP_VERSION_INFO (0x0030)";
-        }
-        uses tpm12-version;
-        leaf spec-level {
-          type uint16;
-          description
-            "A number indicating the level of ordinals supported.";
-        }
-        leaf errata-rev {
-          type uint8;
-          description
-            "A number indicating the errata version of the
-             specification.";
-        }
-        leaf tpm-vendor-id {
-          type binary;
-          description
-            "The vendor ID unique to each TPM manufacturer.";
-        }
-        leaf vendor-specific-size {
-          type uint16;
-          description
-            "The size of the vendor-specific area.";
-        }
-        leaf vendor-specific {
-          type binary;
-          description
-            "Vendor specific information.";
-        }
-      }
-    }
-  }
-
-  grouping tpm12-pcr-composite {
-    description
-      "The actual values of the selected PCRs (a list of TPM_PCRVALUEs
-       (binary) and associated metadata for TPM 1.2.";
-    list TPM_PCR_COMPOSITE {
-      description
-        "The TPM 1.2 TPM_PCRVALUEs for the pcr-indices.";
-      reference
-        "TPM Main Part 2 TPM Structures v1.2 July 2007, Section 8.2";
-      uses tpm12-pcr-selection;
-      leaf value-size {
-        type uint32;
-        description
-          "This SHALL be the size of the 'tpm12-pcr-value' field
-           (not the number of PCRs).";
-      }
-      leaf-list tpm12-pcr-value {
-        type binary;
-        description
-          "The list of TPM_PCRVALUEs from each PCR selected in sequence
-           of tpm12-pcr-selection.";
-      }
-    }
-  }
 
   grouping node-uptime {
     description
@@ -571,25 +352,14 @@ module ietf-tpm-remote-attestation {
       measurements.  It is supplemented by unsigned Attester 
       information.";
     uses node-uptime;
-    uses compute-node-identifier;
-    uses tpm12-quote-info-common;
-    choice tpm12-quote {
-      mandatory true;
+    leaf TPM_QUOTE2 {
+      type binary;
       description
-        "Either a tpm12-quote-info or tpm12-quote-info2, depending
-         on whether TPM_Quote or TPM_Quote2 was used
-         (cf. input field add-verson).";
-      case tpm12-quote1 {
-        description
-          "BIOS/UEFI event logs";
-        uses tpm12-quote-info;
-        uses tpm12-pcr-composite;
-      }
-      case tpm12-quote2 {
-        description
-          "BIOS/UEFI event logs";
-        uses tpm12-quote-info2;
-      }
+        "Result of a TPM1.2 Quote2 operation. This includes PCRs,
+        signatures, locality, the provided nonce and other data which 
+        can be further parsed to appraise the Attester.";
+      reference
+        "TPM1.2 commands rev116 July 2007, Section 16.5";  
     }
   }
 
@@ -616,14 +386,24 @@ module ietf-tpm-remote-attestation {
         generated using the key associated with the 
         certificate-name.";
     } 
-    uses node-uptime;
-    uses compute-node-identifier;    
+    uses node-uptime;  
     list unsigned-pcr-values {
       description
-        "PCR values in each PCR bank. This often should not be 
-         necessary for TPM2, as the raw information needing 
-         signature and hash validation will be coming from 
-         the 'quote' leaf";  
+        "PCR values in each PCR bank. This might appear redundant with
+        the TPM2B_DIGEST, but that digest is calculated across multiple 
+        PCRs.  Having to verify across multiple PCRs does not 
+        necessarily make it easy for a Verifier to appraise just the 
+        minimum set of PCR information which has changed since the last 
+        received TPM2B_DIGEST.  Put another way, why should a Verifier 
+        reconstruct the proper value of all PCR Quotes when only a 
+        single PCR has changed?  
+
+        To help this happen, if the Attester does know specific PCR 
+        values, the Attester can provide these individual values via 
+        'unsigned-pcr-values'.   By comparing this information to the 
+        what has previously been validated, it is possible for a 
+        Verifier to confirm the Attester's signature while eliminating 
+        significant processing.";  
       uses TPM20-hash-algo;
       list pcr-values {
         key pcr-index;
@@ -888,16 +668,8 @@ module ietf-tpm-remote-attestation {
            TPM 1.2 structure definitions";
         uses tpm12-pcr-selection;
         uses nonce;
-        leaf add-version {
-          type boolean;
-          description
-            "Whether or not to include TPM_CAP_VERSION_INFO; if true,
-             then TPM_Quote2 must be used to create the response.";
-          reference
-            "TPM Main Part 2 TPM Structures v1.2 July 2007, 
-            Section 21.6";
-        }
         leaf-list certificate-name {
+          if-feature "tpm:TPMs";
           must "/tpm:rats-support-structures/tpm:tpms" +
                "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']" +
                "/tpm:certificates/" +
@@ -944,6 +716,7 @@ module ietf-tpm-remote-attestation {
         uses nonce;       
         uses tpm20-pcr-selection;
         leaf-list certificate-name {
+          if-feature "tpm:TPMs";
           must "/tpm:rats-support-structures/tpm:tpms" +
                "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']" +
                "/tpm:certificates/" +
@@ -1065,8 +838,7 @@ module ietf-tpm-remote-attestation {
        parties to discover the information necessary to use the
        remote attestation RPCs appropriately.";
     container compute-nodes {
-      presence
-        "Indicates that more than one TPM exists on a device.";
+      if-feature "tpm:TPMs";
       description
         "Holds the set device subsystems/components in this composite
          device that support TPM operations.";
@@ -1074,10 +846,25 @@ module ietf-tpm-remote-attestation {
         key node-id;
         config false;
         min-elements 2;
-        uses compute-node-identifier;
         description
-          "A components in this composite device that RATS which 
+          "A component in this composite device that 
           supports TPM operations."; 
+        leaf node-id {
+          type string;
+          description
+            "ID of the compute node, such as Board Serial Number.";
+        }
+        leaf node-physical-index {
+          if-feature ietfhw:entity-mib;
+          type int32 {
+            range "1..2147483647";
+          }
+          config false;
+          description
+           "The entPhysicalIndex for the compute node.";
+          reference
+           "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
+        }
         leaf node-name {
           type string;
           description
@@ -1126,7 +913,7 @@ module ietf-tpm-remote-attestation {
             reboots.";
         }
         leaf compute-node {
-          when "../../../compute-nodes";
+          if-feature "tpm:TPMs";
           type compute-node-ref;
           config false;
           mandatory true;
