@@ -78,7 +78,7 @@ normative:
   RFC6991: ietf-yang-types
   RFC8348: ietf-hardware
   I-D.ietf-netconf-keystore: ietf-keystore
-  I-D.ietf-rats-reference-interaction-model: rats-interaction-models
+  I-D.ietf-rats-reference-interaction-models: rats-interaction-models
   I-D.ietf-rats-architecture: rats-architecture
   I-D.ietf-rats-tpm-based-network-device-attest: RIV
 
