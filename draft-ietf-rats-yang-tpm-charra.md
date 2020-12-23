@@ -151,19 +151,73 @@ This module supports the following types of attestation event logs: \<ima\>, \<b
 
 #### RPCs
 
-\<tpm12-challenge-response-attestation\> - Allows a Verifier to request a quote of PCRs from a TPM1.2 compliant cryptoprocessor.  Where the feature \<TPMs\> is active, and one or more \<certificate-name\> is not provided, all TPM1.2 compliant cryptoprocessors will respond.  A YANG tree diagram of this RPC is as follows:
-
-~~~ TREE
-{::include tpm12-challenge-response-attestation.tree}
-~~~
-
-\<tpm20-challenge-response-attestation\> - Allows a Verifier to request a quote of PCRs from a TPM2.0 compliant cryptoprocessor.  Where the feature \<TPMs\> is active, and one or more \<certificate-name\> is not provided, all TPM2.0 compliant cryptoprocessors will respond.   A YANG tree diagram of this RPC is as follows:
+##### \<tpm20-challenge-response-attestation\>
+This RPC allows a Verifier to request a quote of PCRs from a TPM2.0 compliant cryptoprocessor.  Where the feature \<TPMs\> is active, and one or more \<certificate-name\> is not provided, all TPM2.0 compliant cryptoprocessors will respond.   A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
 {::include tpm20-challenge-response-attestation.tree}
 ~~~
 
-\<log-retrieval\> - Allows a Verifier to acquire the evidence which was extended into specific PCRs.   A YANG tree diagram of this RPC is as follows:
+An example of an RPC challenge requesting PCRs 0-7 from a SHA256 bank could look like the following:
+
+~~~
+<rpc message-id="101" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <tpm20-challenge-response-attestation>
+      xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
+    <nonce>110101010110011011111001010010100</nonce>
+    <tpm20-pcr-selection>
+      <TPM20-hash-algo 
+          xmlns="urn:ietf:params:xml:ns:yang:ietf-tcg-algs">
+        taa:TPM_ALG_SHA256
+      </TPM20-hash-algo>
+      <pcr-index>0</pcr-index>
+      <pcr-index>1</pcr-index>
+      <pcr-index>2</pcr-index>
+      <pcr-index>3</pcr-index>
+      <pcr-index>4</pcr-index>
+      <pcr-index>5</pcr-index>
+      <pcr-index>6</pcr-index>
+      <pcr-index>7</pcr-index>
+    </tpm20-pcr-selection>
+  </tpm20-challenge-response-attestation>
+</rpc>
+~~~
+
+and a successful response might be formated as follows:
+
+~~~
+<rpc-reply message-id="101"
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+  <tpm12-attestation-response
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
+    <certificate-name xmlns=urn:ietf:params:xml:ns:yang:ietf-keystore>
+       (instance of Certificate name in the Keystore)
+    </certificate-name>
+    <TPMS_QUOTE_INFO>
+       (raw information from the TPM Quote, this includes a digest 
+       across the requested PCRs, the nonce, TPM2 time counters.)
+    </TPMS_QUOTE_INFO>
+    <quote-signature>
+        (signature across TPMS_QUOTE_INFO)
+    </quote-signature>
+    <up-time>
+      10000
+    </up-time>
+  </tpm12-attestation-response>
+</rpc-reply>
+~~~
+
+#### \<tpm12-challenge-response-attestation\>
+
+This RPC allows a Verifier to request a quote of PCRs from a TPM1.2 compliant cryptoprocessor.  Where the feature \<TPMs\> is active, and one or more \<certificate-name\> is not provided, all TPM1.2 compliant cryptoprocessors will respond.  A YANG tree diagram of this RPC is as follows:
+
+~~~ TREE
+{::include tpm12-challenge-response-attestation.tree}
+~~~
+
+#### \<log-retrieval\>
+ 
+This RPC allows a Verifier to acquire the evidence which was extended into specific PCRs.   A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
 {::include log-retrieval.tree}
@@ -197,7 +251,7 @@ container \<compute-nodes\> - When there is more than one TPM supported, this co
 #### YANG Module
 {: #ietf-tpm-remote-attestation}
 ~~~ YANG
-<CODE BEGINS> file ietf-tpm-remote-attestation@2020-12-09.yang
+<CODE BEGINS> file ietf-tpm-remote-attestation@2020-12-17.yang
 {::include ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
