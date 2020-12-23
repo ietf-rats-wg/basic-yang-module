@@ -167,7 +167,7 @@ An example of an RPC challenge requesting PCRs 0-7 from a SHA256 bank could look
     <nonce>110101010110011011111001010010100</nonce>
     <tpm20-pcr-selection>
       <TPM20-hash-algo 
-          xmlns="urn:ietf:params:xml:ns:yang:ietf-tcg-algs">
+          xmlns:taa="urn:ietf:params:xml:ns:yang:ietf-tcg-algs">
         taa:TPM_ALG_SHA256
       </TPM20-hash-algo>
       <pcr-index>0</pcr-index>
@@ -190,8 +190,9 @@ and a successful response might be formated as follows:
   xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <tpm12-attestation-response
     xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
-    <certificate-name xmlns=urn:ietf:params:xml:ns:yang:ietf-keystore>
-       (instance of Certificate name in the Keystore)
+    <certificate-name 
+        xmlns:ks=urn:ietf:params:xml:ns:yang:ietf-keystore>
+       ks:(instance of Certificate name in the Keystore)
     </certificate-name>
     <TPMS_QUOTE_INFO>
        (raw information from the TPM Quote, this includes a digest 
@@ -200,9 +201,6 @@ and a successful response might be formated as follows:
     <quote-signature>
         (signature across TPMS_QUOTE_INFO)
     </quote-signature>
-    <up-time>
-      10000
-    </up-time>
   </tpm12-attestation-response>
 </rpc-reply>
 ~~~
