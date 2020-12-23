@@ -317,6 +317,10 @@ Not yet.
 
 #  Change Log
 
+Changes from version 04 to version 05:
+
+* YANG Doctor requested changes
+
 Changes from version 03 to version 04:
 
 * TPM1.2 Quote1 eliminated
