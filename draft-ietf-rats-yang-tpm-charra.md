@@ -202,7 +202,7 @@ To be defined yet.  But keeping up with changes to ietf-tcg-algs.yang will be ne
 
 #  Security Considerations
 
-The \<certificate-name\> provided in the YANG models needs to be trusted by the Verifier from a source independent of the Attester.  Specifically, the certificated must be known to be assigned to a specific router, and even known to be associated with a specific line card where the \<TPMs\> feature is active.   This is necessary as it is possible for an attacker with access to the router to provide false information within the \<ietf-keystore\> model of the Attester.
+The \<certificate-name\> provided in the YANG models needs to be trusted by the Verifier from a source independent of the Attester.  Specifically, the certificate must be known to be assigned to a specific router, and even known to be associated with a specific line card where the \<TPMs\> feature is active.   This is necessary as it is possible for an attacker with access to the router to provide false information within the \<ietf-keystore\> model of the Attester.
 
 The YANG module specified in this document defines a schema for data that is designed to be accessed via network management protocols such as NETCONF {{RFC6241}} or RESTCONF {{RFC8040}}.  The lowest NETCONF layer is the secure transport layer, and the mandatory-to-implement secure transport is Secure Shell (SSH) {{RFC6242}}.  The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement secure transport is TLS {{RFC5246}}.
 
