@@ -1,0 +1,20 @@
++--rw tpms
+   +--rw tpm* [tpm-name]
+      +--rw tpm-name                string
+      +--ro hardware-based?         boolean
+      +--ro tpm-physical-index?     int32 {ietfhw:entity-mib}?
+      +--ro tpm-path?               string
+      +--ro compute-node            compute-node-ref {tpm:TPMs}?
+      +--ro tpm-manufacturer?       string
+      +--rw tpm-firmware-version    identityref
+      +--rw TPM12-hash-algo?        identityref
+      +--rw TPM12-pcrs*             pcr
+      +--rw tpm20-pcr-bank* [TPM20-hash-algo]
+      |  +--rw TPM20-hash-algo    identityref
+      |  +--rw pcr-index*         tpm:pcr
+      +--ro tpm-status              enumeration
+      +--rw certificates
+         +--rw certificate* [certificate-name]
+            +--rw certificate-name            string
+            +--rw certificate-keystore-ref?   -> /ks:keystore/asymmetric-keys/asymmetric-key/certificates/certificate/name
+            +--rw certificate-type?           enumeration

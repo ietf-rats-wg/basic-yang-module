@@ -1,0 +1,53 @@
++---x log-retrieval
+   +---w input
+   |  +---w log-selector* []
+   |  |  +---w tpm-name*                  string
+   |  |  +---w (index-type)?
+   |  |  |  +--:(last-entry)
+   |  |  |  |  +---w last-entry-value?    binary
+   |  |  |  +--:(index)
+   |  |  |  |  +---w last-index-number?   uint64
+   |  |  |  +--:(timestamp)
+   |  |  |     +---w timestamp?           yang:date-and-time
+   |  |  +---w log-entry-quantity?        uint16
+   |  +---w log-type        identityref
+   +--ro output
+      +--ro system-event-logs
+         +--ro node-data* []
+            +--ro tpm-name?     string
+            +--ro up-time?      uint32
+            +--ro log-result
+               +--ro (attested_event_log_type)
+                  +--:(bios)
+                  |  +--ro bios-event-logs
+                  |     +--ro bios-event-entry* [event-number]
+                  |        +--ro event-number    uint32
+                  |        +--ro event-type?     uint32
+                  |        +--ro pcr-index?      pcr
+                  |        +--ro digest-list* []
+                  |        |  +--ro hash-algo?   identityref
+                  |        |  +--ro digest*      binary
+                  |        +--ro event-size?     uint32
+                  |        +--ro event-data*     uint8
+                  +--:(ima)
+                  |  +--ro ima-event-logs
+                  |     +--ro ima-event-entry* [event-number]
+                  |        +--ro event-number               uint64
+                  |        +--ro ima-template?              string
+                  |        +--ro filename-hint?             string
+                  |        +--ro filedata-hash?             binary
+                  |        +--ro filedata-hash-algorithm?   string
+                  |        +--ro template-hash-algorithm?   string
+                  |        +--ro template-hash?             binary
+                  |        +--ro pcr-index?                 pcr
+                  |        +--ro signature?                 binary
+                  +--:(netequip_boot)
+                     +--ro boot-event-logs
+                        +--ro boot-event-entry* [event-number]
+                           +--ro event-number               uint64
+                           +--ro filename-hint?             string
+                           +--ro filedata-hash?             binary
+                           +--ro filedata-hash-algorithm?   string
+                           +--ro file-version?              string
+                           +--ro file-type?                 string
+                           +--ro pcr-index?                 pcr

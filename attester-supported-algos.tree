@@ -1,0 +1,5 @@
++--rw attester-supported-algos
+   +--rw tpm12-asymmetric-signing*   identityref {taa:TPM12}?
+   +--rw tpm12-hash*                 identityref {taa:TPM12}?
+   +--rw tpm20-asymmetric-signing*   identityref {taa:TPM20}?
+   +--rw tpm20-hash*                 identityref {taa:TPM20}?

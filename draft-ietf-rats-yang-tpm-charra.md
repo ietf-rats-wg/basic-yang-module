@@ -131,7 +131,7 @@ One or more TPMs MUST be embedded in the composite device that is providing atte
 
 
 ### ietf-tpm-remote-attestation
-This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, {{-ietf-keystore}}, ietf-tcg-algs.yang {{ietf-tcg-algs}}.
+This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, {{-ietf-keystore}}, ietf-tcg-algs.yang {{ref-ietf-tcg-algs}}.
 
 #### Features
 
@@ -140,7 +140,7 @@ This module supports the following features:
 \<TPMs\> - Indicates that multiple TPMs on the device can support remote attestation,  This feature is applicable in cases where multiple line cards, each with its own TPM.
 
 \<bios\>  - Indicates the device supports the retrieval of bios event logs.
- 
+
 \<ima\> - Indicates the device supports the retrieval of Integrity Measurement Architecture event logs.
 
 \<netequip_boot\> - Indicates the device supports the retrieval of netequip boot event logs.
@@ -166,7 +166,7 @@ An example of an RPC challenge requesting PCRs 0-7 from a SHA256 bank could look
       xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
     <nonce>110101010110011011111001010010100</nonce>
     <tpm20-pcr-selection>
-      <TPM20-hash-algo 
+      <TPM20-hash-algo
           xmlns:taa="urn:ietf:params:xml:ns:yang:ietf-tcg-algs">
         taa:TPM_ALG_SHA256
       </TPM20-hash-algo>
@@ -190,12 +190,12 @@ and a successful response might be formated as follows:
   xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <tpm12-attestation-response
     xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
-    <certificate-name 
+    <certificate-name
         xmlns:ks=urn:ietf:params:xml:ns:yang:ietf-keystore>
        ks:(instance of Certificate name in the Keystore)
     </certificate-name>
     <TPMS_QUOTE_INFO>
-       (raw information from the TPM Quote, this includes a digest 
+       (raw information from the TPM Quote, this includes a digest
        across the requested PCRs, the nonce, TPM2 time counters.)
     </TPMS_QUOTE_INFO>
     <quote-signature>
@@ -214,7 +214,7 @@ This RPC allows a Verifier to request a quote of PCRs from a TPM1.2 compliant cr
 ~~~
 
 #### \<log-retrieval\>
- 
+
 This RPC allows a Verifier to acquire the evidence which was extended into specific PCRs.   A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
@@ -223,9 +223,9 @@ This RPC allows a Verifier to acquire the evidence which was extended into speci
 
 #### Data Nodes
 
-This section provides a high level description of the data nodes containing the configuration and operational objects with the YANG model. For more details, please see the YANG model itself in {{ietf-tpm-remote-attestation}}. 
+This section provides a high level description of the data nodes containing the configuration and operational objects with the YANG model. For more details, please see the YANG model itself in {{ref-ietf-tpm-remote-attestation}}.
 
-container \<rats-support-structures\> - This houses the set of information relating to a device's TPM(s).  
+container \<rats-support-structures\> - This houses the set of information relating to a device's TPM(s).
 
 container \<tpms\> - Provides configuration and operational details for each supported TPM, including the tpm-firmware-version, PCRs which may be quoted, certificates which are associated with that TPM, and the current operational status.  Of note is the certificates which are associated with that TPM.  As a certificate is associated with a single Attestation key, knowledge of the certificate allows a specific TPM to be identified.
 
@@ -247,14 +247,14 @@ container \<compute-nodes\> - When there is more than one TPM supported, this co
 
 
 #### YANG Module
-{: #ietf-tpm-remote-attestation}
+{: #ref-ietf-tpm-remote-attestation}
 ~~~ YANG
 <CODE BEGINS> file ietf-tpm-remote-attestation@2020-12-17.yang
 {::include ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
 
-###  ietf-tcg-algs
+### ietf-tcg-algs
 
 Cryptographic algorithm types were initially included within -v14 NETCONF's iana-crypto-types.yang.  Unfortunately all this content including the algorithms needed here failed to make the -v15 used WGLC.   As a result this document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32.  By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.
 
@@ -272,7 +272,7 @@ The second are API specifications for tpms: \<tpm12\> and \<tpm2\>.
 
 The third are specific algorithm types.   Each algorithm type defines what cryptographic functions may be supported, and on which type of API specification.  It is not required that an implementation of a specific TPM will support all algorithm types.  The contents of each specific algorithm mirrors what is in Table 3 of {{TCG-Algos}}.
 
-{: #ietf-tcg-algs}
+{: #ref-ietf-tcg-algs}
 #### YANG Module
 ~~~~ YANG
 <CODE BEGINS> ietf-tcg-algs@2020-09-18.yang

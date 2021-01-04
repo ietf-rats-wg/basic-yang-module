@@ -1,0 +1,19 @@
++---x tpm20-challenge-response-attestation {taa:TPM20}?
+   +---w input
+   |  +---w tpm20-attestation-challenge
+   |     +---w nonce-value            binary
+   |     +---w tpm20-pcr-selection* []
+   |     |  +---w TPM20-hash-algo?   identityref
+   |     |  +---w pcr-index*         tpm:pcr
+   |     +---w certificate-name*      certificate-name-ref {tpm:TPMs}?
+   +--ro output
+      +--ro tpm20-attestation-response* []
+         +--ro certificate-name       certificate-name-ref
+         +--ro TPMS_QUOTE_INFO        binary
+         +--ro quote-signature?       binary
+         +--ro up-time?               uint32
+         +--ro unsigned-pcr-values* []
+            +--ro TPM20-hash-algo?   identityref
+            +--ro pcr-values* [pcr-index]
+               +--ro pcr-index    pcr
+               +--ro pcr-value?   binary

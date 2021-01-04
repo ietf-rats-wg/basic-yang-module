@@ -1,0 +1,6 @@
++--rw compute-nodes {tpm:TPMs}?
+   +--ro compute-node* [node-id]
+      +--ro node-id                string
+      +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
+      +--ro node-name?             string
+      +--ro node-location?         string
