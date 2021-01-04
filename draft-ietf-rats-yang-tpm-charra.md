@@ -106,12 +106,12 @@ informative:
   RFC6241:
   RFC8040:
   RFC6242:
-  RFC5246:
+  RFC8446:
 
 
 --- abstract
 
-This document defines a YANG RPC and a minimal datastore required to retrieve attestation evidence about integrity measurements from a device following the operational context defined in {{-RIV}}. Complementary measurement logs are also provided by the YANG RPC originating from one or more roots of trust of measurement. The module defined requires at least one TPM 1.2 or TPM 2.0 and corresponding Trusted Software Stack included in the device components of the composite device the YANG server is running on.
+This document defines a YANG RPC and a minimal datastore required to retrieve attestation evidence about integrity measurements from a device following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPC originating from one or more roots of trust of measurement. The module defined requires at least one TPM 1.2 or TPM 2.0 and corresponding Trusted Software Stack included in the device components of the composite device the YANG server is running on.
 
 --- middle
 
@@ -131,7 +131,7 @@ One or more TPMs MUST be embedded in the composite device that is providing atte
 
 
 ### ietf-tpm-remote-attestation
-This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, {{-ietf-keystore}}, ietf-tcg-algs.yang.
+This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, {{-ietf-keystore}}, ietf-tcg-algs.yang {{ietf-tcg-algs}}.
 
 #### Features
 
@@ -272,6 +272,7 @@ The second are API specifications for tpms: \<tpm12\> and \<tpm2\>.
 
 The third are specific algorithm types.   Each algorithm type defines what cryptographic functions may be supported, and on which type of API specification.  It is not required that an implementation of a specific TPM will support all algorithm types.  The contents of each specific algorithm mirrors what is in Table 3 of {{TCG-Algos}}.
 
+{: #ietf-tcg-algs}
 #### YANG Module
 ~~~~ YANG
 <CODE BEGINS> ietf-tcg-algs@2020-09-18.yang
@@ -289,7 +290,7 @@ To be defined yet.  But keeping up with changes to ietf-tcg-algs.yang will be ne
 
 #  Security Considerations
 
-The YANG module specified in this document defines a schema for data that is designed to be accessed via network management protocols such as NETCONF {{RFC6241}} or RESTCONF {{RFC8040}}.  The lowest NETCONF layer is the secure transport layer, and the mandatory-to-implement secure transport is Secure Shell (SSH) {{RFC6242}}.  The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement secure transport is TLS {{RFC5246}}.
+The YANG module specified in this document defines a schema for data that is designed to be accessed via network management protocols such as NETCONF {{RFC6241}} or RESTCONF {{RFC8040}}.  The lowest NETCONF layer is the secure transport layer, and the mandatory-to-implement secure transport is Secure Shell (SSH) {{RFC6242}}.  The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement secure transport is TLS {{RFC8446}}.
 
 There are a number of data nodes defined in this YANG module that are writable/creatable/deletable (i.e., config true, which is the default).  These data nodes may be considered sensitive or vulnerable in some network environments.  Write operations (e.g., edit-config) to these data nodes without proper protection can have a negative effect on network operations.  These are the subtrees and data nodes and their sensitivity/vulnerability:
 
@@ -319,7 +320,7 @@ Not yet.
 
 Changes from version 04 to version 05:
 
-* YANG Doctor requested changes
+* YANG Dr comments covered
 
 Changes from version 03 to version 04:
 
