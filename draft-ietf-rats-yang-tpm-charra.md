@@ -111,7 +111,7 @@ informative:
 
 --- abstract
 
-This document defines a YANG RPC and a minimal datastore required to retrieve attestation evidence about integrity measurements from a device following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPC originating from one or more roots of trust of measurement. The module defined requires at least one TPM 1.2 or TPM 2.0 and corresponding Trusted Software Stack included in the device components of the composite device the YANG server is running on.
+This document defines a YANG RPC and a small number of configuration node required to retrieve attestation evidence about integrity measurements from a device following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPC originating from one or more roots of trust of measurement. The module defined requires at least one TPM 1.2 or TPM 2.0 and corresponding Trusted Software Stack included in the device components of the composite device the YANG server is running on.
 
 --- middle
 
