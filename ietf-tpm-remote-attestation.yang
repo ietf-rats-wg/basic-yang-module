@@ -45,18 +45,11 @@ module ietf-tpm-remote-attestation {
      BSD License set forth in Section 4.c of the IETF Trust's
      Legal Provisions Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
-     
-     Redistribution and use in source and binary forms, with or
-     without modification, is permitted pursuant to, and subject to
-     the license terms contained in, the Simplified BSD License set
-     forth in Section 4.c of the IETF Trust's Legal Provisions
-     Relating to IETF Documents
-     (https://trustee.ietf.org/license-info).
 
      This version of this YANG module is part of RFC XXXX
      (https://www.rfc-editor.org/info/rfcXXXX); see the RFC
-     itself for full legal notices.
-
+     itself for full legal notices."
+	 
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
      'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
      'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
@@ -64,7 +57,7 @@ module ietf-tpm-remote-attestation {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision "2020-12-15" {
+  revision "2021-03-16" {
     description
       "Initial version";
     reference
@@ -81,6 +74,27 @@ module ietf-tpm-remote-attestation {
       TPM based cryptoprocessors.";
   }
 
+  feature bios {
+    description
+      "The device supports the bios logs.";
+	reference
+       "https://trustedcomputinggroup.org/wp-content/uploads/
+       PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
+	   Section 9.4.5.2";	
+  }
+
+  feature ima {
+    description
+      "The device supports Integrity Measurement Architecture logs.";
+	reference
+	  "https://www.trustedcomputinggroup.org/wp-content/uploads/
+       TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3";
+  }
+  
+  feature netequip_boot {
+    description
+      "The device supports the netequip_boot logs.";
+  }
 
   /*****************/
   /*   Typedefs    */
@@ -146,65 +160,23 @@ module ietf-tpm-remote-attestation {
   /*****************/
   /*   Groupings   */
   /*****************/
-  
-  grouping TPM20-asymmetric-signing-algo {
-    description
-      "The signature scheme that is used to sign the TPM2 Quote 
-      information response.";
-    leaf TPM20-asymmetric-signing-algo {
-      must "/tpm:rats-support-structures/tpm:attester-supported-algos"
-         + "/tpm:tpm20-asymmetric-signing" {
-         error-message "Not a platform supported " + 
-                       "TPM20-asymmetric-signing-algo";
-      }
-      type identityref {
-        base taa:asymmetric;
-      }
-      description
-        "The signature scheme that is used to sign the TPM2.0
-         Quote information response. This must be one of those 
-         supported by a platform.";   
-    default taa:TPM_ALG_RSA; 
-    }
-  }
-
-  grouping TPM12-asymmetric-signing-algo {
-    description
-      "The signature scheme that is used to sign the TPM12 Quote 
-      information response.";
-    leaf TPM12-asymmetric-signing-algo {
-      must "/tpm:rats-support-structures/tpm:attester-supported-algos"
-         + "/tpm:tpm12-asymmetric-signing" {
-         error-message "Not a platform supported " + 
-                       "TPM12-asymmetric-signing-algo";
-      }   
-      type identityref {
-        base taa:asymmetric;
-      }
-      description
-        "The signature scheme that is used to sign the TPM1.2
-         Quote information response. This must be one of those 
-         supported by a platform.";   
-    default taa:TPM_ALG_RSA;          
-    }
-  }  
 
   grouping TPM20-hash-algo {
     description
       "The cryptographic algorithm used to hash the TPM2 PCRs.  This
       must be from the list of platform supported options.";
     leaf TPM20-hash-algo {
+      type identityref {
+        base taa:hash;
+      }
       must "/tpm:rats-support-structures/tpm:attester-supported-algos"
          + "/tpm:tpm20-hash" {
          error-message "Not a platform supported TPM20-hash-algo";
       }
-      type identityref {
-        base taa:hash;
-      }
+      default taa:TPM_ALG_SHA256;
       description
         "The hash scheme that is used to hash a TPM1.2 PCR. This 
-        must be one of those supported by a platform.";            
-    default taa:TPM_ALG_SHA256; 
+        must be one of those supported by a platform.";             
     }
   }
 
@@ -212,26 +184,26 @@ module ietf-tpm-remote-attestation {
     description
       "The cryptographic algorithm used to hash the TPM1.2 PCRs.";
     leaf TPM12-hash-algo {
+      type identityref {
+        base taa:hash;
+      }
       must "/tpm:rats-support-structures/tpm:attester-supported-algos"
          + "/tpm:tpm12-hash" {
          error-message "Not a platform supported TPM12-hash-algo";
       }
-      type identityref {
-        base taa:hash;
-      }
+      default taa:TPM_ALG_SHA1; 
       description
         "The hash scheme that is used to hash a TPM1.2 PCR. This 
-        must be one of those supported by a platform.  This assumes
+        MUST be one of those supported by a platform.  This assumes
         that an algorithm other than SHA1 can be supported on some
-        TPM1.2 cryptoprocessor variant."; 
-      default taa:TPM_ALG_SHA1;         
+        TPM1.2 cryptoprocessor variant.";         
     }
   } 
 
   grouping nonce {
     description
-      "A nonce to show freshness and to allow the detection
-      of replay attacks.";
+      "A random number intended to be used once to show freshness 
+	  and to allow the detection of replay attacks.";
     leaf nonce-value {
       type binary;
       mandatory true;
@@ -306,9 +278,9 @@ module ietf-tpm-remote-attestation {
       "Identifies a certificate in a keystore.";
     leaf certificate-name {
       type certificate-name-ref;
-        description
-          "Identifies a certificate in a keystore.";
       mandatory true;
+      description
+        "Identifies a certificate in a keystore.";
     }
   }
 
@@ -369,8 +341,8 @@ module ietf-tpm-remote-attestation {
       measurements.  It is supplemented by unsigned Attester 
       information.";
     leaf TPMS_QUOTE_INFO {
-      mandatory true;
       type binary;
+      mandatory true;
       description
         "A hash of the latest PCR values (and the hash algorithm used) 
         which have been returned from a Verifier for the selected PCRs 
@@ -385,6 +357,9 @@ module ietf-tpm-remote-attestation {
         "Quote signature returned by TPM Quote.  The signature was
         generated using the key associated with the 
         certificate-name.";
+      reference
+        "https://www.trustedcomputinggroup.org/wp-content/uploads/
+        TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 11.2.1"; 
     } 
     uses node-uptime;  
     list unsigned-pcr-values {
@@ -418,6 +393,9 @@ module ietf-tpm-remote-attestation {
           type binary;
           description
             "PCR value.";
+	      reference
+           "https://www.trustedcomputinggroup.org/wp-content/uploads/
+           TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
         }
       }
     }
@@ -470,7 +448,8 @@ module ietf-tpm-remote-attestation {
       leaf-list digest {
         type binary;
         description
-          "The hash of the event data";
+          "The hash of the event data using the algorithm of the 
+		  'hash-algo' against 'event data'.";
       }
     }
     leaf event-size {
@@ -501,6 +480,9 @@ module ietf-tpm-remote-attestation {
   grouping ima-event {
     description
       "Defines an hash log extend event for IMA measurements";
+	reference
+      "https://www.trustedcomputinggroup.org/wp-content/uploads/
+       TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3";
     leaf event-number {
       type uint64;
       description
@@ -621,6 +603,7 @@ module ietf-tpm-remote-attestation {
       description
         "Event log type determines the event logs content.";
       case bios {
+        if-feature "bios";
         description
           "BIOS/UEFI event logs";
         container bios-event-logs {
@@ -630,6 +613,7 @@ module ietf-tpm-remote-attestation {
         }
       }
       case ima {
+        if-feature "ima";
         description
           "IMA event logs.";
         container ima-event-logs {
@@ -639,6 +623,7 @@ module ietf-tpm-remote-attestation {
         }
       }
       case netequip_boot {
+        if-feature "netequip_boot";
         description
           "Network Equipment Boot event logs";
         container boot-event-logs {
@@ -670,13 +655,13 @@ module ietf-tpm-remote-attestation {
         uses nonce;
         leaf-list certificate-name {
           if-feature "tpm:TPMs";
+          type certificate-name-ref;
           must "/tpm:rats-support-structures/tpm:tpms" +
                "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']" +
                "/tpm:certificates/" +
                "/tpm:certificate[certificate-name-ref=current()]" {
             error-message "Not an available TPM1.2 AIK certificate."; 
           }  
-          type certificate-name-ref;
           description
             "When populated, the RPC will only get a Quote for the
             TPMs associated with these certificate(s).";
@@ -717,16 +702,16 @@ module ietf-tpm-remote-attestation {
         uses tpm20-pcr-selection;
         leaf-list certificate-name {
           if-feature "tpm:TPMs";
+          type certificate-name-ref;
           must "/tpm:rats-support-structures/tpm:tpms" +
                "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']" +
                "/tpm:certificates/" +
                "/tpm:certificate[certificate-name-ref=current()]" {
             error-message "Not an available TPM2.0 AIK certificate."; 
           } 
-          type certificate-name-ref;
-            description
-              "When populated, the RPC will only get a Quote for the
-              TPMs associated with the certificates.";
+          description
+            "When populated, the RPC will only get a Quote for the
+            TPMs associated with the certificates.";
         }
       }
     }
@@ -847,7 +832,7 @@ module ietf-tpm-remote-attestation {
         config false;
         min-elements 2;
         description
-          "A component in this composite device that 
+          "A component within this composite device which 
           supports TPM operations."; 
         leaf node-id {
           type string;
@@ -909,7 +894,7 @@ module ietf-tpm-remote-attestation {
           type string;
           config false;
           description
-            "Path to a unique TPM on a device.  This can change agross 
+            "Path to a unique TPM on a device.  This can change across 
             reboots.";
         }
         leaf compute-node {
@@ -918,8 +903,7 @@ module ietf-tpm-remote-attestation {
           config false;
           mandatory true;
           description
-            "When there is more that one TPM, this indicates for which 
-            compute node this TPM services.";
+            "Indicates the compute node measured by this TPM.";
         }
         leaf tpm-manufacturer {
           type string;
@@ -934,9 +918,8 @@ module ietf-tpm-remote-attestation {
           mandatory true;
           description
             "Identifies the cryptoprocessor API set supported.  This 
-            cannot be configured.  However it is referenced via XPATH
-            as part of configuration, so is shown as 'rw' 
-            to eliminate YANG warnings related NMDA.";
+			is automatically configured by the device and should not 
+			be changed.";   
         }
         uses TPM12-hash-algo {
           when "tpm-firmware-version = 'taa:tpm12'";
@@ -965,13 +948,13 @@ module ietf-tpm-remote-attestation {
             "https://www.trustedcomputinggroup.org/wp-content/uploads/
              TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
           leaf TPM20-hash-algo {
+            type identityref {
+              base taa:hash;
+            }
             must "/tpm:rats-support-structures"
                + "/tpm:attester-supported-algos"
                + "/tpm:tpm20-hash" {
               error-message "Not a platform supported TPM20-hash-algo";
-            }
-            type identityref {
-              base taa:hash;
             }
             description
               "The hash scheme actively being used to hash a 
@@ -1065,9 +1048,9 @@ module ietf-tpm-remote-attestation {
         "Identifies which TPM algorithms are available for use on an
         attesting platform.";
       leaf-list tpm12-asymmetric-signing {
-        if-feature "taa:TPM12";
         when "../../tpm:tpms" +
              "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']";
+        if-feature "taa:TPM12";
         type identityref {
           base taa:asymmetric;
         }
@@ -1075,9 +1058,9 @@ module ietf-tpm-remote-attestation {
           "Platform Supported TPM12 asymmetric algorithms.";  
       }
       leaf-list tpm12-hash {
-        if-feature "taa:TPM12";
         when "../../tpm:tpms" +
              "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']";
+        if-feature "taa:TPM12";
         type identityref {
           base taa:hash;
         }
@@ -1085,9 +1068,9 @@ module ietf-tpm-remote-attestation {
           "Platform supported TPM12 hash algorithms.";  
       }
       leaf-list tpm20-asymmetric-signing {
-        if-feature "taa:TPM20";
         when "../../tpm:tpms" +
              "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']";
+        if-feature "taa:TPM20";
         type identityref {
           base taa:asymmetric;
         }
@@ -1095,9 +1078,9 @@ module ietf-tpm-remote-attestation {
           "Platform Supported TPM20 asymmetric algorithms.";    
       }
       leaf-list tpm20-hash {
-        if-feature "taa:TPM20";
         when "../../tpm:tpms" +
              "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']";
+        if-feature "taa:TPM20";
         type identityref {
           base taa:hash;
         }
