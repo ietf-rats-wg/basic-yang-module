@@ -48,7 +48,14 @@ module ietf-tpm-remote-attestation {
 
      This version of this YANG module is part of RFC XXXX
      (https://www.rfc-editor.org/info/rfcXXXX); see the RFC
-     itself for full legal notices.";
+     itself for full legal notices."
+	 
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
+     'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
+     'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
+     are to be interpreted as described in BCP 14 (RFC 2119)
+     (RFC 8174) when, and only when, they appear in all
+     capitals, as shown here.";
 
   revision "2021-03-16" {
     description
@@ -187,7 +194,7 @@ module ietf-tpm-remote-attestation {
       default taa:TPM_ALG_SHA1; 
       description
         "The hash scheme that is used to hash a TPM1.2 PCR. This 
-        must be one of those supported by a platform.  This assumes
+        MUST be one of those supported by a platform.  This assumes
         that an algorithm other than SHA1 can be supported on some
         TPM1.2 cryptoprocessor variant.";         
     }
