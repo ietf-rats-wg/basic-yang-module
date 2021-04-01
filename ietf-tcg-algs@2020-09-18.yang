@@ -46,13 +46,13 @@ module ietf-tcg-algs {
   feature TPM12 {
     description
       "This feature indicates algorithm support for the TPM 1.2 API
-      as per TPM-main-1.2-Rev94-part-2, Section 4.8.";
+       as per TPM-main-1.2-Rev94-part-2, Section 4.8.";
   }
 
   feature TPM20 {
     description
       "This feature indicates algorithm support for the TPM 2.0 API 
-      as per TPM-Rev-2.0-Part-1-Architecture-01.38 Section 11.4.";
+       as per TPM-Rev-2.0-Part-1-Architecture-01.38 Section 11.4.";
   }
 
 
@@ -66,10 +66,10 @@ module ietf-tcg-algs {
   identity asymmetric {
     description
       "A TCG recognized asymmetric algorithm with a public and 
-      private key.";
+       private key.";
     reference
       "http://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
-      TCG_Algorithm_Registry_r1p32_pub Table 2";
+       TCG_Algorithm_Registry_r1p32_pub Table 2";
   }
 
   identity symmetric {
@@ -82,7 +82,7 @@ module ietf-tcg-algs {
   identity hash {
     description
       "A TCG recognized hash algorithm that compresses input data to 
-      a digest value or indicates a method that uses a hash.";
+       a digest value or indicates a method that uses a hash.";
     reference
       "TCG_Algorithm_Registry_r1p32_pub Table 2";
   }
@@ -134,7 +134,7 @@ module ietf-tcg-algs {
       "Supportable by a TPM1.2.";
     reference
       "TPM-Main-Part-2-TPM-Structures_v1.2_rev116_01032011.pdf
-      TPM_ALGORITHM_ID values, page 18";
+       TPM_ALGORITHM_ID values, page 18";
   }
   
   identity tpm20 {
@@ -144,7 +144,7 @@ module ietf-tcg-algs {
       "Supportable by a TPM2.";
     reference  
       "TPM-Rev-2.0-Part-2-Structures-01.38.pdf
-      The TCG Algorithm Registry. Table 9";
+       The TCG Algorithm Registry. Table 9";
   } 
   
   identity TPM_ALG_RSA {
@@ -155,10 +155,9 @@ module ietf-tcg-algs {
     base object_type;
     description
       "RSA algorithm";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and 
-      RFC 8017. ALG_ID: 0x0001";    
-
+       RFC 8017. ALG_ID: 0x0001";
   }
 
   identity TPM_ALG_TDES {
@@ -169,10 +168,9 @@ module ietf-tcg-algs {
       "Block cipher with various key sizes (Triple Data Encryption
        Algorithm, commonly called Triple Data Encryption Standard)
        Note: was banned in TPM1.2 v94";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and 
-      ISO/IEC 18033-3. ALG_ID: 0x0003";    
-
+       ISO/IEC 18033-3. ALG_ID: 0x0003";
   }
   
   identity TPM_ALG_SHA1 {
@@ -182,12 +180,11 @@ module ietf-tcg-algs {
     base tpm20;
     description
       "SHA1 algorithm - Deprecated due to insufficient cryptographic 
-      protection.  However it is still useful for hash algorithms 
-      where protection is not required.";
-    reference  
+       protection.  However it is still useful for hash algorithms 
+       where protection is not required.";
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 10118-3. ALG_ID: 0x0004";    
-
+       ISO/IEC 10118-3. ALG_ID: 0x0004";
   }
   
   identity TPM_ALG_HMAC  {
@@ -198,10 +195,9 @@ module ietf-tcg-algs {
     base signing;
     description
       "Hash Message Authentication Code (HMAC) algorithm";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3, 
-      ISO/IEC 9797-2 and RFC2014. ALG_ID: 0x0005";    
-
+       ISO/IEC 9797-2 and RFC2014. ALG_ID: 0x0005";
   }
       
   identity TPM_ALG_AES  {
@@ -210,10 +206,9 @@ module ietf-tcg-algs {
     base symmetric;
     description
       "The AES algorithm with various key sizes";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 18033-3. ALG_ID: 0x0006";    
-
+       ISO/IEC 18033-3. ALG_ID: 0x0006";
   }
 
   identity TPM_ALG_MGF1 {
@@ -223,11 +218,10 @@ module ietf-tcg-algs {
     base method;
     description
       "hash-based mask-generation function";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3,
-      IEEE Std 1363-2000 and IEEE Std 1363a -2004.
-      ALG_ID: 0x0007";    
-
+       IEEE Std 1363-2000 and IEEE Std 1363a -2004.
+       ALG_ID: 0x0007";
   }
   
   identity TPM_ALG_KEYEDHASH {
@@ -237,13 +231,12 @@ module ietf-tcg-algs {
     base object_type;   
     description
       "An encryption or signing algorithm using a keyed hash.  These 
-      may use XOR for encryption or an HMAC for signing and may
-      also refer to a data object that is neither signing nor 
-      encrypting.";
-    reference  
+       may use XOR for encryption or an HMAC for signing and may
+       also refer to a data object that is neither signing nor 
+       encrypting.";
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      TCG TPM 2.0 library specification. . ALG_ID: 0x0008";
-
+       TCG TPM 2.0 library specification. . ALG_ID: 0x0008";
     }
 
   identity TPM_ALG_XOR {
@@ -254,10 +247,9 @@ module ietf-tcg-algs {
     base symmetric;  
     description
       "The XOR encryption algorithm.";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      TCG TPM 2.0 library specification. ALG_ID: 0x000A";
-
+       TCG TPM 2.0 library specification. ALG_ID: 0x000A";
   }
 
   identity TPM_ALG_SHA256 {
@@ -266,10 +258,9 @@ module ietf-tcg-algs {
     base hash;
     description
       "The SHA 256 algorithm";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 10118-3. ALG_ID: 0x000B";    
-
+       ISO/IEC 10118-3. ALG_ID: 0x000B";
   }
 
   identity TPM_ALG_SHA384  {
@@ -278,10 +269,9 @@ module ietf-tcg-algs {
     base hash;
     description
       "The SHA 384 algorithm";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 10118-3. ALG_ID: 0x000C";
-
+       ISO/IEC 10118-3. ALG_ID: 0x000C";
   }
 
   identity TPM_ALG_SHA512  {
@@ -290,10 +280,9 @@ module ietf-tcg-algs {
     base hash;
     description
       "The SHA 512 algorithm";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 10118-3. ALG_ID: 0x000D";    
-
+       ISO/IEC 10118-3. ALG_ID: 0x000D";
   }
 
   identity TPM_ALG_NULL {
@@ -301,10 +290,9 @@ module ietf-tcg-algs {
     base tpm20;
     description
       "NULL algorithm";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      TCG TPM 2.0 library specification. ALG_ID: 0x0010";     
-
+       TCG TPM 2.0 library specification. ALG_ID: 0x0010";
   }
 
   identity TPM_ALG_SM3_256 {
@@ -313,10 +301,9 @@ module ietf-tcg-algs {
     base hash;
     description
       "The SM3 hash algorithm.";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      GM/T 0004-2012 - SM3_256. ALG_ID: 0x0012";    
-
+       GM/T 0004-2012 - SM3_256. ALG_ID: 0x0012";
   }
 
   identity TPM_ALG_SM4 {
@@ -325,10 +312,9 @@ module ietf-tcg-algs {
     base symmetric;
     description
       "SM4 symmetric block cipher";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      GB/T 32907-2016. ALG_ID: 0x0013";    
-
+       GB/T 32907-2016. ALG_ID: 0x0013";
   }
 
   identity TPM_ALG_RSASSA {
@@ -338,10 +324,9 @@ module ietf-tcg-algs {
     base signing;  
     description
       "Signature algorithm defined in section 8.2 (RSASSAPKCS1-v1_5)";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017.
-      ALG_ID: 0x0014";    
-
+       ALG_ID: 0x0014";
   }
 
   identity TPM_ALG_RSAES {
@@ -351,10 +336,9 @@ module ietf-tcg-algs {
     base encryption_mode;
     description
       "Signature algorithm defined in section 7.2 (RSAES-PKCS1-v1_5)";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017
-      ALG_ID: 0x0015";
-
+       ALG_ID: 0x0015";
   }
 
   identity TPM_ALG_RSAPSS {
@@ -364,10 +348,9 @@ module ietf-tcg-algs {
     base signing;
     description
       "Padding algorithm defined in section 8.1 (RSASSA PSS)";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017.
-      ALG_ID: 0x0016";   
-
+       ALG_ID: 0x0016";
   }
 
   identity TPM_ALG_OAEP {
@@ -377,10 +360,9 @@ module ietf-tcg-algs {
     base encryption_mode;
     description
       "Padding algorithm defined in section 7.1 (RSASSA OAEP)";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017.
-      ALG_ID: 0x0017";  
-
+       ALG_ID: 0x0017";
   }
 
   identity TPM_ALG_ECDSA {
@@ -390,10 +372,9 @@ module ietf-tcg-algs {
     base signing;
     description
       "Signature algorithm using elliptic curve cryptography (ECC)";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 14888-3. ALG_ID: 0x0018";    
-
+       ISO/IEC 14888-3. ALG_ID: 0x0018";
   }            
 
   identity TPM_ALG_ECDH {
@@ -403,10 +384,9 @@ module ietf-tcg-algs {
     base method;
     description
       "Secret sharing using ECC";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST SP800-56A and RFC 7748. ALG_ID: 0x0019";    
-
+       NIST SP800-56A and RFC 7748. ALG_ID: 0x0019";
   }
 
   identity TPM_ALG_ECDAA {
@@ -417,10 +397,9 @@ module ietf-tcg-algs {
     base anonymous_signing;
     description
       "Elliptic-curve based anonymous signing scheme";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      TCG TPM 2.0 library specification. ALG_ID: 0x001A";   
-
+       TCG TPM 2.0 library specification. ALG_ID: 0x001A";
   }
 
   identity TPM_ALG_SM2 {
@@ -431,14 +410,13 @@ module ietf-tcg-algs {
     base encryption_mode;
     base method;
     description
-      "SM2 – depending on context, either an elliptic-curve based,
-      signature algorithm, an encryption scheme, or a key exchange 
-      protocol";
+      "SM2 - depending on context, either an elliptic-curve based,
+       signature algorithm, an encryption scheme, or a key exchange 
+       protocol";
     reference  
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      A GM/T 0003.1–2012, GM/T 0003.2–2012, GM/T 0003.3–2012,
-      GM/T 0003.5–2012 SM2. ALG_ID: 0x001B";    
-
+       A GM/T 0003.1-2012, GM/T 0003.2-2012, GM/T 0003.3-2012,
+       GM/T 0003.5-2012 SM2. ALG_ID: 0x001B";
   }
 
   identity TPM_ALG_ECSCHNORR {
@@ -448,10 +426,9 @@ module ietf-tcg-algs {
     base signing;
     description
       "Elliptic-curve based Schnorr signature";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      TCG TPM 2.0 library specification. ALG_ID: 0x001C";       
-
+       TCG TPM 2.0 library specification. ALG_ID: 0x001C";
   }
 
   identity TPM_ALG_ECMQV {
@@ -461,10 +438,9 @@ module ietf-tcg-algs {
     base method;
     description
       "Two-phase elliptic-curve key";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST SP800-56A. ALG_ID: 0x001D";    
-
+       NIST SP800-56A. ALG_ID: 0x001D";
   }
 
   identity TPM_ALG_KDF1_SP800_56A {
@@ -474,11 +450,10 @@ module ietf-tcg-algs {
     base method;
     description
       "Concatenation key derivation function";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST SP800-56A  (approved alternative1) section 5.8.1.
-      ALG_ID: 0x0020";    
-
+       NIST SP800-56A  (approved alternative1) section 5.8.1.
+       ALG_ID: 0x0020";
   }
 
   identity TPM_ALG_KDF2  {
@@ -488,21 +463,19 @@ module ietf-tcg-algs {
     base method;
     description
       "Key derivation function";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      IEEE 1363a-2004 KDF2 section 13.2. ALG_ID: 0x0021";    
-
+       IEEE 1363a-2004 KDF2 section 13.2. ALG_ID: 0x0021";
   }
 
   identity TPM_ALG_KDF1_SP800_108 {
     base TPM_ALG_KDF2;
     description
       "A key derivation method";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST SP800-108 - Section 5.1 KDF. ALG_ID: 0x0022";    
-
-  }            
+       NIST SP800-108 - Section 5.1 KDF. ALG_ID: 0x0022";
+  }
 
   identity TPM_ALG_ECC {
     if-feature "TPM20";
@@ -513,8 +486,7 @@ module ietf-tcg-algs {
       "Prime field ECC";
     reference  
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 15946-1. ALG_ID: 0x0023";    
-
+       ISO/IEC 15946-1. ALG_ID: 0x0023";
   }
 
   identity TPM_ALG_SYMCIPHER {
@@ -522,11 +494,10 @@ module ietf-tcg-algs {
     base tpm20;
     description
       "Object type for a symmetric block cipher";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      TCG TPM 2.0 library specification. ALG_ID: 0x0025";          
-
-  }            
+       TCG TPM 2.0 library specification. ALG_ID: 0x0025";
+  }
 
   identity TPM_ALG_CAMELLIA {
     if-feature "TPM20";
@@ -534,10 +505,9 @@ module ietf-tcg-algs {
     base symmetric;
     description
       "The Camellia algorithm";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 18033-3. ALG_ID: 0x0026";    
-
+       ISO/IEC 18033-3. ALG_ID: 0x0026";
   }
 
   identity TPM_ALG_SHA3_256  {
@@ -546,10 +516,9 @@ module ietf-tcg-algs {
     base hash;
     description
       "ISO/IEC 10118-3 - the SHA 256 algorithm";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST PUB FIPS 202. ALG_ID: 0x0027";          
-
+       NIST PUB FIPS 202. ALG_ID: 0x0027";
   }
 
   identity TPM_ALG_SHA3_384 {
@@ -558,10 +527,9 @@ module ietf-tcg-algs {
     base hash;
     description
       "The SHA 384 algorithm";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST PUB FIPS 202. ALG_ID: 0x0028";   
-
+       NIST PUB FIPS 202. ALG_ID: 0x0028";
   }
 
   identity TPM_ALG_SHA3_512 {
@@ -570,10 +538,9 @@ module ietf-tcg-algs {
     base hash;
     description
       "The SHA 512 algorithm";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST PUB FIPS 202. ALG_ID: 0x0029";   
-
+       NIST PUB FIPS 202. ALG_ID: 0x0029";
   }
 
   identity TPM_ALG_CMAC {
@@ -583,10 +550,9 @@ module ietf-tcg-algs {
     base signing;
     description
       "block Cipher-based Message Authentication Code (CMAC)";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 9797-1:2011 Algorithm 5. ALG_ID: 0x003F";   
-
+       ISO/IEC 9797-1:2011 Algorithm 5. ALG_ID: 0x003F";
   }
 
   identity TPM_ALG_CTR {
@@ -596,10 +562,9 @@ module ietf-tcg-algs {
     base encryption_mode;
     description
       "Counter mode";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 10116. ALG_ID: 0x0040";    
-
+       ISO/IEC 10116. ALG_ID: 0x0040";
   }
 
   identity TPM_ALG_OFB {
@@ -608,10 +573,9 @@ module ietf-tcg-algs {
     base encryption_mode;
     description
       "Output Feedback mode";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 10116. ALG_ID: 0x0041";    
-
+       ISO/IEC 10116. ALG_ID: 0x0041";
   }
 
   identity TPM_ALG_CBC {
@@ -621,10 +585,9 @@ module ietf-tcg-algs {
     base encryption_mode;
     description
       "Cipher Block Chaining mode";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 10116. ALG_ID: 0x0042";    
-
+       ISO/IEC 10116. ALG_ID: 0x0042";
   }
 
   identity TPM_ALG_CFB {
@@ -634,10 +597,9 @@ module ietf-tcg-algs {
     base encryption_mode;
     description
       "Cipher Feedback mode";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 10116. ALG_ID: 0x0043";    
-
+       ISO/IEC 10116. ALG_ID: 0x0043";
   }
 
   identity TPM_ALG_ECB  {
@@ -647,10 +609,9 @@ module ietf-tcg-algs {
     base encryption_mode;
     description
       "Electronic Codebook mode";
-    reference  
+    reference 
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      ISO/IEC 10116. ALG_ID: 0x0044";    
-
+       ISO/IEC 10116. ALG_ID: 0x0044";
   }
 
   identity TPM_ALG_CCM  {
@@ -662,10 +623,9 @@ module ietf-tcg-algs {
     description
       "Counter with Cipher Block Chaining-Message Authentication 
       Code (CCM)";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST SP800-38C. ALG_ID: 0x0050";    
-
+       NIST SP800-38C. ALG_ID: 0x0050";
   }
 
   identity TPM_ALG_GCM {
@@ -676,10 +636,9 @@ module ietf-tcg-algs {
     base encryption_mode;
     description
       "Galois/Counter Mode (GCM)";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST SP800-38D. ALG_ID: 0x0051";    
-
+       NIST SP800-38D. ALG_ID: 0x0051";
   }
   
   identity TPM_ALG_KW {
@@ -690,10 +649,9 @@ module ietf-tcg-algs {
     base encryption_mode;
     description
       "AES Key Wrap (KW)";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST SP800-38F. ALG_ID: 0x0052";    
-
+       NIST SP800-38F. ALG_ID: 0x0052";
   }
   
   identity TPM_ALG_KWP {
@@ -704,10 +662,9 @@ module ietf-tcg-algs {
     base encryption_mode;
     description
       "AES Key Wrap with Padding (KWP)";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST SP800-38F. ALG_ID: 0x0053";    
-
+       NIST SP800-38F. ALG_ID: 0x0053";
   }
   
   identity TPM_ALG_EAX  {
@@ -718,10 +675,9 @@ module ietf-tcg-algs {
     base encryption_mode;
     description
       "Authenticated-Encryption Mode";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      NIST SP800-38F. ALG_ID: 0x0054";    
-
+       NIST SP800-38F. ALG_ID: 0x0054";
   }
    
   identity TPM_ALG_EDDSA {
@@ -731,10 +687,8 @@ module ietf-tcg-algs {
     base signing;
     description
       "Edwards-curve Digital Signature Algorithm (PureEdDSA)";
-    reference  
+    reference
       "TCG_Algorithm_Registry_r1p32_pub Table 3 and
-      RFC 8032. ALG_ID: 0x0060";    
-
+       RFC 8032. ALG_ID: 0x0060";
   }
-
 }
