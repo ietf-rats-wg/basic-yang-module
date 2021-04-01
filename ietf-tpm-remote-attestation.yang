@@ -49,7 +49,7 @@ module ietf-tpm-remote-attestation {
      This version of this YANG module is part of RFC XXXX
      (https://www.rfc-editor.org/info/rfcXXXX); see the RFC
      itself for full legal notices."
-	 
+
      The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
      'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
      'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
@@ -77,17 +77,17 @@ module ietf-tpm-remote-attestation {
   feature bios {
     description
       "The device supports the bios logs.";
-	reference
-       "https://trustedcomputinggroup.org/wp-content/uploads/
+    reference
+      "https://trustedcomputinggroup.org/wp-content/uploads/
        PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
-	   Section 9.4.5.2";	
+       Section 9.4.5.2";
   }
 
   feature ima {
     description
       "The device supports Integrity Measurement Architecture logs.";
-	reference
-	  "https://www.trustedcomputinggroup.org/wp-content/uploads/
+    reference
+      "https://www.trustedcomputinggroup.org/wp-content/uploads/
        TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3";
   }
   
@@ -115,8 +115,8 @@ module ietf-tpm-remote-attestation {
     }
     description
       "This type is used to reference a hardware node.  It is quite 
-      possible this leafref will eventually point to another YANG 
-      module's node.";
+       possible this leafref will eventually point to another YANG 
+       module's node.";
   }
 
   typedef certificate-name-ref {
@@ -136,7 +136,7 @@ module ietf-tpm-remote-attestation {
   identity attested_event_log_type {
     description
       "Base identity allowing categorization of the reasons why and
-      attested measurement has been taken on an Attester.";
+       attested measurement has been taken on an Attester.";
   }
 
   identity ima {
@@ -164,7 +164,7 @@ module ietf-tpm-remote-attestation {
   grouping TPM20-hash-algo {
     description
       "The cryptographic algorithm used to hash the TPM2 PCRs.  This
-      must be from the list of platform supported options.";
+       must be from the list of platform supported options.";
     leaf TPM20-hash-algo {
       type identityref {
         base taa:hash;
@@ -176,7 +176,7 @@ module ietf-tpm-remote-attestation {
       default taa:TPM_ALG_SHA256;
       description
         "The hash scheme that is used to hash a TPM1.2 PCR. This 
-        must be one of those supported by a platform.";             
+         must be one of those supported by a platform.";             
     }
   }
 
@@ -194,16 +194,16 @@ module ietf-tpm-remote-attestation {
       default taa:TPM_ALG_SHA1; 
       description
         "The hash scheme that is used to hash a TPM1.2 PCR. This 
-        MUST be one of those supported by a platform.  This assumes
-        that an algorithm other than SHA1 can be supported on some
-        TPM1.2 cryptoprocessor variant.";         
+         MUST be one of those supported by a platform.  This assumes
+         that an algorithm other than SHA1 can be supported on some
+         TPM1.2 cryptoprocessor variant.";         
     }
   } 
 
   grouping nonce {
     description
       "A random number intended to be used once to show freshness 
-	  and to allow the detection of replay attacks.";
+       and to allow the detection of replay attacks.";
     leaf nonce-value {
       type binary;
       mandatory true;
@@ -237,7 +237,7 @@ module ietf-tpm-remote-attestation {
       type pcr;
       description
         "The numbers/indexes of the PCRs. At the moment this is limited
-        to 32.";
+         to 32.";
     }
   }
 
@@ -251,7 +251,7 @@ module ietf-tpm-remote-attestation {
       unique "TPM20-hash-algo";
       description
         "Specifies the list of PCRs and Hash Algorithms that can be   
-        returned within a TPM2B_DIGEST.";
+         returned within a TPM2B_DIGEST.";
       reference
         "https://www.trustedcomputinggroup.org/wp-content/uploads/
          TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
@@ -268,7 +268,7 @@ module ietf-tpm-remote-attestation {
         type tpm:pcr;
         description
           "The numbers of the PCRs that which are being tracked
-          with a hash based on the TPM20-hash-algo.";
+           with a hash based on the TPM20-hash-algo.";
       }
     }
   }
@@ -302,9 +302,9 @@ module ietf-tpm-remote-attestation {
       config false;
       description
         "Name of one or more unique TPMs on a device.  If this object 
-        exists, a selection should pull only the objects related to 
-        these TPM(s).  If it does not exist, all qualifying TPMs that 
-        are 'hardware-based' equals true on the device are selected.";
+         exists, a selection should pull only the objects related to 
+         these TPM(s).  If it does not exist, all qualifying TPMs that 
+         are 'hardware-based' equals true on the device are selected.";
     }
   }
 
@@ -321,15 +321,15 @@ module ietf-tpm-remote-attestation {
   grouping tpm12-attestation {
     description
       "Contains an instance of TPM1.2 style signed cryptoprocessor 
-      measurements.  It is supplemented by unsigned Attester 
-      information.";
+       measurements.  It is supplemented by unsigned Attester 
+       information.";
     uses node-uptime;
     leaf TPM_QUOTE2 {
       type binary;
       description
         "Result of a TPM1.2 Quote2 operation. This includes PCRs,
-        signatures, locality, the provided nonce and other data which 
-        can be further parsed to appraise the Attester.";
+         signatures, locality, the provided nonce and other data which 
+         can be further parsed to appraise the Attester.";
       reference
         "TPM1.2 commands rev116 July 2007, Section 16.5";  
     }
@@ -338,47 +338,47 @@ module ietf-tpm-remote-attestation {
   grouping tpm20-attestation {
     description
       "Contains an instance of TPM2 style signed cryptoprocessor 
-      measurements.  It is supplemented by unsigned Attester 
-      information.";
+       measurements.  It is supplemented by unsigned Attester 
+       information.";
     leaf TPMS_QUOTE_INFO {
       type binary;
       mandatory true;
       description
         "A hash of the latest PCR values (and the hash algorithm used) 
-        which have been returned from a Verifier for the selected PCRs 
-        and Hash Algorithms.";
+         which have been returned from a Verifier for the selected PCRs 
+         and Hash Algorithms.";
       reference
         "https://www.trustedcomputinggroup.org/wp-content/uploads/
-        TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.12.1";        
+         TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.12.1";        
     }
     leaf quote-signature {
       type binary;
       description
         "Quote signature returned by TPM Quote.  The signature was
-        generated using the key associated with the 
-        certificate-name.";
+         generated using the key associated with the 
+         certificate-name.";
       reference
         "https://www.trustedcomputinggroup.org/wp-content/uploads/
-        TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 11.2.1"; 
+         TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 11.2.1"; 
     } 
     uses node-uptime;  
     list unsigned-pcr-values {
       description
         "PCR values in each PCR bank. This might appear redundant with
-        the TPM2B_DIGEST, but that digest is calculated across multiple 
-        PCRs.  Having to verify across multiple PCRs does not 
-        necessarily make it easy for a Verifier to appraise just the 
-        minimum set of PCR information which has changed since the last 
-        received TPM2B_DIGEST.  Put another way, why should a Verifier 
-        reconstruct the proper value of all PCR Quotes when only a 
-        single PCR has changed?  
+         the TPM2B_DIGEST, but that digest is calculated across multiple 
+         PCRs.  Having to verify across multiple PCRs does not 
+         necessarily make it easy for a Verifier to appraise just the 
+         minimum set of PCR information which has changed since the last 
+         received TPM2B_DIGEST.  Put another way, why should a Verifier 
+         reconstruct the proper value of all PCR Quotes when only a 
+         single PCR has changed?  
 
-        To help this happen, if the Attester does know specific PCR 
-        values, the Attester can provide these individual values via 
-        'unsigned-pcr-values'.   By comparing this information to the 
-        what has previously been validated, it is possible for a 
-        Verifier to confirm the Attester's signature while eliminating 
-        significant processing.";  
+         To help this happen, if the Attester does know specific PCR 
+         values, the Attester can provide these individual values via 
+         'unsigned-pcr-values'.   By comparing this information to the 
+         what has previously been validated, it is possible for a 
+         Verifier to confirm the Attester's signature while eliminating 
+         significant processing.";  
       uses TPM20-hash-algo;
       list pcr-values {
         key pcr-index;
@@ -393,9 +393,9 @@ module ietf-tpm-remote-attestation {
           type binary;
           description
             "PCR value.";
-	      reference
+          reference
            "https://www.trustedcomputinggroup.org/wp-content/uploads/
-           TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
+            TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
         }
       }
     }
@@ -418,7 +418,7 @@ module ietf-tpm-remote-attestation {
   grouping boot-event-log {
     description
       "Defines an event log corresponding to the event that extended 
-      the PCR";
+       the PCR";
     leaf event-number {
       type uint32;
       description
@@ -443,13 +443,13 @@ module ietf-tpm-remote-attestation {
         }
         description
           "The hash scheme that is used to compress the event data in 
-          each of the leaf-list digest items.";    
+           each of the leaf-list digest items.";    
       }   
       leaf-list digest {
         type binary;
         description
-          "The hash of the event data using the algorithm of the 
-		  'hash-algo' against 'event data'.";
+          "The hash of the event data using the algorithm of the
+           'hash-algo' against 'event data'.";
       }
     }
     leaf event-size {
@@ -480,7 +480,7 @@ module ietf-tpm-remote-attestation {
   grouping ima-event {
     description
       "Defines an hash log extend event for IMA measurements";
-	reference
+    reference
       "https://www.trustedcomputinggroup.org/wp-content/uploads/
        TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3";
     leaf event-number {
@@ -833,7 +833,7 @@ module ietf-tpm-remote-attestation {
         min-elements 2;
         description
           "A component within this composite device which 
-          supports TPM operations."; 
+           supports TPM operations."; 
         leaf node-id {
           type string;
           description
@@ -846,9 +846,9 @@ module ietf-tpm-remote-attestation {
           }
           config false;
           description
-           "The entPhysicalIndex for the compute node.";
+            "The entPhysicalIndex for the compute node.";
           reference
-           "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
+            "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
         }
         leaf node-name {
           type string;
@@ -870,14 +870,14 @@ module ietf-tpm-remote-attestation {
         unique "tpm-path";
           description
            "A list of TPMs in this composite device that RATS
-           can be conducted with.";   
+            can be conducted with.";   
         uses tpm-name;
         leaf hardware-based {
           type boolean;
           config false;
           description
             "Answers the question: is this TPM is a hardware based 
-            TPM?";
+             TPM?";
         }
         leaf tpm-physical-index {
           if-feature ietfhw:entity-mib;
@@ -895,7 +895,7 @@ module ietf-tpm-remote-attestation {
           config false;
           description
             "Path to a unique TPM on a device.  This can change across 
-            reboots.";
+             reboots.";
         }
         leaf compute-node {
           if-feature "tpm:TPMs";
@@ -917,16 +917,16 @@ module ietf-tpm-remote-attestation {
           }       
           mandatory true;
           description
-            "Identifies the cryptoprocessor API set supported.  This 
-			is automatically configured by the device and should not 
-			be changed.";   
+            "Identifies the cryptoprocessor API set supported.  This
+             is automatically configured by the device and should not 
+             be changed.";   
         }
         uses TPM12-hash-algo {
           when "tpm-firmware-version = 'taa:tpm12'";
           refine TPM12-hash-algo {
             description
               "The hash algorithm overwrites the default used for PCRs 
-              on this TPM1.2 compliant cryptoprocessor.";
+               on this TPM1.2 compliant cryptoprocessor.";
           }
         } 
         leaf-list TPM12-pcrs {
@@ -934,16 +934,16 @@ module ietf-tpm-remote-attestation {
           type pcr;
           description
             "The PCRs which may be extracted from this TPM1.2 
-            compliant cryptoprocessor.";
+             compliant cryptoprocessor.";
         }           
         list tpm20-pcr-bank {
           when "../tpm-firmware-version = 'taa:tpm20'";
           key "TPM20-hash-algo";
           description
             "Specifies the list of PCRs that may be extracted for
-            a specific Hash Algorithm on this TPM2 compliant 
-            cryptoprocessor.  A bank is a set of PCRs which are 
-            extended using a particular hash algorithm.";
+             a specific Hash Algorithm on this TPM2 compliant 
+             cryptoprocessor.  A bank is a set of PCRs which are 
+             extended using a particular hash algorithm.";
           reference
             "https://www.trustedcomputinggroup.org/wp-content/uploads/
              TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
@@ -958,7 +958,7 @@ module ietf-tpm-remote-attestation {
             }
             description
               "The hash scheme actively being used to hash a 
-              one or more TPM2.0 PCRs.";
+               one or more TPM2.0 PCRs.";
           }    
           leaf-list pcr-index {
             type tpm:pcr;
@@ -972,16 +972,16 @@ module ietf-tpm-remote-attestation {
               value 0;
               description
                 "The TPM currently is currently running normally and
-                is ready to accept and process TPM quotes.";
+                 is ready to accept and process TPM quotes.";
               reference
                 "TPM-Rev-2.0-Part-1-Architecture-01.07-2014-03-13.pdf
-                Section 12";
+                 Section 12";
             }
             enum non-operational {
               value 1;
               description
                 "TPM is in a state such as startup or shutdown which 
-                precludes the processing of TPM quotes.";
+                 precludes the processing of TPM quotes.";
             }
           }
           config false;
@@ -1046,7 +1046,7 @@ module ietf-tpm-remote-attestation {
     container attester-supported-algos {
       description
         "Identifies which TPM algorithms are available for use on an
-        attesting platform.";
+         attesting platform.";
       leaf-list tpm12-asymmetric-signing {
         when "../../tpm:tpms" +
              "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']";
