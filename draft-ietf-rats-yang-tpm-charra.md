@@ -249,7 +249,7 @@ container \<compute-nodes\> - When there is more than one TPM supported, this co
 #### YANG Module
 {: #ref-ietf-tpm-remote-attestation}
 ~~~ YANG
-<CODE BEGINS> file ietf-tpm-remote-attestation@2020-12-17.yang
+<CODE BEGINS> file "ietf-tpm-remote-attestation@2021-03-16.yang"
 {::include ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
@@ -275,7 +275,7 @@ The third are specific algorithm types.   Each algorithm type defines what crypt
 {: #ref-ietf-tcg-algs}
 #### YANG Module
 ~~~~ YANG
-<CODE BEGINS> ietf-tcg-algs@2020-09-18.yang
+<CODE BEGINS> file "ietf-tcg-algs@2020-09-18.yang"
 {::include ietf-tcg-algs@2020-09-18.yang}
 <CODE ENDS>
 ~~~~
