@@ -1,0 +1,1735 @@
+{
+  "magic": "E!vIA5L86J2I",
+  "timestamp": "2021-04-20T08:10:38.943346+00:00",
+  "repo": "ietf-rats-wg/basic-yang-module",
+  "labels": [
+    {
+      "name": "bug",
+      "description": "Something isn't working",
+      "color": "d73a4a"
+    },
+    {
+      "name": "documentation",
+      "description": "Improvements or additions to documentation",
+      "color": "0075ca"
+    },
+    {
+      "name": "duplicate",
+      "description": "This issue or pull request already exists",
+      "color": "cfd3d7"
+    },
+    {
+      "name": "enhancement",
+      "description": "New feature or request",
+      "color": "a2eeef"
+    },
+    {
+      "name": "good first issue",
+      "description": "Good for newcomers",
+      "color": "7057ff"
+    },
+    {
+      "name": "help wanted",
+      "description": "Extra attention is needed",
+      "color": "008672"
+    },
+    {
+      "name": "invalid",
+      "description": "This doesn't seem right",
+      "color": "e4e669"
+    },
+    {
+      "name": "question",
+      "description": "Further information is requested",
+      "color": "d876e3"
+    },
+    {
+      "name": "wontfix",
+      "description": "This will not be worked on",
+      "color": "ffffff"
+    }
+  ],
+  "issues": [
+    {
+      "number": 1,
+      "id": "MDU6SXNzdWU1NTAwMTA3Nzc=",
+      "title": "A minor mistake of duplicate description",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/issues/1",
+      "state": "CLOSED",
+      "author": "William-PanWei",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "The description of COSE_Algorithm-value\r\nhttps://github.com/ietf-rats-wg/basic-yang-module/blob/da656b35802d86fcf2caad972b23de5c9cf59986/ietf-tpm-remote-attestation.yang#L247\r\nis the same as that of TPM_ALG_ID-value.\r\nhttps://github.com/ietf-rats-wg/basic-yang-module/blob/da656b35802d86fcf2caad972b23de5c9cf59986/ietf-tpm-remote-attestation.yang#L236",
+      "createdAt": "2020-01-15T07:22:38Z",
+      "updatedAt": "2020-03-09T11:48:37Z",
+      "closedAt": "2020-03-09T11:48:37Z",
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks! Fixed in commit https://github.com/ietf-rats-wg/basic-yang-module/commit/b0c9e94f32f7304cc8cb1565e00aabba754e7d70.",
+          "createdAt": "2020-03-09T11:48:37Z",
+          "updatedAt": "2020-03-09T11:48:37Z"
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "id": "MDU6SXNzdWU1NzYzMzYzNjg=",
+      "title": "Please ensure that the merge result in the old repo is reflected here.",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/issues/3",
+      "state": "CLOSED",
+      "author": "henkbirkholz",
+      "authorAssociation": "COLLABORATOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Please confirm that all changes made in https://github.com/ietf-rats/draft-birkholz-rats-basic-yang-module/pull/17 are reflected here.",
+      "createdAt": "2020-03-05T15:28:48Z",
+      "updatedAt": "2020-03-09T11:49:18Z",
+      "closedAt": "2020-03-09T11:49:17Z",
+      "comments": [
+        {
+          "author": "haknmcaobin",
+          "authorAssociation": "NONE",
+          "body": "Thanks Henk :)",
+          "createdAt": "2020-03-06T03:10:00Z",
+          "updatedAt": "2020-03-06T03:10:00Z"
+        },
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "body": "Thanks! Fixed in PR #4.",
+          "createdAt": "2020-03-09T11:49:17Z",
+          "updatedAt": "2020-03-09T11:49:17Z"
+        }
+      ]
+    },
+    {
+      "number": 6,
+      "id": "MDU6SXNzdWU2MzEwOTIxMTY=",
+      "title": "Multiple issues",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/issues/6",
+      "state": "CLOSED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "There are several issues with the current YANG model.  I am grouping them as one as I have a single YANG model pull request to cover all of these.  \r\n\r\nThe issues I believe need to be addressed include:\r\n\r\n(1) PCR numbers should be their own type, not a UINT8.  PCRs should be limited to [0..31]\r\n\r\n(2) We should use ENUMs instead of strings for TCG and IETF crypto algorithm types.  Strings allow lots of errors to be introduced which we can protect using a larger, more detailed ENUM construct.\r\n\r\n(3) Most devices do not have multiple line cards.  Because of that, we should not have nested keys of [node id] [tpm name].  This adds unnecessary complexity for the vast majority of users.  Instead the tpm should have a mandatory leafref back to node-id when compute-nodes is not null.\r\n\r\n(4) The YANG doctors will not let us have a TPM-Name of \"ALL\".  Instead of \"ALL\" we should be able to assume that an RPC means all hardware based TPMs if a specific TPM is not named in the RPC.   Note that this means that we *should not* use TPM-name as a KEY in any RPC. \r\n\r\n(5) We should add leaf for a unique TPM-Path.  It might be claimed this is irrelevant with the existing key structure, but\r\n- likely the YANG model itself will learn the TPM this way after boot.\r\n- You could add/remove/migrate new virtual TPMs, more easily only re-allocating an *existing* path when the new vTPM is activated.\r\n\r\n(6) We should have optional YANG features for TPM1.2 and TPM2.0 so that RPCs are not exposed when there are no such TPMs of that type are supported.\r\n\r\n(7) We should great new grouping for the log algorithm types.  These groupings can be reused for a Telemetry/Subscription feed of individual log entries.  Other log types like those proposed for \"netequip boot\" by Bin Cao can then be merged.\r\n",
+      "createdAt": "2020-06-04T19:31:59Z",
+      "updatedAt": "2021-01-04T15:21:09Z",
+      "closedAt": "2021-01-04T15:21:09Z",
+      "comments": [
+        {
+          "author": "ericvoit",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I placed this as a separate issue from the Pull Request as *almost* all issues are addressed in the pull request.   For (2), I only added some of the relevant ENUMs.  Others will be added should people agree with the direction of the pull request.",
+          "createdAt": "2020-06-04T21:09:47Z",
+          "updatedAt": "2020-06-04T21:09:47Z"
+        },
+        {
+          "author": "ericvoit",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Based on some feedback, made the following changes:\r\n(8) Removed 'TPM-path' as a unique identifier for RPCs.   Instead 'certificate-name' is used.  This allows for a cleaner certificate migration path, and won't have issues with reboots.\r\n\r\n(9) Extracted into a group TPM2_ALG_ID",
+          "createdAt": "2020-06-09T20:16:08Z",
+          "updatedAt": "2020-06-09T20:16:08Z"
+        },
+        {
+          "author": "ericvoit",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Other issues included in latest proposal:\r\n\r\n(10) Separate out crypto-algorithm types into a separate draft\r\n\r\n(11) Not much reason in building choices for IETF algorithm types when the TPMs need to follow TCG types.\r\n\r\n(12) Leafrefs for certificate datastores should simplify the storage of this information should people not want to create separate structures.",
+          "createdAt": "2020-06-17T20:49:20Z",
+          "updatedAt": "2020-06-17T20:49:20Z"
+        },
+        {
+          "author": "ericvoit",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "We should separate 10 into its own issue.  The current model doesn't break it out into its own draft.   Let's publish the next charra version as including both within this draft.  Doing so will allow us to ask the WG the question at the next IETF.",
+          "createdAt": "2020-09-29T17:23:55Z",
+          "updatedAt": "2020-09-29T17:23:55Z"
+        },
+        {
+          "author": "William-PanWei",
+          "authorAssociation": "NONE",
+          "body": "Because these TCG-defined algorithm types are only used by CHARRA now, so I think this strong relationship makes it OK that leaving the crypto-algorithm types in CHARRA.",
+          "createdAt": "2020-09-30T02:14:10Z",
+          "updatedAt": "2020-09-30T02:14:10Z"
+        },
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "body": "Especially for the upcoming review phase this is fine. Long term, we have to understand how maintenance of the alg document will work. When the TCG registry changes, only the alg module in this doc has to be updated. Do we have to update the whole doc? Do we split out only the alg module? Maybe that is a reason to split it out now. I am not sure that we know today (at least I don't) and we should find out. Let's drive a thorough review cycle before the upcoming meeting and then bring this topic up in a discussion at the virtual meeting itself.",
+          "createdAt": "2020-09-30T09:13:00Z",
+          "updatedAt": "2020-09-30T09:13:00Z"
+        }
+      ]
+    },
+    {
+      "number": 10,
+      "id": "MDU6SXNzdWU2NzcyNDcyMDI=",
+      "title": "TCG algorithms in YANG model",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/issues/10",
+      "state": "CLOSED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "During the charra presentation at IETF 108, we said we were going to ask the following question to the list: \"Should the algorithm set defined in YANG be reduced to just those asymmetric algorithms currently exposed in the current TPM 1.2 and 2 specifications?\"\r\n\r\nThis is reflected seen in https://www.ietf.org/proceedings/108/slides/slides-108-rats-sessb-charra-update-00, Slide 7.\r\n\r\nThe proposal I would like to make is as follows:\r\n\r\nThe TCG tracked algorithms supportable by a TPM should be the only ones included in a charra maintained list of YANG identities.   \r\n\r\n- This identity set needs to be extendable to new algorithms for any YANG models which augment charra.\r\n\r\nTCG Algorithm Registry Revision 01.32, Table 3 at https://trustedcomputinggroup.org/wp-content/uploads/TCG-_Algorithm_Registry_r1p32_pub.pdf contains the algorithms we should encode.\r\n\r\n- There are other types of information within this table, and we might as well encode the full table within a YANG model.   That way we can explicitly make the scope of a \"ietf-tcg-algs.yang\" model the contents this TCG table encoded in YANG.\r\n\r\n- The YANG model will indicate what TCG algorithms are deprecated by the IETF.  However identities for these deprecated algorithms from the TCG table will be assigned.  (e.g., SHA-1)\r\n\r\n",
+      "createdAt": "2020-08-11T22:46:07Z",
+      "updatedAt": "2020-09-22T08:00:08Z",
+      "closedAt": "2020-09-22T08:00:08Z",
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "body": "This issue has been addressed by the addition of ietf-tcg-algs.yang\r\nOther types of information are covered by the corresponding identity taxonomy introduced.\r\nAlg deprecation should be discussed on list, maybe during YANG doc review",
+          "createdAt": "2020-09-22T08:00:08Z",
+          "updatedAt": "2020-09-22T08:00:08Z"
+        }
+      ]
+    },
+    {
+      "number": 22,
+      "id": "MDU6SXNzdWU3MTE3Nzg2NjQ=",
+      "title": "Potential stand-alone document for ietf-tcg-algs.yang",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/issues/22",
+      "state": "OPEN",
+      "author": "henkbirkholz",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "This is item (10) split out from issue #6 \r\n\r\nAs ietf-tcg-algs.yang has to be updated over time, the question is how to facilitate that with the least growing pains. One option is $SUBJECT. We should have a clear understanding how this can work and how this should work in the end.",
+      "createdAt": "2020-09-30T09:17:06Z",
+      "updatedAt": "2020-09-30T09:17:06Z",
+      "closedAt": null,
+      "comments": []
+    },
+    {
+      "number": 25,
+      "id": "MDU6SXNzdWU3NTk1OTI5NjE=",
+      "title": "Simplify TPM1.2 Quote structures.   Is Quote1 needed?",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/issues/25",
+      "state": "CLOSED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Details are in Pull Request 24.",
+      "createdAt": "2020-12-08T16:32:30Z",
+      "updatedAt": "2021-01-04T15:20:48Z",
+      "closedAt": "2021-01-04T15:20:48Z",
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "body": "Addressed and merged. Keeping these issues open for comments over the holidays.",
+          "createdAt": "2020-12-16T16:27:15Z",
+          "updatedAt": "2020-12-16T16:27:15Z"
+        }
+      ]
+    },
+    {
+      "number": 34,
+      "id": "MDU6SXNzdWU4NTU2MDkxMDQ=",
+      "title": "ima & neteq logs effectively both use ima_event format, but with different scope",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/issues/34",
+      "state": "OPEN",
+      "author": "henkbirkholz",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "This issues tries to capture the remaining issue about the difference between the log features \"ima\" and \"netequip_boot\":\r\n\r\nThe difference between the two log types is the scope of events represented in the most expressive way possible. While ima changes the formats during layered attestation ending up using the \"richest format\" when the kernel becomes the Attesting Environment, netequip_boot uses the \"rich kernel format\" from the very start.\r\nNeteq therefore can reuse the ima-event grouping and can use \"https://www.trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3\" as the reference in \"feature netequip_boot\". But it seems to me that it somehow still should be its own feature, as there is a difference in the semantics how the format in that grouping is used.\r\n\r\nHere I am trying to capture what I think of as the most straight forward options right now:\r\n\r\nShould a \"feature driven\" optional statement be added to \"ima-event\" that acts as a flag that exists based on the netequip_boot feature (which I think would be more verbose where logs are already verbose) and ima and netequip_boot feature are merged into ima?\r\n\r\nor\r\n\r\nShould netequip_boot feature remain a separate statement that also uses ima-event, but has the extended scope of ima expressiveness described in its feature description?\r\n\r\nPlease add obvious options that elude me right now.",
+      "createdAt": "2021-04-12T06:39:49Z",
+      "updatedAt": "2021-04-12T06:39:49Z",
+      "closedAt": null,
+      "comments": []
+    }
+  ],
+  "pulls": [
+    {
+      "number": 2,
+      "id": "MDExOlB1bGxSZXF1ZXN0MzgxMzc2ODY0",
+      "title": "Fix typo for hash operation type",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/2",
+      "state": "MERGED",
+      "author": "puiterwijk",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-02-28T12:56:43Z",
+      "updatedAt": "2020-03-02T12:05:57Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "da656b35802d86fcf2caad972b23de5c9cf59986",
+      "headRepository": "puiterwijk/basic-yang-module",
+      "headRefName": "fixtypo",
+      "headRefOid": "9f91dbe25bb61252c16c2b8086b2e3f9cff72cc0",
+      "closedAt": "2020-02-28T13:55:27Z",
+      "mergedAt": "2020-02-28T13:55:27Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "7adaa6cd1fb5d1d422a706a8ee2315218dacf8ae"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3MzY3MTQ5MDQ4",
+          "commit": {
+            "abbreviatedOid": "9f91dbe"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "COMMENTED",
+          "body": "extent -> extend\r\n\r\nthx! I would have never catched that, I htink.",
+          "createdAt": "2020-03-02T12:05:57Z",
+          "updatedAt": "2020-03-02T12:05:57Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "id": "MDExOlB1bGxSZXF1ZXN0Mzg0OTA0NjQ4",
+      "title": "modify without adding NetEquip boot.",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/4",
+      "state": "MERGED",
+      "author": "haknmcaobin",
+      "authorAssociation": "FIRST_TIME_CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "merged changes from https://github.com/ietf-rats/draft-birkholz-rats-basic-yang-module/pull/17\r\n",
+      "createdAt": "2020-03-06T16:15:45Z",
+      "updatedAt": "2020-03-09T10:30:34Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "7adaa6cd1fb5d1d422a706a8ee2315218dacf8ae",
+      "headRepository": "haknmcaobin/basic-yang-module",
+      "headRefName": "bcao-branch",
+      "headRefOid": "41d654e4ae3db0f3d949c06981b8ad41a7f93dc6",
+      "closedAt": "2020-03-09T10:30:34Z",
+      "mergedAt": "2020-03-09T10:30:34Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "7e2845719f4bac333fb2c5ab05956974e5e19f02"
+      },
+      "comments": [
+        {
+          "author": "shwethab",
+          "authorAssociation": "NONE",
+          "body": "LGTM",
+          "createdAt": "2020-03-09T10:25:42Z",
+          "updatedAt": "2020-03-09T10:25:42Z"
+        },
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "body": "All items very reviewed and are in line with current discussions (incl. architecture)",
+          "createdAt": "2020-03-09T10:30:22Z",
+          "updatedAt": "2020-03-09T10:30:22Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 5,
+      "id": "MDExOlB1bGxSZXF1ZXN0Mzg1NTk1NTE5",
+      "title": "add a new log type for network devices boot",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/5",
+      "state": "CLOSED",
+      "author": "haknmcaobin",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "Besides \"bios\" and \"ima\", adding third log type \"netequip boot\".\r\nAnd fixs some typos and missing changes.",
+      "createdAt": "2020-03-09T13:42:20Z",
+      "updatedAt": "2020-09-22T07:56:58Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "e904a73c3a509067b8b92305c5612121a628e27a",
+      "headRepository": "haknmcaobin/basic-yang-module",
+      "headRefName": "bcao-branch",
+      "headRefOid": "933d14c8f739d62f24daa17cb525f604b112e702",
+      "closedAt": "2020-09-22T07:56:58Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "William-PanWei",
+          "authorAssociation": "NONE",
+          "body": "#18 and #19 have contained the changes proposed in this PR. This PR can be closed.",
+          "createdAt": "2020-09-22T07:52:10Z",
+          "updatedAt": "2020-09-22T07:52:10Z"
+        },
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "body": "Thanks Wei! This PR now aligns with the current main and therefore can be closed (this also counts as an implicitly approved changes via the other PRs of course!)",
+          "createdAt": "2020-09-22T07:56:58Z",
+          "updatedAt": "2020-09-22T07:56:58Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 7,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDI4MDY0MzQ1",
+      "title": "Matches to the Issue #6: Multiple Issues",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/7",
+      "state": "CLOSED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "There are several issues with the current YANG model. I am grouping them as one as I have a single YANG model pull request to cover all of these.\r\n\r\nThe issues I believe need to be addressed include:\r\n\r\n(1) PCR numbers should be their own type, not a UINT8. PCRs should be limited to [0..31]\r\n\r\n(2) We should use ENUMs instead of strings for TCG and IETF crypto algorithm types. Strings allow lots of errors to be introduced which we can protect using a larger, more detailed ENUM construct.\r\n\r\n(3) Most devices do not have multiple line cards. Because of that, we should not have nested keys of [node id] [tpm name]. This adds unnecessary complexity for the vast majority of users. Instead the tpm should have a mandatory leafref back to node-id when compute-nodes is not null.\r\n\r\n(4) The YANG doctors will not let us have a TPM-Name of \"ALL\". Instead of \"ALL\" we should be able to assume that an RPC means all hardware based TPMs if a specific TPM is not named in the RPC. Note that this means that we should not use TPM-name as a KEY in any RPC.\r\n\r\n(5) We should add leaf for a unique TPM-Path. It might be claimed this is irrelevant with the existing key structure, but\r\n\r\nlikely the YANG model itself will learn the TPM this way after boot.\r\nYou could add/remove/migrate new virtual TPMs, more easily only re-allocating an existing path when the new vTPM is activated.\r\n(6) We should have optional YANG features for TPM1.2 and TPM2.0 so that RPCs are not exposed when there are no such TPMs of that type are supported.\r\n\r\n(7) We should great new grouping for the log algorithm types. These groupings can be reused for a Telemetry/Subscription feed of individual log entries. Other log types like those proposed for \"netequip boot\" by Bin Cao can then be merged.",
+      "createdAt": "2020-06-04T20:15:15Z",
+      "updatedAt": "2020-06-09T20:27:01Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "67d1ebe13d4ce381c7b6b6fb1d56b4d15b88b902",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-1",
+      "headRefOid": "4c1084030429ab96abca9db9c66535137913e513",
+      "closedAt": "2020-06-09T20:27:01Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "ericvoit",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "Closed in favor of the new file associated with #8 ",
+          "createdAt": "2020-06-09T20:27:01Z",
+          "updatedAt": "2020-06-09T20:27:01Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 8,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDMyMDQ0MzUx",
+      "title": "Update ietf-tpm-remote-attestation.yang",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/8",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "See comments in Issue #6",
+      "createdAt": "2020-06-09T20:26:01Z",
+      "updatedAt": "2020-06-24T09:36:05Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "67d1ebe13d4ce381c7b6b6fb1d56b4d15b88b902",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-2",
+      "headRefOid": "8a4f689a3c93d22301f652c61c0449868fb20a34",
+      "closedAt": "2020-06-24T09:36:05Z",
+      "mergedAt": "2020-06-24T09:36:05Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "fb98cf238892e16789f5694482895f2cb4b35bc6"
+      },
+      "comments": [
+        {
+          "author": "ericvoit",
+          "authorAssociation": "CONTRIBUTOR",
+          "body": "I made one final suggested change for the next iteration of the YANG file for the upcoming v02 charra release.   This is that Hash Algo should be the key to the set of PCRs which needed to be attested.",
+          "createdAt": "2020-06-23T16:06:47Z",
+          "updatedAt": "2020-06-23T16:06:47Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDI4MTM0MDgy",
+          "commit": {
+            "abbreviatedOid": "37afe6b"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "COLLABORATOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2020-06-10T14:48:58Z",
+          "updatedAt": "2020-06-10T14:48:58Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 9,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDM4NzE1MDM2",
+      "title": "Changes to support Issues #6 & #7",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/9",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Allows the YANG model changes I have suggested to be merged into the overall document",
+      "createdAt": "2020-06-23T17:30:10Z",
+      "updatedAt": "2020-06-24T09:38:01Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "67d1ebe13d4ce381c7b6b6fb1d56b4d15b88b902",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-3",
+      "headRefOid": "9d36b315b2c3854faf0206c2169ca0dcb6657003",
+      "closedAt": "2020-06-24T09:38:01Z",
+      "mergedAt": "2020-06-24T09:38:01Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "8acb223d42eaeac7f68eb1d889013b8631fbf4f7"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDM2NDg1NDE0",
+          "commit": {
+            "abbreviatedOid": "9d36b31"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "Thanks!",
+          "createdAt": "2020-06-24T09:37:48Z",
+          "updatedAt": "2020-06-24T09:37:48Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 11,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDY3MjU5ODUz",
+      "title": "make the 'key-identifier' and 'tpm-name' in the query to be a choice",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/11",
+      "state": "CLOSED",
+      "author": "William-PanWei",
+      "authorAssociation": "NONE",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-08-13T09:18:45Z",
+      "updatedAt": "2020-09-17T13:48:24Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "08ea642746a06c91105216fc1ce9323a471bb08a",
+      "headRepository": "William-PanWei/basic-yang-module",
+      "headRefName": "input_key",
+      "headRefOid": "b1a7ddd18015f56d5e79d0cc6a02e311325b3b31",
+      "closedAt": "2020-09-17T13:48:24Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 12,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDc0Nzk1NTI3",
+      "title": "Update ietf-tpm-remote-attestation.tree",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/12",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Rework of many elements of the YANG file to vastly reduce the number of possible error conditions and viable mis-configurations.\r\n\u2022\tEnforcement of specific TPM hash and signing algos\r\n\u2022\tSuggesting default hash and signing algorithms (e.g., SHA-1 is the hash algo for TPM1.2.) \r\n\u2022\tHaving a list of supported hash and signing algorithms for a platform (enforcing that the RPCs must use only these).\r\n\u2022\tMaking references to externally stored certificates\r\n\u2022\tGot rid of the basic trust establishment RPC.   This can be accomplished with other RPCs not in this model.\r\n\u2022\tAdded references to various TPM specifications\r\n\u2022\tError conditions identified in RPC\r\n\u2022\tGot rid of UUID as nobody seems to want it\r\n\u2022\tExtra containers for tpms and compute-nodes to make the tree more readable (following standard YANG practice)\r\n\r\nAll of these changes need additional viewership and scrubbing.  Especially the XPATH needs checking as I was guessing in many cases.",
+      "createdAt": "2020-08-27T15:52:48Z",
+      "updatedAt": "2020-09-16T09:05:45Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "08ea642746a06c91105216fc1ce9323a471bb08a",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-5",
+      "headRefOid": "cc57ce36a79d32b83789ec56971c0fe59b2b545b",
+      "closedAt": "2020-09-16T09:05:45Z",
+      "mergedAt": "2020-09-16T09:05:45Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "25e2ebd5603c295eaec4f2cbe4de32b5379fadbf"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 13,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDc0Nzk4OTMy",
+      "title": "Update ietf-tpm-remote-attestation.yang",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/13",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Rework of many elements of the YANG file to vastly reduce the number of possible error conditions and viable mis-configurations.\r\n\u2022 Enforcement of specific TPM hash and signing algos\r\n\u2022 Suggesting default hash and signing algorithms (e.g., SHA-1 is the hash algo for TPM1.2.)\r\n\u2022 Having a list of supported hash and signing algorithms for a platform (enforcing that the RPCs must use only these).\r\n\u2022 Making references to externally stored certificates\r\n\u2022 Got rid of the basic trust establishment RPC. This can be accomplished with other RPCs not in this model.\r\n\u2022 Added references to various TPM specifications\r\n\u2022 Error conditions identified in RPC\r\n\u2022 Got rid of UUID as nobody seems to want it\r\n\u2022 Extra containers for tpms and compute-nodes to make the tree more readable (following standard YANG practice)\r\n\r\nAll of these changes need additional viewership and scrubbing. Especially the XPATH needs checking as I was guessing in many cases.",
+      "createdAt": "2020-08-27T15:58:34Z",
+      "updatedAt": "2020-09-16T09:05:11Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "08ea642746a06c91105216fc1ce9323a471bb08a",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-6",
+      "headRefOid": "dd5e5beed3a0b487df251e6ba54c6b451f588ad4",
+      "closedAt": "2020-09-16T09:05:11Z",
+      "mergedAt": "2020-09-16T09:05:11Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "6eb25d26d46f4e9657e49a28818a3653a5a7a360"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDg5NDIzMjM3",
+          "commit": {
+            "abbreviatedOid": "dd5e5be"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "In generally, all modifications are an improvement, I think. As they are implementation feedback, that is great. In past iterations we started to make the trust-establishment rpc obsolete and now it was finally okay to remove it. Most modifications are about usage simplification and/or improving usage consistency.\r\n\r\n* the assumption here seems to be that all TPM 1.2 and all TPM 2.0 in the same managed entity provide the same support for algorithms. I could confabulate a scenario where this not true, but my assumption is that this in no real world problem - and I approve of the restructuring.\r\n* \"Containerization\" of the TPM support structure seems like a typical YANG thing to do nowadays - agree.\r\n* including native TPM structures that are part of the evidence is an performance measure - I am fine with it as long as nobody perceives this as an implementation barrier (which I assume it cannot be)\r\n* after discussing this on the list, it is fine to remove the uuid support (it might have been an error in the first place as it is a TSS method and not a TPM method - although the TSS is the go to API for a TPM)\r\n* removal of the increasingly redundant establishment rpc seems fine. This now maps real world management processes better\r\n* there has to be a choice on \"fastest procedure\" here: either your management processes use a certificate pub-key to identify the attesting environment or its corresponding authentication secret - or you use a constructed tpm-name. If you initially know one, but not \"the other\" in your external management process, for one side of this choice you have to use the support-structure to resolve \"the other\". As it is now, you have to resolve the certificate-name, if you only have the tpm-name initially. I am okay with this, but I might be a bit biased as this is a tad bit closer to the reference interaction model. It also maps neatly with the now referenceble external certificates.\r\n\r\nWe need a reviewer that is more experienced in YPATH! I already reached out, but well... summer time?",
+          "createdAt": "2020-09-16T09:04:49Z",
+          "updatedAt": "2020-09-16T09:04:49Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 14,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDc0ODAyMDAz",
+      "title": "Replacement for the ietf algs",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/14",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Matches the TCG Table.",
+      "createdAt": "2020-08-27T16:04:00Z",
+      "updatedAt": "2020-09-16T08:38:02Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "08ea642746a06c91105216fc1ce9323a471bb08a",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "master",
+      "headRefOid": "a68fd9e3479e9ea4c181ca019e56c69195797a8b",
+      "closedAt": "2020-09-16T08:38:02Z",
+      "mergedAt": "2020-09-16T08:38:01Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "f768d4576644dcb6f4bd19217b58d6d528d1f469"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDg4NDIwMjQ1",
+          "commit": {
+            "abbreviatedOid": "1641776"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "I really like the new identity mapping. For direct mapping to TLV'ish/binary representation, I added the actual alg-ids to the reference statements in each identity.\r\n\r\nI also really like the small taxonomy including multi parents for ease of use and selection. In general, this will become its own work, so updates to the registry result in updates of this module. Question is: does it therefore make sense to split now already?",
+          "createdAt": "2020-09-15T07:56:08Z",
+          "updatedAt": "2020-09-15T08:31:58Z",
+          "comments": [
+            {
+              "originalPosition": 163,
+              "body": "```suggestion\r\n      RFC 8017. ALG_ID: 0x0001\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T07:56:08Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 176,
+              "body": "```suggestion\r\n      ISO/IEC 18033-3. ALG_ID: 0x0003\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T07:56:59Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 190,
+              "body": "```suggestion\r\n      ISO/IEC 10118-3. ALG_ID: 0x0004\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T07:57:22Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 203,
+              "body": "```suggestion\r\n      ISO/IEC 9797-2 and RFC2014. ALG_ID: 0x0005\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T07:57:53Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 214,
+              "body": "```suggestion\r\n      ISO/IEC 18033-3. ALG_ID: 0x0006\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T07:58:24Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 226,
+              "body": "```suggestion\r\n      IEEE Std 1363-2000 and IEEE Std 1363a -2004.\r\n      ALG_ID: 0x0007\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T07:59:02Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 241,
+              "body": "```suggestion\r\n      TCG TPM 2.0 library specification. . ALG_ID: 0x0008\";\r\n\r\n```",
+              "createdAt": "2020-09-15T07:59:59Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 254,
+              "body": "```suggestion\r\n      TCG TPM 2.0 library specification. ALG_ID: 0x000A\";\r\n\r\n```",
+              "createdAt": "2020-09-15T08:00:30Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 265,
+              "body": "```suggestion\r\n      ISO/IEC 10118-3. ALG_ID: 0x000B\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:01:06Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 276,
+              "body": "```suggestion\r\n      ISO/IEC 10118-3. ALG_ID: 0x000C\";\r\n\r\n```",
+              "createdAt": "2020-09-15T08:01:30Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 287,
+              "body": "```suggestion\r\n      ISO/IEC 10118-3. ALG_ID: 0x000D\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:01:49Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 297,
+              "body": "```suggestion\r\n      TCG TPM 2.0 library specification. ALG_ID: 0x0010\";     \r\n\r\n```",
+              "createdAt": "2020-09-15T08:02:32Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 308,
+              "body": "```suggestion\r\n      GM/T 0004-2012 - SM3_256. ALG_ID: 0x0012\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:03:12Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 319,
+              "body": "```suggestion\r\n      GB/T 32907-2016. ALG_ID: 0x0013\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:03:39Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 330,
+              "body": "```suggestion\r\n      \"TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017.\r\n      ALG_ID: 0x0014\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:04:19Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 341,
+              "body": "```suggestion\r\n      \"TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017\r\n      ALG_ID: 0x0015\";\r\n\r\n```",
+              "createdAt": "2020-09-15T08:04:54Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 352,
+              "body": "```suggestion\r\n      \"TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017.\r\n      ALG_ID: 0x0016\";   \r\n\r\n```",
+              "createdAt": "2020-09-15T08:05:41Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 363,
+              "body": "```suggestion\r\n      \"TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017.\r\n      ALG_ID: 0x0017\";  \r\n\r\n```",
+              "createdAt": "2020-09-15T08:06:15Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 375,
+              "body": "```suggestion\r\n      ISO/IEC 14888-3. ALG_ID: 0x0018\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:06:36Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 387,
+              "body": "```suggestion\r\n      NIST SP800-56A and RFC 7748. ALG_ID: 0x0019\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:07:16Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 400,
+              "body": "```suggestion\r\n      TCG TPM 2.0 library specification. ALG_ID: 0x001A\";   \r\n\r\n```",
+              "createdAt": "2020-09-15T08:07:35Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 417,
+              "body": "```suggestion\r\n      GM/T 0003.5\u20132012 SM2. ALG_ID: 0x001B\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:08:22Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 429,
+              "body": "```suggestion\r\n      TCG TPM 2.0 library specification. ALG_ID: 0x001C\";       \r\n\r\n```",
+              "createdAt": "2020-09-15T08:08:45Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 441,
+              "body": "```suggestion\r\n      NIST SP800-56A. ALG_ID: 0x001D\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:09:23Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 453,
+              "body": "```suggestion\r\n      NIST SP800-56A  (approved alternative1) section 5.8.1.\r\n      ALG_ID: 0x0020\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:10:05Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 465,
+              "body": "```suggestion\r\n      IEEE 1363a-2004 KDF2 section 13.2. ALG_ID: 0x0021\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:10:30Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 474,
+              "body": "```suggestion\r\n      NIST SP800-108 - Section 5.1 KDF. ALG_ID: 0x0022\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:11:13Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 486,
+              "body": "```suggestion\r\n      ISO/IEC 15946-1. ALG_ID: 0x0023\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:11:39Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 496,
+              "body": "```suggestion\r\n      TCG TPM 2.0 library specification. ALG_ID: 0x0025\";          \r\n\r\n```",
+              "createdAt": "2020-09-15T08:12:16Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 507,
+              "body": "```suggestion\r\n      ISO/IEC 18033-3. ALG_ID: 0x0026\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:20:17Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 518,
+              "body": "```suggestion\r\n      NIST PUB FIPS 202. ALG_ID: 0x0027\";          \r\n\r\n```",
+              "createdAt": "2020-09-15T08:20:49Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 529,
+              "body": "```suggestion\r\n      NIST PUB FIPS 202. ALG_ID: 0x0028\";   \r\n\r\n```",
+              "createdAt": "2020-09-15T08:21:40Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 540,
+              "body": "```suggestion\r\n      NIST PUB FIPS 202. ALG_ID: 0x0029\";   \r\n\r\n```",
+              "createdAt": "2020-09-15T08:21:56Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 552,
+              "body": "```suggestion\r\n      ISO/IEC 9797-1:2011 Algorithm 5. ALG_ID: 0x003F\";   \r\n\r\n```",
+              "createdAt": "2020-09-15T08:22:21Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 564,
+              "body": "```suggestion\r\n      ISO/IEC 10116. ALG_ID: 0x0040\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:22:56Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 575,
+              "body": "```suggestion\r\n      ISO/IEC 10116. ALG_ID: 0x0041\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:23:26Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 587,
+              "body": "```suggestion\r\n      ISO/IEC 10116. ALG_ID: 0x0042\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:23:44Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 599,
+              "body": "```suggestion\r\n      ISO/IEC 10116. ALG_ID: 0x0043\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:24:08Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 611,
+              "body": "```suggestion\r\n      ISO/IEC 10116. ALG_ID: 0x0044\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:24:31Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 625,
+              "body": "```suggestion\r\n      NIST SP800-38C. ALG_ID: 0x0050\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:24:51Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 638,
+              "body": "```suggestion\r\n      NIST SP800-38D. ALG_ID: 0x0051\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:25:07Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 651,
+              "body": "```suggestion\r\n      NIST SP800-38F. ALG_ID: 0x0052\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:25:31Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 664,
+              "body": "```suggestion\r\n      NIST SP800-38F. ALG_ID: 0x0053\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:25:45Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 677,
+              "body": "```suggestion\r\n      NIST SP800-38F. ALG_ID: 0x0054\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:26:02Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            },
+            {
+              "originalPosition": 689,
+              "body": "```suggestion\r\n      RFC 8032. ALG_ID: 0x0060\";    \r\n\r\n```",
+              "createdAt": "2020-09-15T08:26:20Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDg4OTY1Mzgy",
+          "commit": {
+            "abbreviatedOid": "1641776"
+          },
+          "author": "ericvoit",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-09-15T18:45:35Z",
+          "updatedAt": "2020-09-15T18:45:36Z",
+          "comments": [
+            {
+              "originalPosition": 163,
+              "body": "I like the additions of the ALG_ID",
+              "createdAt": "2020-09-15T18:45:35Z",
+              "updatedAt": "2020-09-16T08:36:55Z"
+            }
+          ]
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDg4OTc2MDc3",
+          "commit": {
+            "abbreviatedOid": "71122dc"
+          },
+          "author": "ericvoit",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "COMMENTED",
+          "body": "I like the additions of the ALG_ID",
+          "createdAt": "2020-09-15T18:55:05Z",
+          "updatedAt": "2020-09-15T18:55:05Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 15,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDg4NjY5ODY0",
+      "title": "Update and rename ietf-tcg-algs@2020-08-26.yang to ietf-tcg-algs@2020\u2026",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/15",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "\u2026-09-17.yang\r\n\r\nAlso changed identity names to underscores are per William Bellingrath <wbellingrath@juniper.net> review",
+      "createdAt": "2020-09-17T13:29:09Z",
+      "updatedAt": "2020-09-18T14:04:49Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "25e2ebd5603c295eaec4f2cbe4de32b5379fadbf",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-7",
+      "headRefOid": "b6221bfc5ee3701b90800617d23568bf1dc95f6a",
+      "closedAt": "2020-09-18T14:04:49Z",
+      "mergedAt": "2020-09-18T14:04:49Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "3e9b760ccb982b3f7b6f8f2cef969e1d82b0c9c2"
+      },
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "body": "Looks good. Thanks for being so super fast, Eric!",
+          "createdAt": "2020-09-18T14:04:43Z",
+          "updatedAt": "2020-09-18T14:04:43Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 16,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDg4NjcxOTE5",
+      "title": "Update ietf-tpm-remote-attestation.yang",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/16",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "From William Bellingrath review, and a little re-sequencing",
+      "createdAt": "2020-09-17T13:32:24Z",
+      "updatedAt": "2020-09-18T14:09:21Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "25e2ebd5603c295eaec4f2cbe4de32b5379fadbf",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-8",
+      "headRefOid": "c4f344a83e661f7fe3594ccf79db8df1f6daa88e",
+      "closedAt": "2020-09-18T14:09:21Z",
+      "mergedAt": "2020-09-18T14:09:21Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "d7bab75e09f62ca2d9edb60229e4aefed91385e9"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDkxNTAwNTU5",
+          "commit": {
+            "abbreviatedOid": "c4f344a"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "We will do a final naming-convention / syntax polish around the WGLC. Fine for now.",
+          "createdAt": "2020-09-18T14:09:13Z",
+          "updatedAt": "2020-09-18T14:09:13Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 17,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDg4NjgwMjM0",
+      "title": "Update ietf-tpm-remote-attestation.tree",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/17",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Includes netequip_boot and other tweaks",
+      "createdAt": "2020-09-17T13:45:19Z",
+      "updatedAt": "2020-09-18T14:10:07Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "25e2ebd5603c295eaec4f2cbe4de32b5379fadbf",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-9",
+      "headRefOid": "d444aeea955c739abbe0e7788777dbc21861c665",
+      "closedAt": "2020-09-18T14:10:07Z",
+      "mergedAt": "2020-09-18T14:10:07Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "c97a8c46ece9ba74836b9098fb3fbe8817d73f47"
+      },
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "body": "Analogous to #16 ",
+          "createdAt": "2020-09-18T14:10:02Z",
+          "updatedAt": "2020-09-18T14:10:02Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 18,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDg5NTA4NTc5",
+      "title": "Update ietf-tpm-remote-attestation.tree",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/18",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Tweaks, such as adding a leaf of what TPM1.2 PCRs may be remotely quoted.  This allows RPCs to verify that the PCR is something which can be extracted.",
+      "createdAt": "2020-09-18T19:48:42Z",
+      "updatedAt": "2020-09-22T07:40:16Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "6d3930aa9ca66b92dd22251269aa49d778c00c40",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-10",
+      "headRefOid": "27ede2367cc6ce1e270f0dca1ecfacee058b92d2",
+      "closedAt": "2020-09-22T07:40:16Z",
+      "mergedAt": "2020-09-22T07:40:16Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "4d84d2c32d85ead26a09aeacbc207fc42be4d1fb"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 19,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDg5NTExMDQ5",
+      "title": "Update ietf-tpm-remote-attestation.yang",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/19",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "The identities for TPM 1.2 and 2.0 already existed in TCG algs.  Eliminated them here.   Added a leaf which enables an Attester to limit which TPM1.2 PCRs might be acquired.   Added some initial XPATH to limit which PCRs can be extracted as part of an RPC.   They still need work, and am hoping the YANG doctors can provide the syntax for this error check.",
+      "createdAt": "2020-09-18T19:54:18Z",
+      "updatedAt": "2020-09-22T07:39:44Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "6d3930aa9ca66b92dd22251269aa49d778c00c40",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-11",
+      "headRefOid": "b792b43a3c57fe85ee6276da9aae153fc00b0923",
+      "closedAt": "2020-09-22T07:39:43Z",
+      "mergedAt": "2020-09-22T07:39:43Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "1d7eab171b13b1536a991e0430c3aa3be5d6b797"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 20,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDg5NTEyNjky",
+      "title": "Update draft-ietf-rats-yang-tpm-charra.md",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/20",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Provides more context around the various elements of the model",
+      "createdAt": "2020-09-18T19:58:03Z",
+      "updatedAt": "2020-09-22T06:36:40Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "6d3930aa9ca66b92dd22251269aa49d778c00c40",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-12",
+      "headRefOid": "b6042cb5d550f189f64350da6f3d751653e0bb42",
+      "closedAt": "2020-09-22T06:36:40Z",
+      "mergedAt": "2020-09-22T06:36:40Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "8055723faf83075936dc755f38e27da915f45ef3"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NDkzMTU5NDM4",
+          "commit": {
+            "abbreviatedOid": "b6042cb"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "Thanks a lot for your stab at Security Considerations! Also the I-D was in dire need for some expositional english text. Reads straight forward and comprehensive.",
+          "createdAt": "2020-09-22T06:36:22Z",
+          "updatedAt": "2020-09-22T06:36:22Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 21,
+      "id": "MDExOlB1bGxSZXF1ZXN0NDg5NTE0NjY2",
+      "title": "Minor tweaks.   ",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/21",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "When we get rid of the date in the file name, we can re-integrate the toolchain.",
+      "createdAt": "2020-09-18T20:02:23Z",
+      "updatedAt": "2020-09-22T07:40:45Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "6d3930aa9ca66b92dd22251269aa49d778c00c40",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "master",
+      "headRefOid": "3d86f4c67b70f045553a4b5db861b61dcc3a54a5",
+      "closedAt": "2020-09-22T07:40:44Z",
+      "mergedAt": "2020-09-22T07:40:44Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "485fa3a5fb7779e3c1485166d969618e19cd4a07"
+      },
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "body": "17 \u2260 18\r\n\r\nCurrent tool-chain errors are not the result of the '@' used. Will fixed via direct push.\r\n\r\nAlso, isn't the proposed version for review always the current editor's version? I am okay'ish with splitting a stable text version out for deterministic review, I guess.",
+          "createdAt": "2020-09-22T07:03:46Z",
+          "updatedAt": "2020-09-22T07:38:42Z"
+        }
+      ],
+      "reviews": []
+    },
+    {
+      "number": 23,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTAwNTcyOTgz",
+      "title": "Shwetha has a new company",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/23",
+      "state": "CLOSED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-10-09T12:59:12Z",
+      "updatedAt": "2020-12-15T18:35:46Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "e904a73c3a509067b8b92305c5612121a628e27a",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-13",
+      "headRefOid": "f077ca549d6befdbf876d96bcdb4e195d11fef6c",
+      "closedAt": "2020-12-15T18:35:46Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 24,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTM0NTY5ODUx",
+      "title": "Removing TPM1.2 Quote 1: model simplifications",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/24",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Various conversations leads several people to believe network operators don't need support for TPM1.2 Quote 1.  Rather Quote 2 is preferred.",
+      "createdAt": "2020-12-08T16:29:48Z",
+      "updatedAt": "2020-12-16T16:24:34Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "e904a73c3a509067b8b92305c5612121a628e27a",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-14",
+      "headRefOid": "fc03b1b46af20eb066065e94b5f79d524f5323e2",
+      "closedAt": "2020-12-16T16:24:34Z",
+      "mergedAt": "2020-12-16T16:24:34Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "8e37b2a352593aba579c256020cda26b7652cf0d"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTUzODUyNjY4",
+          "commit": {
+            "abbreviatedOid": "ef4d065"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-12-16T16:17:37Z",
+          "updatedAt": "2020-12-16T16:17:38Z",
+          "comments": [
+            {
+              "originalPosition": 386,
+              "body": "```suggestion\r\n          \"A component in this composite device that \r\n```",
+              "createdAt": "2020-12-16T16:17:37Z",
+              "updatedAt": "2020-12-16T16:17:52Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 26,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTQwNDA3Njc3",
+      "title": "Matches pull request #24",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/26",
+      "state": "CLOSED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-12-15T16:54:57Z",
+      "updatedAt": "2020-12-15T22:21:29Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "e904a73c3a509067b8b92305c5612121a628e27a",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-15",
+      "headRefOid": "832b8a10ad983d40bc62a8ce51361be79fe3015e",
+      "closedAt": "2020-12-15T22:21:29Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 27,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTQwNTQwOTU2",
+      "title": "YANG model simplifications for TPM1.2",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/27",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-12-15T18:35:16Z",
+      "updatedAt": "2020-12-16T16:30:04Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "e904a73c3a509067b8b92305c5612121a628e27a",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-16",
+      "headRefOid": "b97b6f0db1514dc97ca84ce37b44a3c362a5ee5c",
+      "closedAt": "2020-12-16T16:30:04Z",
+      "mergedAt": "2020-12-16T16:30:04Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "a66028f5574db9d3258db07e53b2f2e8a58cdfaf"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 28,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTQwNzU1OTQz",
+      "title": "tree update",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/28",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-12-15T22:21:15Z",
+      "updatedAt": "2020-12-16T16:31:07Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "e904a73c3a509067b8b92305c5612121a628e27a",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-18",
+      "headRefOid": "b73cd4f7c404723e1ade5da5a9d6fc0385ea6632",
+      "closedAt": "2020-12-16T16:31:07Z",
+      "mergedAt": "2020-12-16T16:31:07Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "9bf9112c14548b9ae008712f685da2d0c9bb55b8"
+      },
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 29,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTQxOTI2MjYz",
+      "title": "YANG Dr comments",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/29",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-12-17T15:05:16Z",
+      "updatedAt": "2021-01-04T13:01:22Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "e4b9e9b1d46a576999119c8e46ee8d0e58dd3ee2",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-20",
+      "headRefOid": "8b6a9fc536b1e69b9636ce57783840d43042d36d",
+      "closedAt": "2021-01-04T13:01:22Z",
+      "mergedAt": "2021-01-04T13:01:22Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "5036d4e3928e3220e3fba883e75945f6afbc10e8"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTYxMDExNDU3",
+          "commit": {
+            "abbreviatedOid": "8b6a9fc"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-01-04T13:01:12Z",
+          "updatedAt": "2021-01-04T13:01:12Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 30,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTQyODIwMzQw",
+      "title": "More YANG Dr changes",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/30",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2020-12-18T23:01:39Z",
+      "updatedAt": "2021-01-04T13:03:00Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "5036d4e3928e3220e3fba883e75945f6afbc10e8",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-22",
+      "headRefOid": "1e4b0e449ef30b66c29840ba94eda251cd23b800",
+      "closedAt": "2021-01-04T13:03:00Z",
+      "mergedAt": "2021-01-04T13:03:00Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "683763deed80e922ced5f9a8be7fcf196bb74cc7"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTYxMDExMTEy",
+          "commit": {
+            "abbreviatedOid": "5032c58"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-01-04T13:00:35Z",
+          "updatedAt": "2021-01-04T13:00:35Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 31,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTQ0ODU2NTQ3",
+      "title": "Making sure the Attester's keystore is not trusted",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/31",
+      "state": "CLOSED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "You need an outside source for the association of the certificates to the TPM(s)",
+      "createdAt": "2020-12-23T14:29:36Z",
+      "updatedAt": "2020-12-24T14:55:18Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "e4b9e9b1d46a576999119c8e46ee8d0e58dd3ee2",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-23",
+      "headRefOid": "691c7bc0df74905cbc25faaa5ee8be71ead99077",
+      "closedAt": "2020-12-24T14:55:18Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTU4MzEzMzQ2",
+          "commit": {
+            "abbreviatedOid": "34ce880"
+          },
+          "author": "William-PanWei",
+          "authorAssociation": "NONE",
+          "state": "COMMENTED",
+          "body": "",
+          "createdAt": "2020-12-24T02:58:11Z",
+          "updatedAt": "2020-12-24T02:58:12Z",
+          "comments": [
+            {
+              "originalPosition": 4,
+              "body": "```suggestion\r\nThe \\<certificate-name\\> provided in the YANG models needs to be trusted by the Verifier from a source independent of the Attester.  Specifically, the certificate must be known to be assigned to a specific router, and even known to be associated with a specific line card where the \\<TPMs\\> feature is active.   This is necessary as it is possible for an attacker with access to the router to provide false information within the \\<ietf-keystore\\> model of the Attester.\r\n```",
+              "createdAt": "2020-12-24T02:58:11Z",
+              "updatedAt": "2020-12-24T14:55:05Z"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "number": 32,
+      "id": "MDExOlB1bGxSZXF1ZXN0NTc2NjMwMTUy",
+      "title": "Update draft-ietf-rats-yang-tpm-charra.md",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/32",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Per Jeurgen's comment that we are not building a new datastore (type)",
+      "createdAt": "2021-02-19T18:14:51Z",
+      "updatedAt": "2021-03-25T14:56:59Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "0f5e3ed19549a9c69c78e905c56912acadecc622",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-24",
+      "headRefOid": "37f2ef112c90c179e0480436cec7f34f9546e2d1",
+      "closedAt": "2021-03-25T14:56:59Z",
+      "mergedAt": "2021-03-25T14:56:59Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "82807867806f4294ef83fe7d0abee8ddc87a10ea"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NTk0Njg3NTM4",
+          "commit": {
+            "abbreviatedOid": "37f2ef1"
+          },
+          "author": "William-PanWei",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-02-20T01:49:49Z",
+          "updatedAt": "2021-02-20T01:49:49Z",
+          "comments": []
+        },
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjIxMjE4NDk2",
+          "commit": {
+            "abbreviatedOid": "37f2ef1"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-03-25T14:56:50Z",
+          "updatedAt": "2021-03-25T14:56:50Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 33,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjAwNzk3MDUw",
+      "title": "Update ietf-tpm-remote-attestation.yang",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/33",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Updated descriptions to include links to references.  Fixed duplicated header",
+      "createdAt": "2021-03-25T14:38:15Z",
+      "updatedAt": "2021-03-25T15:38:06Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "0f5e3ed19549a9c69c78e905c56912acadecc622",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-25",
+      "headRefOid": "77a82a726665639e2a20fb44fd88793125999002",
+      "closedAt": "2021-03-25T15:38:06Z",
+      "mergedAt": "2021-03-25T15:38:06Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "394d9aaffc92e7819ebdd098b0808a3d7a1211c2"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjIxMjYxMDk5",
+          "commit": {
+            "abbreviatedOid": "77a82a7"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "This is an approve with comment.\r\n\r\nThe feature statements added include references to the corresponding log formats. There is no reference for netequip_boot. Either we fix this by including an appropriate reference to something here, too, or at the very least create an appendix that illustrates the context/format.",
+          "createdAt": "2021-03-25T15:30:58Z",
+          "updatedAt": "2021-03-25T15:30:58Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 35,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjE0NzU1ODg5",
+      "title": "Update draft-ietf-rats-yang-tpm-charra.md",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/35",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "yang detritus",
+      "createdAt": "2021-04-13T20:55:16Z",
+      "updatedAt": "2021-04-14T12:43:40Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "1fbbf745e8cc609aba6e1ecc723655b9d39dbc2a",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-26",
+      "headRefOid": "893243fa1132bb72c353f1dc763a2faa95f71c77",
+      "closedAt": "2021-04-14T12:43:40Z",
+      "mergedAt": "2021-04-14T12:43:40Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "8bf8df472f7e85c2a5209cd008ef8d476e16b004"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjM1NTcyMTI5",
+          "commit": {
+            "abbreviatedOid": "893243f"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-04-14T12:43:34Z",
+          "updatedAt": "2021-04-14T12:43:34Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 36,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjE0NzU2ODI4",
+      "title": "Update ietf-tpm-remote-attestation.yang",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/36",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "yang detritus",
+      "createdAt": "2021-04-13T20:56:50Z",
+      "updatedAt": "2021-04-14T12:43:19Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "1fbbf745e8cc609aba6e1ecc723655b9d39dbc2a",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-27",
+      "headRefOid": "44f0a8ef4c87494779e5859264009f60b8e09d37",
+      "closedAt": "2021-04-14T12:43:19Z",
+      "mergedAt": "2021-04-14T12:43:19Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "23c5479f1213a5f95dc95774c0a7cb9d5a4bbdba"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjM1NTcxNzk1",
+          "commit": {
+            "abbreviatedOid": "44f0a8e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-04-14T12:43:14Z",
+          "updatedAt": "2021-04-14T12:43:14Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 37,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjE3ODM0MjA2",
+      "title": "consolidation of Network Equipment Boot feature/format/log",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/37",
+      "state": "OPEN",
+      "author": "henkbirkholz",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "fixes #34",
+      "createdAt": "2021-04-19T09:41:24Z",
+      "updatedAt": "2021-04-20T08:10:15Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "1a31f4b3075005d10a59ac20dab4815664970ff0",
+      "headRepository": "ietf-rats-wg/basic-yang-module",
+      "headRefName": "neteq_boot-consolidation",
+      "headRefOid": "2197060815a3bae3afaeaa247ce0784c6a2753ef",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "body": "This PR is intended to reflect the current consensus on consolidating the use of the Network Equipment Boot log format. In the current proposal it re-uses the IMA event format (therefore addressing the missing reference in the corresponding feature statement) and highlights in its description that it combines the scope of BIOS event and IMA event measurements.",
+          "createdAt": "2021-04-19T09:45:13Z",
+          "updatedAt": "2021-04-19T09:45:13Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjM5NDI3MDg1",
+          "commit": {
+            "abbreviatedOid": "a0b1b10"
+          },
+          "author": "William-PanWei",
+          "authorAssociation": "NONE",
+          "state": "APPROVED",
+          "body": "The YANG Tree also needs to be updated.",
+          "createdAt": "2021-04-20T01:22:25Z",
+          "updatedAt": "2021-04-20T01:22:25Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 38,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjE4NjYxMjM5",
+      "title": "Update ietf-tpm-remote-attestation.yang",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/38",
+      "state": "OPEN",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Mahesh's XPATH",
+      "createdAt": "2021-04-19T22:49:17Z",
+      "updatedAt": "2021-04-19T22:49:17Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "1a31f4b3075005d10a59ac20dab4815664970ff0",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-28",
+      "headRefOid": "a84c72e2e3a34e0a76d4a306e6c4484e221f5a29",
+      "closedAt": null,
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    }
+  ]
+}
