@@ -85,7 +85,11 @@ module ietf-tpm-remote-attestation {
   
   feature netequip_boot {
     description
-      "The device supports the netequip_boot logs.";
+      "The device supports the netequip_boot logs using the Integrity
+       Measurement Architecture log format.";
+    reference
+      "https://www.trustedcomputinggroup.org/wp-content/uploads/
+       TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3";
   }
   /*****************/
   /*   Typedefs    */
@@ -502,55 +506,22 @@ module ietf-tpm-remote-attestation {
        uses ima-event;
     }
   }
-  grouping netequip-boot-event {
-    description
-      "Defines an hash log extend event for Network Equipment Boot.";
-    leaf event-number {
-      type uint64;
-      description
-        "Unique number for this event for sequencing";
-    }
-    leaf filename-hint {
-      type string;
-      description
-        "File that was measured";
-    }
-    leaf filedata-hash {
-      type binary;
-      description
-        "Hash of filedata";
-    }
-    leaf filedata-hash-algorithm {
-      type string;
-      description
-        "Algorithm used for filedata-hash.";
-      }
-    leaf file-version {
-      type string;
-      description
-        "File version information.";
-    }
-    leaf file-type {
-      type string;
-      description
-        "Indicating at which boot stage the file is loaded,
-         such as BIOS, BootLoader, etc.";
-    }
-    leaf pcr-index {
-      type pcr;
-      description
-        "Defines the PCR index that this event extended";
-    }
-  }
+
   grouping network-equipment-boot-event-log {
     description
-      "Measurement log created by Network Equipment Boot.";
+      "Measurement log created by Network Equipment Boot. The Network
+       Equipment Boot format is identical to the IMA format. In
+       contrast to the IMA log, the Network Equipment Boot log
+       includes every measurable event from an Attester, including
+       the boot stages of BIOS, Bootloader, etc. In essence, the scope
+       of events represented in this format combines the scope of BIOS
+       events and IMA events.";
     list boot-event-entry {
       key event-number;
       description
         "Ordered list of Network Equipment Boot event logs
-         by event-number.";
-      uses netequip-boot-event;
+         by event-number, using the IMA event format.";
+      uses ima-event;
     }
   }
   grouping event-logs {
