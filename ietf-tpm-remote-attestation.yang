@@ -35,17 +35,14 @@ module ietf-tpm-remote-attestation {
      remote attestation procedure using a challenge-response
      interaction model and the TPM 1.2 and TPM 2.0 Quote
      primitive operations.
-
      Copyright (c) 2020 IETF Trust and the persons identified
      as authors of the code. All rights reserved.
-
      Redistribution and use in source and binary forms, with
      or without modification, is permitted pursuant to, and
      subject to the license terms contained in, the Simplified
      BSD License set forth in Section 4.c of the IETF Trust's
      Legal Provisions Relating to IETF Documents
      (https://trustee.ietf.org/license-info).
-
      This version of this YANG module is part of RFC XXXX
      (https://www.rfc-editor.org/info/rfcXXXX); see the RFC
      itself for full legal notices.
@@ -56,24 +53,20 @@ module ietf-tpm-remote-attestation {
      are to be interpreted as described in BCP 14 (RFC 2119)
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
-
-  revision "2021-03-16" {
+  revision "2021-04-19" {
     description
       "Initial version";
     reference
       "draft-ietf-rats-yang-tpm-charra";
   }
-
   /*****************/
   /*   Features    */
   /*****************/
-
   feature TPMs {
     description
       "The device supports the remote attestation of multiple 
        TPM based cryptoprocessors.";
   }
-
   feature bios {
     description
       "The device supports the bios logs.";
@@ -82,7 +75,6 @@ module ietf-tpm-remote-attestation {
        PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
        Section 9.4.5.2";
   }
-
   feature ima {
     description
       "The device supports Integrity Measurement Architecture logs.";
@@ -99,11 +91,9 @@ module ietf-tpm-remote-attestation {
       "https://www.trustedcomputinggroup.org/wp-content/uploads/
        TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3";
   }
-
   /*****************/
   /*   Typedefs    */
   /*****************/
-
   typedef pcr {
     type uint8 {
       range "0..31";
@@ -111,7 +101,6 @@ module ietf-tpm-remote-attestation {
     description
       "Valid index number for a PCR.  At this point 0-31 is viable.";
   }  
-
   typedef compute-node-ref {
     type leafref {
       path "/tpm:rats-support-structures/tpm:compute-nodes" +
@@ -122,7 +111,6 @@ module ietf-tpm-remote-attestation {
        possible this leafref will eventually point to another YANG 
        module's node.";
   }
-
   typedef certificate-name-ref {
     type leafref {
       path "/tpm:rats-support-structures/tpm:tpms/tpm:tpm" +
@@ -131,40 +119,32 @@ module ietf-tpm-remote-attestation {
     description
       "A type which allows identification of a TPM based certificate.";
   }
-
-
   /******************/
   /*   Identities   */
   /******************/
-
   identity attested_event_log_type {
     description
       "Base identity allowing categorization of the reasons why and
        attested measurement has been taken on an Attester.";
   }
-
   identity ima {
     base attested_event_log_type;
     description
       "An event type recorded in IMA.";
   }
-
   identity bios {
     base attested_event_log_type;
     description
       "An event type associated with BIOS/UEFI.";
   }
-
   identity netequip_boot {
     base attested_event_log_type;
     description
       "An event type associated with Network Equipment Boot.";
   }
-
   /*****************/
   /*   Groupings   */
   /*****************/
-
   grouping TPM20-hash-algo {
     description
       "The cryptographic algorithm used to hash the TPM2 PCRs.  This
@@ -183,7 +163,6 @@ module ietf-tpm-remote-attestation {
          must be one of those supported by a platform.";             
     }
   }
-
   grouping TPM12-hash-algo {
     description
       "The cryptographic algorithm used to hash the TPM1.2 PCRs.";
@@ -203,7 +182,6 @@ module ietf-tpm-remote-attestation {
          TPM1.2 cryptoprocessor variant.";         
     }
   } 
-
   grouping nonce {
     description
       "A random number intended to be used once to show freshness 
@@ -220,7 +198,6 @@ module ietf-tpm-remote-attestation {
          in the response of the attestor.";
     }
   }
-
   grouping tpm12-pcr-selection {
     description
       "A Verifier can request one or more PCR values using its
@@ -230,21 +207,18 @@ module ietf-tpm-remote-attestation {
        Requesting a PCR value that is not in scope of the AC used,
        detailed exposure via error msg should be avoided.";
     leaf-list pcr-index {
-      /*  the following XPATH must be updated to ensure that only
-            selectable PCRs are allowed in the RPC
       must "/tpm:rats-support-structures/tpm:tpms" +
-           "/tpm:tpm[tpm-name = current()]" +
+           "/tpm:tpm[tpm-name = current()] and " +
+           "/tpm:rats-support-structures/tpm:tpms" +
            "/tpm:tpm[TPM12-pcrs = current()]" {
         error-message "Acquiring this PCR index is not supported";
       }
-      */
       type pcr;
       description
         "The numbers/indexes of the PCRs. At the moment this is limited
          to 32.";
     }
   }
-
   grouping tpm20-pcr-selection {
     description
       "A Verifier can acquire one or more PCR values, which are hashed 
@@ -261,14 +235,12 @@ module ietf-tpm-remote-attestation {
          TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
       uses TPM20-hash-algo;
       leaf-list pcr-index {
-        /*  the following XPATH must be updated to ensure that only
-            selectable PCRs are allowed in the RPC
-        must "/tpm:rats-support-structures/tpm:tpms" +
-             "/tpm:tpm[tpm-name = current()]" +
-             "/tpm:tpm20-pcr-bank[pcr-index = current()]" {
+          must "/tpm:rats-support-structures/tpm:tpms" +
+               "/tpm:tpm[tpm-name = current()] and " +
+               "/tpm:rats-support-structures/tpm:tpms/tpm:tpm" +
+               "/tpm:tpm20-pcr-bank[pcr-index = current()]" {
           error-message "Acquiring this PCR index is not supported";
         }
-        */
         type tpm:pcr;
         description
           "The numbers of the PCRs that which are being tracked
@@ -287,7 +259,6 @@ module ietf-tpm-remote-attestation {
         "Identifies a certificate in a keystore.";
     }
   }
-
   grouping tpm-name {
     description
       "A unique TPM on a device.";
@@ -311,7 +282,6 @@ module ietf-tpm-remote-attestation {
          are 'hardware-based' equals true on the device are selected.";
     }
   }
-
   grouping node-uptime {
     description
       "Uptime in seconds of the node.";
@@ -321,7 +291,6 @@ module ietf-tpm-remote-attestation {
         "Uptime in seconds of this node reporting its data";
     }
   }
-
   grouping tpm12-attestation {
     description
       "Contains an instance of TPM1.2 style signed cryptoprocessor 
@@ -338,7 +307,6 @@ module ietf-tpm-remote-attestation {
         "TPM1.2 commands rev116 July 2007, Section 16.5";  
     }
   }
-
   grouping tpm20-attestation {
     description
       "Contains an instance of TPM2 style signed cryptoprocessor 
@@ -376,7 +344,6 @@ module ietf-tpm-remote-attestation {
          received TPM2B_DIGEST.  Put another way, why should a Verifier 
          reconstruct the proper value of all PCR Quotes when only a 
          single PCR has changed?  
-
          To help this happen, if the Attester does know specific PCR 
          values, the Attester can provide these individual values via 
          'unsigned-pcr-values'.   By comparing this information to the 
@@ -404,8 +371,6 @@ module ietf-tpm-remote-attestation {
       }
     }
   }  
-
-
   grouping log-identifier {
     description
       "Identifier for type of log to be retrieved.";
@@ -418,7 +383,6 @@ module ietf-tpm-remote-attestation {
         "The corresponding measurement log type identity.";
     }
   }
-
   grouping boot-event-log {
     description
       "Defines an event log corresponding to the event that extended 
@@ -467,7 +431,6 @@ module ietf-tpm-remote-attestation {
         "The event data size determined by event-size";
     }
   }
-
   grouping bios-event-log {
     description
       "Measurement log created by the BIOS/UEFI.";
@@ -480,7 +443,6 @@ module ietf-tpm-remote-attestation {
       uses boot-event-log;
     }
   }
-
   grouping ima-event {
     description
       "Defines an hash log extend event for IMA measurements";
@@ -534,7 +496,6 @@ module ietf-tpm-remote-attestation {
         "The file signature";
     }
   }
-
   grouping ima-event-log {
     description
       "Measurement log created by IMA.";
@@ -563,7 +524,6 @@ module ietf-tpm-remote-attestation {
       uses ima-event;
     }
   }
-
   grouping event-logs {
     description
       "A selector for the log and its type.";
@@ -603,11 +563,9 @@ module ietf-tpm-remote-attestation {
       }
     }
   }
-
   /**********************/
   /*   RPC operations   */
   /**********************/
-
   rpc tpm12-challenge-response-attestation {
     if-feature "taa:TPM12";
     description
@@ -652,7 +610,6 @@ module ietf-tpm-remote-attestation {
       }
     }
   }
-
   rpc tpm20-challenge-response-attestation {
     if-feature "taa:TPM20";
     description
@@ -699,7 +656,6 @@ module ietf-tpm-remote-attestation {
       }
     }
   }
-
   rpc log-retrieval {
     description
       "Logs Entries are either identified via indices or via providing
@@ -760,7 +716,6 @@ module ietf-tpm-remote-attestation {
       }
       uses log-identifier;
     }
-
     output {
       container system-event-logs {
         description
@@ -781,11 +736,9 @@ module ietf-tpm-remote-attestation {
       }
     }
   }
-
   /**************************************/
   /*   Config & Oper accessible nodes   */
   /**************************************/
-
   container rats-support-structures {
     description
       "The datastore definition enabling verifiers or relying
@@ -983,9 +936,6 @@ module ietf-tpm-remote-attestation {
               description
                 "A reference to a specific certificate of an
                  asymmetric key in the Keystore.";
-                 /* Note: It is also possible to import a grouping which 
-                    allows local definition via an imported keystore 
-                    schema. */
             }
             leaf certificate-type {
               type enumeration {
