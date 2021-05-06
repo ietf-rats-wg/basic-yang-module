@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-04-20T08:10:38.943346+00:00",
+  "timestamp": "2021-05-06T14:22:29.251387+00:00",
   "repo": "ietf-rats-wg/basic-yang-module",
   "labels": [
     {
@@ -193,16 +193,24 @@
       "id": "MDU6SXNzdWU3MTE3Nzg2NjQ=",
       "title": "Potential stand-alone document for ietf-tcg-algs.yang",
       "url": "https://github.com/ietf-rats-wg/basic-yang-module/issues/22",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "henkbirkholz",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "This is item (10) split out from issue #6 \r\n\r\nAs ietf-tcg-algs.yang has to be updated over time, the question is how to facilitate that with the least growing pains. One option is $SUBJECT. We should have a clear understanding how this can work and how this should work in the end.",
       "createdAt": "2020-09-30T09:17:06Z",
-      "updatedAt": "2020-09-30T09:17:06Z",
-      "closedAt": null,
-      "comments": []
+      "updatedAt": "2021-04-20T08:18:17Z",
+      "closedAt": "2021-04-20T08:18:17Z",
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "body": "Abandoning this thought for now.",
+          "createdAt": "2021-04-20T08:18:17Z",
+          "updatedAt": "2021-04-20T08:18:17Z"
+        }
+      ]
     },
     {
       "number": 25,
@@ -233,15 +241,15 @@
       "id": "MDU6SXNzdWU4NTU2MDkxMDQ=",
       "title": "ima & neteq logs effectively both use ima_event format, but with different scope",
       "url": "https://github.com/ietf-rats-wg/basic-yang-module/issues/34",
-      "state": "OPEN",
+      "state": "CLOSED",
       "author": "henkbirkholz",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "This issues tries to capture the remaining issue about the difference between the log features \"ima\" and \"netequip_boot\":\r\n\r\nThe difference between the two log types is the scope of events represented in the most expressive way possible. While ima changes the formats during layered attestation ending up using the \"richest format\" when the kernel becomes the Attesting Environment, netequip_boot uses the \"rich kernel format\" from the very start.\r\nNeteq therefore can reuse the ima-event grouping and can use \"https://www.trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3\" as the reference in \"feature netequip_boot\". But it seems to me that it somehow still should be its own feature, as there is a difference in the semantics how the format in that grouping is used.\r\n\r\nHere I am trying to capture what I think of as the most straight forward options right now:\r\n\r\nShould a \"feature driven\" optional statement be added to \"ima-event\" that acts as a flag that exists based on the netequip_boot feature (which I think would be more verbose where logs are already verbose) and ima and netequip_boot feature are merged into ima?\r\n\r\nor\r\n\r\nShould netequip_boot feature remain a separate statement that also uses ima-event, but has the extended scope of ima expressiveness described in its feature description?\r\n\r\nPlease add obvious options that elude me right now.",
       "createdAt": "2021-04-12T06:39:49Z",
-      "updatedAt": "2021-04-12T06:39:49Z",
-      "closedAt": null,
+      "updatedAt": "2021-05-06T14:21:48Z",
+      "closedAt": "2021-05-06T14:21:48Z",
       "comments": []
     }
   ],
@@ -1662,24 +1670,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NjE3ODM0MjA2",
       "title": "consolidation of Network Equipment Boot feature/format/log",
       "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/37",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "henkbirkholz",
       "authorAssociation": "MEMBER",
       "assignees": [],
       "labels": [],
       "body": "fixes #34",
       "createdAt": "2021-04-19T09:41:24Z",
-      "updatedAt": "2021-04-20T08:10:15Z",
+      "updatedAt": "2021-05-06T14:21:48Z",
       "baseRepository": "ietf-rats-wg/basic-yang-module",
       "baseRefName": "master",
       "baseRefOid": "1a31f4b3075005d10a59ac20dab4815664970ff0",
       "headRepository": "ietf-rats-wg/basic-yang-module",
       "headRefName": "neteq_boot-consolidation",
       "headRefOid": "2197060815a3bae3afaeaa247ce0784c6a2753ef",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2021-05-06T14:21:48Z",
+      "mergedAt": "2021-05-06T14:21:48Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "68d1d4a8c9e64e2d2801828383d140e053ec3868"
+      },
       "comments": [
         {
           "author": "henkbirkholz",
@@ -1687,6 +1697,13 @@
           "body": "This PR is intended to reflect the current consensus on consolidating the use of the Network Equipment Boot log format. In the current proposal it re-uses the IMA event format (therefore addressing the missing reference in the corresponding feature statement) and highlights in its description that it combines the scope of BIOS event and IMA event measurements.",
           "createdAt": "2021-04-19T09:45:13Z",
           "updatedAt": "2021-04-19T09:45:13Z"
+        },
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "body": "Thanks Wei! Updated.",
+          "createdAt": "2021-04-20T08:12:29Z",
+          "updatedAt": "2021-04-20T08:12:29Z"
         }
       ],
       "reviews": [
@@ -1717,7 +1734,7 @@
       "labels": [],
       "body": "Mahesh's XPATH",
       "createdAt": "2021-04-19T22:49:17Z",
-      "updatedAt": "2021-04-19T22:49:17Z",
+      "updatedAt": "2021-04-20T08:17:34Z",
       "baseRepository": "ietf-rats-wg/basic-yang-module",
       "baseRefName": "master",
       "baseRefOid": "1a31f4b3075005d10a59ac20dab4815664970ff0",
@@ -1728,8 +1745,30 @@
       "mergedAt": null,
       "mergedBy": null,
       "mergeCommit": null,
-      "comments": [],
-      "reviews": []
+      "comments": [
+        {
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "body": "Looking at the expressions without any extensive experience with XPATH, I am putting my faith in Mahesh when approving this change :-) (aka LGTM) ",
+          "createdAt": "2021-04-20T08:16:50Z",
+          "updatedAt": "2021-04-20T08:16:50Z"
+        }
+      ],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjM5NjQ3Njc0",
+          "commit": {
+            "abbreviatedOid": "a84c72e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "also, I am neutral wrt the removal of newline",
+          "createdAt": "2021-04-20T08:17:34Z",
+          "updatedAt": "2021-04-20T08:17:34Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
