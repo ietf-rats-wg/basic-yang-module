@@ -1,0 +1,120 @@
+module: ietf-tpm-remote-attestation
+  +--rw rats-support-structures
+     +--rw compute-nodes {tpm:tpms}?
+     |  +--ro compute-node* [node-id]
+     |     +--ro node-id                string
+     |     +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
+     |     +--ro node-name?             string
+     |     +--ro node-location?         string
+     +--rw tpms
+     |  +--rw tpm* [name]
+     |     +--rw name                string
+     |     +--ro hardware-based?     boolean
+     |     +--ro physical-index?     int32 {ietfhw:entity-mib}?
+     |     +--ro path?               string
+     |     +--ro compute-node        compute-node-ref {tpm:tpms}?
+     |     +--ro manufacturer?       string
+     |     +--rw firmware-version    identityref
+     |     +--rw tpm12-hash-algo?    identityref
+     |     +--rw tpm12-pcrs*         pcr
+     |     +--rw tpm20-pcr-bank* [tpm20-hash-algo]
+     |     |  +--rw tpm20-hash-algo    identityref
+     |     |  +--rw pcr-index*         tpm:pcr
+     |     +--ro status              enumeration
+     |     +--rw certificates
+     |        +--rw certificate* [name]
+     |           +--rw name            string
+     |           +--rw keystore-ref?   -> /ks:keystore/asymmetric-keys/asymmetric-key/certificates/certificate/name
+     |           +--rw type?           enumeration
+     +--rw attester-supported-algos
+        +--rw tpm12-asymmetric-signing*   identityref
+        +--rw tpm12-hash*                 identityref
+        +--rw tpm20-asymmetric-signing*   identityref
+        +--rw tpm20-hash*                 identityref
+
+  rpcs:
+    +---x tpm12-challenge-response-attestation {taa:tpm12}?
+    |  +---w input
+    |  |  +---w tpm12-attestation-challenge
+    |  |     +---w pcr-index*          pcr
+    |  |     +---w nonce-value         binary
+    |  |     +---w certificate-name*   certificate-name-ref {tpm:tpms}?
+    |  +--ro output
+    |     +--ro tpm12-attestation-response* []
+    |        +--ro certificate-name    certificate-name-ref
+    |        +--ro up-time?            uint32
+    |        +--ro TPM_QUOTE2?         binary
+    +---x tpm20-challenge-response-attestation {taa:tpm20}?
+    |  +---w input
+    |  |  +---w tpm20-attestation-challenge
+    |  |     +---w nonce-value            binary
+    |  |     +---w tpm20-pcr-selection* []
+    |  |     |  +---w tpm20-hash-algo?   identityref
+    |  |     |  +---w pcr-index*         pcr
+    |  |     +---w certificate-name*      certificate-name-ref {tpm:tpms}?
+    |  +--ro output
+    |     +--ro tpm20-attestation-response* []
+    |        +--ro certificate-name       certificate-name-ref
+    |        +--ro TPMS_QUOTE_INFO        binary
+    |        +--ro quote-signature?       binary
+    |        +--ro up-time?               uint32
+    |        +--ro unsigned-pcr-values* []
+    |           +--ro tpm20-hash-algo?   identityref
+    |           +--ro pcr-values* [pcr-index]
+    |              +--ro pcr-index    pcr
+    |              +--ro pcr-value?   binary
+    +---x log-retrieval
+       +---w input
+       |  +---w log-selector* []
+       |  |  +---w name*                      string
+       |  |  +---w (index-type)?
+       |  |  |  +--:(last-entry)
+       |  |  |  |  +---w last-entry-value?    binary
+       |  |  |  +--:(index)
+       |  |  |  |  +---w last-index-number?   uint64
+       |  |  |  +--:(timestamp)
+       |  |  |     +---w timestamp?           yang:date-and-time
+       |  |  +---w log-entry-quantity?        uint16
+       |  +---w log-type        identityref
+       +--ro output
+          +--ro system-event-logs
+             +--ro node-data* []
+                +--ro name?         string
+                +--ro up-time?      uint32
+                +--ro log-result
+                   +--ro (attested_event_log_type)
+                      +--:(bios) {bios}?
+                      |  +--ro bios-event-logs
+                      |     +--ro bios-event-entry* [event-number]
+                      |        +--ro event-number    uint32
+                      |        +--ro event-type?     uint32
+                      |        +--ro pcr-index?      pcr
+                      |        +--ro digest-list* []
+                      |        |  +--ro hash-algo?   identityref
+                      |        |  +--ro digest*      binary
+                      |        +--ro event-size?     uint32
+                      |        +--ro event-data*     uint8
+                      +--:(ima) {ima}?
+                      |  +--ro ima-event-logs
+                      |     +--ro ima-event-entry* [event-number]
+                      |        +--ro event-number               uint64
+                      |        +--ro ima-template?              string
+                      |        +--ro filename-hint?             string
+                      |        +--ro filedata-hash?             binary
+                      |        +--ro filedata-hash-algorithm?   string
+                      |        +--ro template-hash-algorithm?   string
+                      |        +--ro template-hash?             binary
+                      |        +--ro pcr-index?                 pcr
+                      |        +--ro signature?                 binary
+                      +--:(netequip_boot) {netequip_boot}?
+                         +--ro boot-event-logs
+                            +--ro boot-event-entry* [event-number]
+                               +--ro event-number               uint64
+                               +--ro ima-template?              string
+                               +--ro filename-hint?             string
+                               +--ro filedata-hash?             binary
+                               +--ro filedata-hash-algorithm?   string
+                               +--ro template-hash-algorithm?   string
+                               +--ro template-hash?             binary
+                               +--ro pcr-index?                 pcr
+                               +--ro signature?                 binary
