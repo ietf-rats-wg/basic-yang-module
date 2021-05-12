@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-05-06T14:22:29.251387+00:00",
+  "timestamp": "2021-05-12T12:54:27.131822+00:00",
   "repo": "ietf-rats-wg/basic-yang-module",
   "labels": [
     {
@@ -1727,24 +1727,26 @@
       "id": "MDExOlB1bGxSZXF1ZXN0NjE4NjYxMjM5",
       "title": "Update ietf-tpm-remote-attestation.yang",
       "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/38",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ericvoit",
       "authorAssociation": "CONTRIBUTOR",
       "assignees": [],
       "labels": [],
       "body": "Mahesh's XPATH",
       "createdAt": "2021-04-19T22:49:17Z",
-      "updatedAt": "2021-04-20T08:17:34Z",
+      "updatedAt": "2021-05-06T14:23:03Z",
       "baseRepository": "ietf-rats-wg/basic-yang-module",
       "baseRefName": "master",
-      "baseRefOid": "1a31f4b3075005d10a59ac20dab4815664970ff0",
+      "baseRefOid": "68d1d4a8c9e64e2d2801828383d140e053ec3868",
       "headRepository": "ericvoit/basic-yang-module",
       "headRefName": "patch-28",
-      "headRefOid": "a84c72e2e3a34e0a76d4a306e6c4484e221f5a29",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "headRefOid": "94fa7ef0ec136c9603f18fcef21fabda9b5c96f9",
+      "closedAt": "2021-05-06T14:23:02Z",
+      "mergedAt": "2021-05-06T14:23:02Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "3916c6328ae5c8017057bda14e379a1158baf29d"
+      },
       "comments": [
         {
           "author": "henkbirkholz",
@@ -1766,6 +1768,268 @@
           "body": "also, I am neutral wrt the removal of newline",
           "createdAt": "2021-04-20T08:17:34Z",
           "updatedAt": "2021-04-20T08:17:34Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 39,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjQwODk1NzQ1",
+      "title": "Mahesh requested a downshift of TPM to tpm in YANG",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/39",
+      "state": "CLOSED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "feature names desired downshift",
+      "createdAt": "2021-05-11T15:43:06Z",
+      "updatedAt": "2021-05-11T19:48:30Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "3916c6328ae5c8017057bda14e379a1158baf29d",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-29",
+      "headRefOid": "eac878c7b1106a761c2560e5ada8082cdf01831c",
+      "closedAt": "2021-05-11T19:48:30Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 40,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjQxNDgzODUy",
+      "title": "Matches to YANG Dr comments",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/40",
+      "state": "CLOSED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-05-11T19:18:46Z",
+      "updatedAt": "2021-05-11T19:48:38Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "3916c6328ae5c8017057bda14e379a1158baf29d",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-30",
+      "headRefOid": "644a81bb209757719e8f702c910e4b2f12e9c857",
+      "closedAt": "2021-05-11T19:48:38Z",
+      "mergedAt": null,
+      "mergedBy": null,
+      "mergeCommit": null,
+      "comments": [],
+      "reviews": []
+    },
+    {
+      "number": 41,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjQxNTc3OTY1",
+      "title": "YANG Dr.",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/41",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-05-11T19:46:09Z",
+      "updatedAt": "2021-05-12T12:43:08Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "3916c6328ae5c8017057bda14e379a1158baf29d",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-32",
+      "headRefOid": "09b2975ba36643f0375e2c4d9b5f40a876dee7a8",
+      "closedAt": "2021-05-12T12:43:08Z",
+      "mergedAt": "2021-05-12T12:43:08Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "7508016ecde3dec5a05bef2009e997fb24f9ee54"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjU3ODM0Nzk5",
+          "commit": {
+            "abbreviatedOid": "09b2975"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-05-12T12:42:45Z",
+          "updatedAt": "2021-05-12T12:42:45Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 42,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjQxNjA1MTk2",
+      "title": "Yang dr",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/42",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-05-11T19:54:38Z",
+      "updatedAt": "2021-05-12T12:42:09Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "3916c6328ae5c8017057bda14e379a1158baf29d",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-33",
+      "headRefOid": "b7231ebf8fe98d95dde8d820b237c005fa2356fa",
+      "closedAt": "2021-05-12T12:42:09Z",
+      "mergedAt": "2021-05-12T12:42:09Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "059a1633bf7393ec48bc2a331e06c0a4e6cd92fd"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjU3ODMzNzI1",
+          "commit": {
+            "abbreviatedOid": "b7231eb"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-05-12T12:41:40Z",
+          "updatedAt": "2021-05-12T12:41:40Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 43,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjQxNjIxNTUy",
+      "title": "YANG Dr",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/43",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-05-11T19:59:43Z",
+      "updatedAt": "2021-05-12T12:40:50Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "3916c6328ae5c8017057bda14e379a1158baf29d",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-36",
+      "headRefOid": "f2b28bacb4e446d647c8a43d61e18ce9cd364243",
+      "closedAt": "2021-05-12T12:40:50Z",
+      "mergedAt": "2021-05-12T12:40:50Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "8aa8ace4ed3b558c15d401a1d92bdab37012174a"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjU3ODMyNTg2",
+          "commit": {
+            "abbreviatedOid": "f2b28ba"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-05-12T12:40:32Z",
+          "updatedAt": "2021-05-12T12:40:32Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 44,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjQxNjI2NjAz",
+      "title": "Update attester-supported-algos.tree",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/44",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-05-11T20:01:17Z",
+      "updatedAt": "2021-05-12T12:40:08Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "3916c6328ae5c8017057bda14e379a1158baf29d",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-37",
+      "headRefOid": "d732b0a5c4cfe9bacaacd15bc918227383c3dc95",
+      "closedAt": "2021-05-12T12:40:08Z",
+      "mergedAt": "2021-05-12T12:40:08Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "c8c2c13ffe1fa1e7b1b153b2ebb729a4abbf8ab0"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjU3ODMyMDU5",
+          "commit": {
+            "abbreviatedOid": "d732b0a"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-05-12T12:39:59Z",
+          "updatedAt": "2021-05-12T12:39:59Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 45,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjQxNjU0NDI2",
+      "title": "YANG Dr.",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/45",
+      "state": "MERGED",
+      "author": "ericvoit",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "",
+      "createdAt": "2021-05-11T20:10:01Z",
+      "updatedAt": "2021-05-12T12:39:17Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "3916c6328ae5c8017057bda14e379a1158baf29d",
+      "headRepository": "ericvoit/basic-yang-module",
+      "headRefName": "patch-38",
+      "headRefOid": "d50bd4ec2e26060d9c46590b2a54e1cad4b615ab",
+      "closedAt": "2021-05-12T12:39:17Z",
+      "mergedAt": "2021-05-12T12:39:17Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "52a7ffc4fc0f4d3f0907baf1e9b830a9efd4acc3"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjU3ODMwMzk4",
+          "commit": {
+            "abbreviatedOid": "d50bd4e"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-05-12T12:38:13Z",
+          "updatedAt": "2021-05-12T12:38:13Z",
           "comments": []
         }
       ]
