@@ -290,7 +290,7 @@ The third are specific algorithm types.   Each algorithm type defines what crypt
 #### YANG Module
 ~~~~ YANG
 <CODE BEGINS> file "ietf-tcg-algs@2021-05-11.yang"
-{::include ietf-tcg-algs@2020-05-11.yang}
+{::include ietf-tcg-algs@2021-05-11.yang}
 <CODE ENDS>
 ~~~~
 
