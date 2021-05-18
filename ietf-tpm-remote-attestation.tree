@@ -85,7 +85,7 @@ module: ietf-tpm-remote-attestation
                 +--ro up-time?      uint32
                 +--ro log-result
                    +--ro (attested_event_log_type)
-                      +--:(bios)
+                      +--:(bios) {bios}?
                       |  +--ro bios-event-logs
                       |     +--ro bios-event-entry* [event-number]
                       |        +--ro event-number    uint32
@@ -96,25 +96,43 @@ module: ietf-tpm-remote-attestation
                       |        |  +--ro digest*      binary
                       |        +--ro event-size?     uint32
                       |        +--ro event-data*     uint8
-                      +--:(ima)
+                      +--:(ima) {ima}?
                       |  +--ro ima-event-logs
                       |     +--ro ima-event-entry* [event-number]
-                      |        +--ro event-number               uint64
-                      |        +--ro ima-template?              string
-                      |        +--ro filename-hint?             string
-                      |        +--ro filedata-hash?             binary
-                      |        +--ro filedata-hash-algorithm?   string
-                      |        +--ro template-hash-algorithm?   string
-                      |        +--ro template-hash?             binary
+                      |        +--ro event-number
+                      |        |       uint64
+                      |        +--ro ima-template?
+                      |        |       string
+                      |        +--ro filename-hint?
+                      |        |       string
+                      |        +--ro filedata-hash?
+                      |        |       binary
+                      |        +--ro filedata-hash-algorithm?
+                      |        |       string
+                      |        +--ro template-hash-algorithm?
+                      |        |       string
+                      |        +--ro template-hash?
+                      |        |       binary
                       |        +--ro pcr-index?                 pcr
-                      |        +--ro signature?                 binary
-                      +--:(netequip_boot)
+                      |        +--ro signature?
+                      |                binary
+                      +--:(netequip_boot) {netequip_boot}?
                          +--ro boot-event-logs
                             +--ro boot-event-entry* [event-number]
-                               +--ro event-number               uint64
-                               +--ro filename-hint?             string
-                               +--ro filedata-hash?             binary
-                               +--ro filedata-hash-algorithm?   string
-                               +--ro file-version?              string
-                               +--ro file-type?                 string
+                               +--ro event-number
+                               |       uint64
+                               +--ro ima-template?
+                               |       string
+                               +--ro filename-hint?
+                               |       string
+                               +--ro filedata-hash?
+                               |       binary
+                               +--ro filedata-hash-algorithm?
+                               |       string
+                               +--ro template-hash-algorithm?
+                               |       string
+                               +--ro template-hash?
+                               |       binary
                                +--ro pcr-index?                 pcr
+                               +--ro signature?
+                                       binary
