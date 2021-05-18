@@ -157,7 +157,7 @@ module ietf-tpm-remote-attestation {
 
   grouping tpm20-hash-algo {
     description
-      "The cryptographic algorithm used to hash the TPM2 PCRs.  This
+      "The cryptographic algorithm used to hash the TPM 2.0 PCRs.  This
        must be from the list of platform supported options.";
     leaf tpm20-hash-algo {
       type identityref {
@@ -169,14 +169,14 @@ module ietf-tpm-remote-attestation {
       }
       default "taa:TPM_ALG_SHA256";
       description
-        "The hash scheme that is used to hash a TPM1.2 PCR. This
+        "The hash scheme that is used to hash a TPM 1.2 PCR. This
          must be one of those supported by a platform.";
     }
   }
 
   grouping tpm12-hash-algo {
     description
-      "The cryptographic algorithm used to hash the TPM1.2 PCRs.";
+      "The cryptographic algorithm used to hash the TPM 1.2 PCRs.";
     leaf tpm12-hash-algo {
       type identityref {
         base taa:hash;
@@ -187,10 +187,10 @@ module ietf-tpm-remote-attestation {
       }
       default "taa:TPM_ALG_SHA1";
       description
-        "The hash scheme that is used to hash a TPM1.2 PCR. This
+        "The hash scheme that is used to hash a TPM 1.2 PCR. This
          MUST be one of those supported by a platform.  This assumes
          that an algorithm other than SHA1 can be supported on some
-         TPM1.2 cryptoprocessor variant.";
+         TPM 1.2 cryptoprocessor variant.";
     }
   }
 
@@ -227,14 +227,14 @@ module ietf-tpm-remote-attestation {
       }
       description
         "The numbers/indexes of the PCRs. At the moment this is limited
-         to 32.";
+         to 32 items.";
     }
   }
 
   grouping tpm20-pcr-selection {
     description
       "A Verifier can acquire one or more PCR values, which are hashed
-       together in a TPM2B_DIGEST coming from the TPM2.  The selection
+       together in a TPM2B_DIGEST coming from the TPM 2.0.  The selection
        list of desired PCRs and the Hash Algorithm is represented in
        this grouping.";
     list tpm20-pcr-selection {
@@ -308,46 +308,47 @@ module ietf-tpm-remote-attestation {
 
   grouping tpm12-attestation {
     description
-      "Contains an instance of TPM1.2 style signed cryptoprocessor
+      "Contains an instance of TPM 1.2 style signed cryptoprocessor
        measurements.  It is supplemented by unsigned Attester
        information.";
     uses node-uptime;
     leaf TPM_QUOTE2 {
       type binary;
       description
-        "Result of a TPM1.2 Quote2 operation. This includes PCRs,
+        "Result of a TPM 1.2 Quote2 operation. This includes PCR values,
          signatures, locality, the provided nonce and other data which
          can be further parsed to appraise the Attester.";
       reference
-        "TPM1.2 commands rev116 July 2007, Section 16.5";
+        "TPM 1.2 commands rev116 July 2007, https://trustedcomputinggroup.org/wp-content/uploads/TPM-Main-Part-3-Commands_v1.2_rev116_01032011.pdf  Section 16.5";
     }
   }
 
   grouping tpm20-attestation {
     description
-      "Contains an instance of TPM2 style signed cryptoprocessor
+      "Contains an instance of TPM 2.0 style signed cryptoprocessor
        measurements.  It is supplemented by unsigned Attester
        information.";
-    leaf TPMS_QUOTE_INFO {
+    leaf attestation-data {
       type binary;
       mandatory true;
       description
-        "A hash of the latest PCR values (and the hash algorithm used)
-         which have been returned from a Verifier for the selected PCRs
-         and Hash Algorithms.";
+        "A composite hash of the latest PCR values (and the hash algorithm used)
+         which have been returned by an Attester for the selected PCRs
+         and Hash Algorithms (type: TPM2B_ATTEST). This also
+         includes the provided nonce and TPM 2.0 time and clock information.";
       reference
         "https://www.trustedcomputinggroup.org/wp-content/uploads/
-         TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.12.1";
+         TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.12.9";
     }
     leaf quote-signature {
       type binary;
       description
-        "Quote signature returned by TPM Quote.  The signature was
-         generated using the key associated with the
+        "Quote signature returned by TPM Quote (type: TPMT_SIGNATURE).
+        The signature was generated using the key associated with the
          certificate 'name'.";
       reference
         "https://www.trustedcomputinggroup.org/wp-content/uploads/
-         TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 11.2.1";
+         TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 11.3.4";
     }
     uses node-uptime;
     list unsigned-pcr-values {
@@ -606,7 +607,7 @@ module ietf-tpm-remote-attestation {
              + "/tpm:tpm[tpm:firmware-version='taa:tpm12']"
              + "/tpm:certificates/"
              + "/tpm:certificate[name=current()]" {
-            error-message "Not an available TPM1.2 AIK certificate.";
+            error-message "Not an available TPM 1.2 AIK certificate.";
           }
           description
             "When populated, the RPC will only get a Quote for the
@@ -653,7 +654,7 @@ module ietf-tpm-remote-attestation {
              + "/tpm:tpm[tpm:firmware-version='taa:tpm20']"
              + "/tpm:certificates/"
              + "/tpm:certificate[name=current()]" {
-            error-message "Not an available TPM2.0 AIK certificate.";
+            error-message "Not an available TPM 2.0 AK certificate.";
           }
           description
             "When populated, the RPC will only get a Quote for the
@@ -665,8 +666,8 @@ module ietf-tpm-remote-attestation {
       list tpm20-attestation-response {
         unique "certificate-name";
         description
-          "The binary output of TPM2b_Quote in one TPM chip of the
-           node which identified by node-id. An TPMS_ATTEST structure
+          "The binary output of TPM2_Quote in one TPM chip of the
+           node which identified by node-id. An TPM2B_ATTEST structure
            including a length, encapsulated in a signature";
         uses certificate-name-ref {
           description
@@ -871,14 +872,14 @@ module ietf-tpm-remote-attestation {
           refine "tpm12-hash-algo" {
             description
               "The hash algorithm overwrites the default used for PCRs
-               on this TPM1.2 compliant cryptoprocessor.";
+               on this TPM 1.2 compliant cryptoprocessor.";
           }
         }
         leaf-list tpm12-pcrs {
           when "../firmware-version = 'taa:tpm12'";
           type pcr;
           description
-            "The PCRs which may be extracted from this TPM1.2
+            "The PCRs which may be extracted from this TPM 1.2
              compliant cryptoprocessor.";
         }
         list tpm20-pcr-bank {
@@ -886,7 +887,7 @@ module ietf-tpm-remote-attestation {
           key "tpm20-hash-algo";
           description
             "Specifies the list of PCRs that may be extracted for
-             a specific Hash Algorithm on this TPM2 compliant
+             a specific Hash Algorithm on this TPM 2.0 compliant
              cryptoprocessor.  A bank is a set of PCRs which are
              extended using a particular hash algorithm.";
           reference
@@ -904,12 +905,12 @@ module ietf-tpm-remote-attestation {
             }
             description
               "The hash scheme actively being used to hash a
-               one or more TPM2.0 PCRs.";
+               one or more TPM 2.0 PCRs.";
           }
           leaf-list pcr-index {
             type tpm:pcr;
             description
-              "Defines what TPM2 PCRs are available to be extracted.";
+              "Defines what TPM 2.0 PCRs are available to be extracted.";
           }
         }
         leaf status {
@@ -1028,7 +1029,7 @@ module ietf-tpm-remote-attestation {
           base taa:asymmetric;
         }
         description
-          "Platform Supported TPM20 asymmetric algorithms.";
+          "Platform Supported TPM 2.0 asymmetric algorithms.";
       }
       leaf-list tpm20-hash {
         when "../../tpm:tpms"
@@ -1037,7 +1038,7 @@ module ietf-tpm-remote-attestation {
           base taa:hash;
         }
         description
-          "Platform supported TPM20 hash algorithms.";
+          "Platform supported TPM 2.0 hash algorithms.";
       }
     }
   }
