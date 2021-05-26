@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-05-12T12:54:27.131822+00:00",
+  "timestamp": "2021-05-26T15:18:41.535180+00:00",
   "repo": "ietf-rats-wg/basic-yang-module",
   "labels": [
     {
@@ -250,6 +250,22 @@
       "createdAt": "2021-04-12T06:39:49Z",
       "updatedAt": "2021-05-06T14:21:48Z",
       "closedAt": "2021-05-06T14:21:48Z",
+      "comments": []
+    },
+    {
+      "number": 47,
+      "id": "MDU6SXNzdWU4OTQ4MjU4NzQ=",
+      "title": "TPMS_QUOTE_INFO should be TPM2B_ATTEST",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/issues/47",
+      "state": "CLOSED",
+      "author": "eckelmeckel",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "TPM 2.0 quote information (attestation data) is of type TPM2B_ATTEST, not TPMS_QUOTE_INFO. TPMS_QUOTE_INFO is a sub element of the TPM2B_ATTEST. In a TPM2_Quote operation, the TPM signs a hash of the TPM2B_ATTEST structure. The signature is of type TPMT_SIGNATURE (just FYI).",
+      "createdAt": "2021-05-18T22:13:21Z",
+      "updatedAt": "2021-05-26T15:18:13Z",
+      "closedAt": "2021-05-26T15:18:13Z",
       "comments": []
     }
   ],
@@ -2030,6 +2046,48 @@
           "body": "",
           "createdAt": "2021-05-12T12:38:13Z",
           "updatedAt": "2021-05-12T12:38:13Z",
+          "comments": []
+        }
+      ]
+    },
+    {
+      "number": 46,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjQ3MTMwMTE1",
+      "title": "Review",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/46",
+      "state": "MERGED",
+      "author": "eckelmeckel",
+      "authorAssociation": "CONTRIBUTOR",
+      "assignees": [],
+      "labels": [],
+      "body": "Basically, this fixes typos, grammar, and consistency. And, all above, the TPM 2.0 quote information, which was set to TPMS_QUOTE_INFO. Actually it is TPM2B_ATTEST.\r\n\r\nFixes #47.\r\nFurther Issues to be created.",
+      "createdAt": "2021-05-18T22:06:56Z",
+      "updatedAt": "2021-05-26T15:18:14Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "cbdea21db3fbd0d87696f43eb403006598fc241a",
+      "headRepository": "eckelmeckel/basic-yang-module",
+      "headRefName": "review-2020-04-16",
+      "headRefOid": "3e4d7e41f523eff578e5266d8992960d993a07fc",
+      "closedAt": "2021-05-26T15:18:13Z",
+      "mergedAt": "2021-05-26T15:18:13Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "474cc6cdbcce37aefa00a4695b2f21e49fd48588"
+      },
+      "comments": [],
+      "reviews": [
+        {
+          "id": "MDE3OlB1bGxSZXF1ZXN0UmV2aWV3NjY5MTU3OTEx",
+          "commit": {
+            "abbreviatedOid": "3e4d7e4"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2021-05-26T15:16:07Z",
+          "updatedAt": "2021-05-26T15:16:07Z",
           "comments": []
         }
       ]
