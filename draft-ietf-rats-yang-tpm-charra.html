@@ -14,14 +14,14 @@
 <meta content="Tom Laffey" name="author">
 <meta content="Guy C. Fedorkow" name="author">
 <meta content="
-       This document defines a YANG RPC and a small number of configuration node required to retrieve attestation evidence about integrity measurements from a device following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPC originating from one or more roots of trust of measurement. The module defined requires at least one TPM 1.2 or TPM 2.0 and corresponding Trusted Software Stack included in the device components of the composite device the YANG server is running on. 
+       This document defines YANG RPCs and a small number of configuration nodes required to retrieve attestation evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), included in the device components of the composite device the YANG server is running on. 
     " name="description">
 <meta content="xml2rfc 3.7.0" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-rats-yang-tpm-charra-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.7.0
-    Python 3.8.8
+    Python 3.8.10
     appdirs 1.4.4
     ConfigArgParse 1.2.3
     google-i18n-address 2.4.0
@@ -829,7 +829,7 @@ address div.right {
 </tr></thead>
 <tfoot><tr>
 <td class="left">Birkholz, et al.</td>
-<td class="center">Expires 13 November 2021</td>
+<td class="center">Expires 27 November 2021</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -842,12 +842,12 @@ address div.right {
 <dd class="internet-draft">draft-ietf-rats-yang-tpm-charra-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-05-12" class="published">12 May 2021</time>
+<time datetime="2021-05-26" class="published">26 May 2021</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-11-13">13 November 2021</time></dd>
+<dd class="expires"><time datetime="2021-11-27">27 November 2021</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -888,7 +888,7 @@ address div.right {
 <h1 id="title">A YANG Data Model for Challenge-Response-based Remote Attestation Procedures using TPMs</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">This document defines a YANG RPC and a small number of configuration node required to retrieve attestation evidence about integrity measurements from a device following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPC originating from one or more roots of trust of measurement. The module defined requires at least one TPM 1.2 or TPM 2.0 and corresponding Trusted Software Stack included in the device components of the composite device the YANG server is running on.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">This document defines YANG RPCs and a small number of configuration nodes required to retrieve attestation evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), included in the device components of the composite device the YANG server is running on.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note" id="section-note.1">
       <h2 id="name-note-to-readers">
@@ -919,7 +919,7 @@ address div.right {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 13 November 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 27 November 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -947,55 +947,55 @@ address div.right {
         <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
 <a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
         </h2>
-<nav class="toc"><ul class="ulEmpty compact toc">
-<li class="ulEmpty compact toc" id="section-toc.1-1.1">
+<nav class="toc"><ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.1">
             <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a></p>
-<ul class="ulEmpty compact toc">
-<li class="ulEmpty compact toc" id="section-toc.1-1.1.2.1">
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.1.2.1">
                 <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-requirements-notation" class="xref">Requirements notation</a></p>
 </li>
             </ul>
 </li>
-          <li class="ulEmpty compact toc" id="section-toc.1-1.2">
+          <li class="compact ulEmpty toc" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-the-yang-module-for-basic-r" class="xref">The YANG Module for Basic Remote Attestation Procedures</a></p>
-<ul class="ulEmpty compact toc">
-<li class="ulEmpty compact toc" id="section-toc.1-1.2.2.1">
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.2.2.1">
                 <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-yang-modules" class="xref">YANG Modules</a></p>
-<ul class="ulEmpty compact toc">
-<li class="ulEmpty compact toc" id="section-toc.1-1.2.2.1.2.1">
-                    <p id="section-toc.1-1.2.2.1.2.1.1" class="keepWithNext"><a href="#section-2.1.1" class="xref">2.1.1</a>.  <a href="#name-ietf-tpm-remote-attestation" class="xref">ietf-tpm-remote-attestation</a></p>
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.2.2.1.2.1">
+                    <p id="section-toc.1-1.2.2.1.2.1.1" class="keepWithNext"><a href="#section-2.1.1" class="xref">2.1.1</a>.  <a href="#name-ietf-tpm-remote-attestation" class="xref">'ietf-tpm-remote-attestation'</a></p>
 </li>
-                  <li class="ulEmpty compact toc" id="section-toc.1-1.2.2.1.2.2">
-                    <p id="section-toc.1-1.2.2.1.2.2.1"><a href="#section-2.1.2" class="xref">2.1.2</a>.  <a href="#name-ietf-tcg-algs" class="xref">ietf-tcg-algs</a></p>
+                  <li class="compact ulEmpty toc" id="section-toc.1-1.2.2.1.2.2">
+                    <p id="section-toc.1-1.2.2.1.2.2.1"><a href="#section-2.1.2" class="xref">2.1.2</a>.  <a href="#name-ietf-tcg-algs" class="xref">'ietf-tcg-algs'</a></p>
 </li>
                 </ul>
 </li>
             </ul>
 </li>
-          <li class="ulEmpty compact toc" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-iana-considerations" class="xref">IANA considerations</a></p>
+          <li class="compact ulEmpty toc" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-iana-considerations" class="xref">IANA Considerations</a></p>
 </li>
-          <li class="ulEmpty compact toc" id="section-toc.1-1.4">
+          <li class="compact ulEmpty toc" id="section-toc.1-1.4">
             <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
 </li>
-          <li class="ulEmpty compact toc" id="section-toc.1-1.5">
+          <li class="compact ulEmpty toc" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-acknowledgements" class="xref">Acknowledgements</a></p>
 </li>
-          <li class="ulEmpty compact toc" id="section-toc.1-1.6">
+          <li class="compact ulEmpty toc" id="section-toc.1-1.6">
             <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-change-log" class="xref">Change Log</a></p>
 </li>
-          <li class="ulEmpty compact toc" id="section-toc.1-1.7">
+          <li class="compact ulEmpty toc" id="section-toc.1-1.7">
             <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-references" class="xref">References</a></p>
-<ul class="ulEmpty compact toc">
-<li class="ulEmpty compact toc" id="section-toc.1-1.7.2.1">
+<ul class="compact ulEmpty toc">
+<li class="compact ulEmpty toc" id="section-toc.1-1.7.2.1">
                 <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
 </li>
-              <li class="ulEmpty compact toc" id="section-toc.1-1.7.2.2">
+              <li class="compact ulEmpty toc" id="section-toc.1-1.7.2.2">
                 <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a></p>
 </li>
             </ul>
 </li>
-          <li class="ulEmpty compact toc" id="section-toc.1-1.8">
+          <li class="compact ulEmpty toc" id="section-toc.1-1.8">
             <p id="section-toc.1-1.8.1"><a href="#section-appendix.a" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
 </li>
         </ul>
@@ -1007,9 +1007,9 @@ address div.right {
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">This document is based on the general terminology defined in the <span>[<a href="#I-D.ietf-rats-architecture" class="xref">I-D.ietf-rats-architecture</a>]</span> and uses the operational context defined in <span>[<a href="#I-D.ietf-rats-tpm-based-network-device-attest" class="xref">I-D.ietf-rats-tpm-based-network-device-attest</a>]</span> as well as the interaction model and information elements defined in <span>[<a href="#I-D.ietf-rats-reference-interaction-models" class="xref">I-D.ietf-rats-reference-interaction-models</a>]</span>. The currently supported hardware security modules are the Trusted Platform Module (TPM) <span>[<a href="#TPM1.2" class="xref">TPM1.2</a>]</span> and <span>[<a href="#TPM2.0" class="xref">TPM2.0</a>]</span> specified by the Trusted Computing Group (TCG). One or more TPMs embedded in the components of a Composite Device are required in order to use the YANG module defined in this document. A TPM is used as a root of trust for reporting in order to retrieve attestation Evidence from a composite device (quote primitive operation). Additionally, it is used as a root of trust for storage (RTS) in order to retain shielded secrets and store system measurements using a folding hash function (extend primitive operation).<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">This document is based on the general terminology defined in the <span>[<a href="#I-D.ietf-rats-architecture" class="xref">I-D.ietf-rats-architecture</a>]</span> and uses the operational context defined in <span>[<a href="#I-D.ietf-rats-tpm-based-network-device-attest" class="xref">I-D.ietf-rats-tpm-based-network-device-attest</a>]</span> as well as the interaction model and information elements defined in <span>[<a href="#I-D.ietf-rats-reference-interaction-models" class="xref">I-D.ietf-rats-reference-interaction-models</a>]</span>. The currently supported hardware security modules (HSMs) are the Trusted Platform Modules (TPMs) <span>[<a href="#TPM1.2" class="xref">TPM1.2</a>]</span> and <span>[<a href="#TPM2.0" class="xref">TPM2.0</a>]</span> as specified by the Trusted Computing Group (TCG). One or more TPMs embedded in the components of a Composite Device are required in order to use the YANG module defined in this document. A TPM is used as a root of trust for reporting (RTR) in order to retrieve attestation Evidence from a composite device (<em>TPM Quote</em> primitive operation). Additionally, it is used as a root of trust for storage (RTS) in order to retain shielded secrets and store system measurements using a folding hash function (<em>TPM PCR Extend</em> primitive operation).<a href="#section-1-1" class="pilcrow">¶</a></p>
 <p id="section-1-2">Specific terms imported from <span>[<a href="#I-D.ietf-rats-architecture" class="xref">I-D.ietf-rats-architecture</a>]</span> and used in this document include: Attester, Composite Device, Evidence.<a href="#section-1-2" class="pilcrow">¶</a></p>
-<p id="section-1-3">Specific terms imported from <span>[<a href="#TPM2.0-Key" class="xref">TPM2.0-Key</a>]</span> and used in this document include: Endorsement Key (EK), Initial Attestation key (IAK), Local Attestation Key (LAK).<a href="#section-1-3" class="pilcrow">¶</a></p>
+<p id="section-1-3">Specific terms imported from <span>[<a href="#TPM2.0-Key" class="xref">TPM2.0-Key</a>]</span> and used in this document include: Endorsement Key (EK), Initial Attestation Key (IAK), Local Attestation Key (LAK).<a href="#section-1-3" class="pilcrow">¶</a></p>
 <div id="requirements-notation">
 <section id="section-1.1">
         <h3 id="name-requirements-notation">
@@ -1029,28 +1029,35 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
       <h2 id="name-the-yang-module-for-basic-r">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-the-yang-module-for-basic-r" class="section-name selfRef">The YANG Module for Basic Remote Attestation Procedures</a>
       </h2>
-<p id="section-2-1">One or more TPMs MUST be embedded in the composite device that is providing attestation evidence via the YANG module defined in this document. The ietf-basic-remote-attestation YANG module enables a composite device to take on the role of Claimant and Attester in accordance with the Remote Attestation Procedures (RATS) architecture <span>[<a href="#I-D.ietf-rats-architecture" class="xref">I-D.ietf-rats-architecture</a>]</span> and the corresponding challenge-response interaction model defined in the <span>[<a href="#I-D.ietf-rats-reference-interaction-models" class="xref">I-D.ietf-rats-reference-interaction-models</a>]</span> document. A fresh nonce with an appropriate amount of entropy MUST be supplied by the YANG client in order to enable a proof-of-freshness with respect to the attestation evidence provided by the attester running the YANG datastore. The functions of this YANG module are restricted to 0-1 TPMs per hardware component.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-2-1">One or more TPMs MUST be embedded in a Composite Device that provides attestation evidence via the YANG module defined in this document. The ietf-basic-remote-attestation YANG module enables a composite device to take on the role of an Attester, in accordance with the Remote Attestation Procedures (RATS) architecture <span>[<a href="#I-D.ietf-rats-architecture" class="xref">I-D.ietf-rats-architecture</a>]</span>, and the corresponding challenge-response interaction model defined in the <span>[<a href="#I-D.ietf-rats-reference-interaction-models" class="xref">I-D.ietf-rats-reference-interaction-models</a>]</span> document. A fresh nonce with an appropriate amount of entropy MUST be supplied by the YANG client in order to enable a proof-of-freshness with respect to the attestation Evidence provided by the Attester running the YANG datastore. Further, this nonce is used to prevent replay attacks. The functions of this YANG module are restricted to 0-1 TPMs per hardware component.<a href="#section-2-1" class="pilcrow">¶</a></p>
 <div id="yang-modules">
 <section id="section-2.1">
         <h3 id="name-yang-modules">
 <a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-yang-modules" class="section-name selfRef">YANG Modules</a>
         </h3>
+<p id="section-2.1-1">In this section the several YANG modules are defined.<a href="#section-2.1-1" class="pilcrow">¶</a></p>
 <div id="ietf-tpm-remote-attestation">
 <section id="section-2.1.1">
           <h4 id="name-ietf-tpm-remote-attestation">
-<a href="#section-2.1.1" class="section-number selfRef">2.1.1. </a><a href="#name-ietf-tpm-remote-attestation" class="section-name selfRef">ietf-tpm-remote-attestation</a>
+<a href="#section-2.1.1" class="section-number selfRef">2.1.1. </a><a href="#name-ietf-tpm-remote-attestation" class="section-name selfRef">'ietf-tpm-remote-attestation'</a>
           </h4>
-<p id="section-2.1.1-1">This YANG module imports modules from <span>[<a href="#RFC6991" class="xref">RFC6991</a>]</span>, <span>[<a href="#RFC8348" class="xref">RFC8348</a>]</span>, <span>[<a href="#I-D.ietf-netconf-keystore" class="xref">I-D.ietf-netconf-keystore</a>]</span>, ietf-tcg-algs.yang <a href="#ref-ietf-tcg-algs" class="xref">Section 2.1.2.3</a>.<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1-1">This YANG module imports modules from <span>[<a href="#RFC6991" class="xref">RFC6991</a>]</span>, <span>[<a href="#RFC8348" class="xref">RFC8348</a>]</span>, <span>[<a href="#I-D.ietf-netconf-keystore" class="xref">I-D.ietf-netconf-keystore</a>]</span>, and <code>ietf-tcg-algs.yang</code> <a href="#ref-ietf-tcg-algs" class="xref">Section 2.1.2.3</a>.<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
 <div id="features">
 <section id="section-2.1.1.1">
             <h5 id="name-features">
 <a href="#section-2.1.1.1" class="section-number selfRef">2.1.1.1. </a><a href="#name-features" class="section-name selfRef">Features</a>
             </h5>
 <p id="section-2.1.1.1-1">This module supports the following features:<a href="#section-2.1.1.1-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.1-2">'TPMs' - Indicates that multiple TPMs on the device can support remote attestation,  This feature is applicable in cases where multiple line cards, each with its own TPM.<a href="#section-2.1.1.1-2" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.1-3">'bios'  - Indicates the device supports the retrieval of bios event logs.<a href="#section-2.1.1.1-3" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.1-4">'ima' - Indicates the device supports the retrieval of Integrity Measurement Architecture event logs.<a href="#section-2.1.1.1-4" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.1-5">'netequip_boot' - Indicates the device supports the retrieval of netequip boot event logs.<a href="#section-2.1.1.1-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-2.1.1.1-2.1">'TPMs': Indicates that multiple TPMs on the device can support remote attestation. This feature is applicable in cases where multiple line cards are present, each with its own TPM.<a href="#section-2.1.1.1-2.1" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-2.1.1.1-2.2">'bios': Indicates that the device supports the retrieval of BIOS/UEFI event logs.<a href="#section-2.1.1.1-2.2" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-2.1.1.1-2.3">'ima': Indicates that the device supports the retrieval of event logs from the Linux Integrity Measurement Architecture (IMA).<a href="#section-2.1.1.1-2.3" class="pilcrow">¶</a>
+</li>
+              <li class="normal" id="section-2.1.1.1-2.4">'netequip_boot': Indicates that the device supports the retrieval of netequip boot event logs.<a href="#section-2.1.1.1-2.4" class="pilcrow">¶</a>
+</li>
+            </ul>
 </section>
 </div>
 <div id="identities">
@@ -1058,21 +1065,45 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
             <h5 id="name-identities">
 <a href="#section-2.1.1.2" class="section-number selfRef">2.1.1.2. </a><a href="#name-identities" class="section-name selfRef">Identities</a>
             </h5>
-<p id="section-2.1.1.2-1">This module supports the following types of attestation event logs: 'ima', 'bios', and 'netequip_boot'.<a href="#section-2.1.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.2-1">This module supports the following types of attestation event logs: 'bios', 'ima', and 'netequip_boot'.<a href="#section-2.1.1.2-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="rpcs">
+<div id="remote-procedure-calls-rpcs">
 <section id="section-2.1.1.3">
-            <h5 id="name-rpcs">
-<a href="#section-2.1.1.3" class="section-number selfRef">2.1.1.3. </a><a href="#name-rpcs" class="section-name selfRef">RPCs</a>
+            <h5 id="name-remote-procedure-calls-rpcs">
+<a href="#section-2.1.1.3" class="section-number selfRef">2.1.1.3. </a><a href="#name-remote-procedure-calls-rpcs" class="section-name selfRef">Remote Procedure Calls (RPCs)</a>
             </h5>
-<div id="tpm20-challenge-response-attestation">
+<p id="section-2.1.1.3-1">In the following, RPCs for both TPM 1.2 and TPM 2.0 attestation procedures are defined.<a href="#section-2.1.1.3-1" class="pilcrow">¶</a></p>
+<div id="tpm12-challenge-response-attestation">
 <section id="section-2.1.1.3.1">
-              <h6 id="name-tpm20-challenge-response-at">
-<a href="#section-2.1.1.3.1" class="section-number selfRef">2.1.1.3.1. </a><a href="#name-tpm20-challenge-response-at" class="section-name selfRef">'tpm20-challenge-response-attestation'</a>
+              <h6 id="name-tpm12-challenge-response-at">
+<a href="#section-2.1.1.3.1" class="section-number selfRef">2.1.1.3.1. </a><a href="#name-tpm12-challenge-response-at" class="section-name selfRef">'tpm12-challenge-response-attestation'</a>
               </h6>
-<p id="section-2.1.1.3.1-1">This RPC allows a Verifier to request a quote of PCRs from a TPM2.0 compliant cryptoprocessor.  Where the feature 'TPMs' is active, and one or more 'certificate-name' is not provided, all TPM2.0 compliant cryptoprocessors will respond.   A YANG tree diagram of this RPC is as follows:<a href="#section-2.1.1.3.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.3.1-1">This RPC allows a Verifier to request signed TPM PCRs (<em>TPM Quote</em> operation) from a TPM 1.2 compliant cryptoprocessor. Where the feature 'TPMs' is active, and one or more 'certificate-name' is not provided, all TPM 1.2 compliant cryptoprocessors will respond.  A YANG tree diagram of this RPC is as follows:<a href="#section-2.1.1.3.1-1" class="pilcrow">¶</a></p>
 <div id="section-2.1.1.3.1-2">
+<pre class="sourcecode lang-TREE">
++---x tpm12-challenge-response-attestation {taa:TPM12}?
+   +---w input
+   |  +---w tpm12-attestation-challenge
+   |     +---w pcr-index*          pcr
+   |     +---w nonce-value         binary
+   |     +---w certificate-name*   certificate-name-ref {tpm:TPMs}?
+   +--ro output
+      +--ro tpm12-attestation-response* []
+         +--ro certificate-name    certificate-name-ref
+         +--ro up-time?            uint32
+         +--ro TPM_QUOTE2?         binary
+</pre><a href="#section-2.1.1.3.1-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="tpm20-challenge-response-attestation">
+<section id="section-2.1.1.3.2">
+              <h6 id="name-tpm20-challenge-response-at">
+<a href="#section-2.1.1.3.2" class="section-number selfRef">2.1.1.3.2. </a><a href="#name-tpm20-challenge-response-at" class="section-name selfRef">'tpm20-challenge-response-attestation'</a>
+              </h6>
+<p id="section-2.1.1.3.2-1">This RPC allows a Verifier to request signed TPM PCRs (<em>TPM Quote</em> operation) from a TPM 2.0 compliant cryptoprocessor. Where the feature 'TPMs' is active, and one or more 'certificate-name' is not provided, all TPM 2.0 compliant cryptoprocessors will respond. A YANG tree diagram of this RPC is as follows:<a href="#section-2.1.1.3.2-1" class="pilcrow">¶</a></p>
+<div id="section-2.1.1.3.2-2">
 <pre class="sourcecode lang-TREE">
 +---x tpm20-challenge-response-attestation {taa:TPM20}?
    +---w input
@@ -1093,15 +1124,21 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
             +--ro pcr-values* [pcr-index]
                +--ro pcr-index    pcr
                +--ro pcr-value?   binary
-</pre><a href="#section-2.1.1.3.1-2" class="pilcrow">¶</a>
+</pre><a href="#section-2.1.1.3.2-2" class="pilcrow">¶</a>
 </div>
-<p id="section-2.1.1.3.1-3">An example of an RPC challenge requesting PCRs 0-7 from a SHA256 bank could look like the following:<a href="#section-2.1.1.3.1-3" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-2.1.1.3.1-4">
+<p id="section-2.1.1.3.2-3">An example of an RPC challenge requesting PCRs 0-7 from a SHA-256 bank could look like the following:<a href="#section-2.1.1.3.2-3" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.1.1.3.2-4">
 <pre>
 &lt;rpc message-id="101" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"&gt;
   &lt;tpm20-challenge-response-attestation&gt;
       xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation"&gt;
-    &lt;nonce&gt;110101010110011011111001010010100&lt;/nonce&gt;
+    &lt;certificate-name&gt;
+      (identifier of a TPM signature key with which the Verifier is supposed
+      to sign the attestation data)
+    &lt;certificate-name&gt;
+    &lt;nonce&gt;
+      0xe041307208d9f78f5b1bbecd19e2d152ad49de2fc5a7d8dbf769f6b8ffdeab9d
+    &lt;/nonce&gt;
     &lt;tpm20-pcr-selection&gt;
       &lt;tpm20-hash-algo
           xmlns:taa="urn:ietf:params:xml:ns:yang:ietf-tcg-algs"&gt;
@@ -1118,64 +1155,43 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
     &lt;/tpm20-pcr-selection&gt;
   &lt;/tpm20-challenge-response-attestation&gt;
 &lt;/rpc&gt;
-</pre><a href="#section-2.1.1.3.1-4" class="pilcrow">¶</a>
+</pre><a href="#section-2.1.1.3.2-4" class="pilcrow">¶</a>
 </div>
-<p id="section-2.1.1.3.1-5">and a successful response might be formated as follows:<a href="#section-2.1.1.3.1-5" class="pilcrow">¶</a></p>
-<div class="artwork art-text alignLeft" id="section-2.1.1.3.1-6">
+<p id="section-2.1.1.3.2-5">A successful response could be formatted as follows:<a href="#section-2.1.1.3.2-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.1.1.3.2-6">
 <pre>
 &lt;rpc-reply message-id="101"
   xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"&gt;
-  &lt;tpm12-attestation-response
+  &lt;tpm20-attestation-response
     xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation"&gt;
     &lt;certificate-name
         xmlns:ks=urn:ietf:params:xml:ns:yang:ietf-keystore&gt;
        ks:(instance of Certificate name in the Keystore)
     &lt;/certificate-name&gt;
-    &lt;TPMS_QUOTE_INFO&gt;
-       (raw information from the TPM Quote, this includes a digest
-       across the requested PCRs, the nonce, TPM2 time counters.)
-    &lt;/TPMS_QUOTE_INFO&gt;
+    &lt;attestation-data&gt;
+       (raw attestation data, i.e. the TPM quote; this includes
+       a composite digest of requested PCRs, the nonce,
+       and TPM 2.0 time information.)
+    &lt;/attestation-data&gt;
     &lt;quote-signature&gt;
-        (signature across TPMS_QUOTE_INFO)
+        (signature over attestation-data using the TPM key
+        identified by sig-key-id)
     &lt;/quote-signature&gt;
-  &lt;/tpm12-attestation-response&gt;
+  &lt;/tpm20-attestation-response&gt;
 &lt;/rpc-reply&gt;
-</pre><a href="#section-2.1.1.3.1-6" class="pilcrow">¶</a>
+</pre><a href="#section-2.1.1.3.2-6" class="pilcrow">¶</a>
 </div>
 </section>
-</div>
-</section>
-</div>
-<div id="tpm12-challenge-response-attestation">
-<section id="section-2.1.1.4">
-            <h5 id="name-tpm12-challenge-response-at">
-<a href="#section-2.1.1.4" class="section-number selfRef">2.1.1.4. </a><a href="#name-tpm12-challenge-response-at" class="section-name selfRef">'tpm12-challenge-response-attestation'</a>
-            </h5>
-<p id="section-2.1.1.4-1">This RPC allows a Verifier to request a quote of PCRs from a TPM1.2 compliant cryptoprocessor.  Where the feature 'TPMs' is active, and one or more 'certificate-name' is not provided, all TPM1.2 compliant cryptoprocessors will respond.  A YANG tree diagram of this RPC is as follows:<a href="#section-2.1.1.4-1" class="pilcrow">¶</a></p>
-<div id="section-2.1.1.4-2">
-<pre class="sourcecode lang-TREE">
-+---x tpm12-challenge-response-attestation {taa:TPM12}?
-   +---w input
-   |  +---w tpm12-attestation-challenge
-   |     +---w pcr-index*          pcr
-   |     +---w nonce-value         binary
-   |     +---w certificate-name*   certificate-name-ref {tpm:TPMs}?
-   +--ro output
-      +--ro tpm12-attestation-response* []
-         +--ro certificate-name    certificate-name-ref
-         +--ro up-time?            uint32
-         +--ro TPM_QUOTE2?         binary
-</pre><a href="#section-2.1.1.4-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="log-retrieval">
-<section id="section-2.1.1.5">
+<section id="section-2.1.1.4">
             <h5 id="name-log-retrieval">
-<a href="#section-2.1.1.5" class="section-number selfRef">2.1.1.5. </a><a href="#name-log-retrieval" class="section-name selfRef">'log-retrieval'</a>
+<a href="#section-2.1.1.4" class="section-number selfRef">2.1.1.4. </a><a href="#name-log-retrieval" class="section-name selfRef">'log-retrieval'</a>
             </h5>
-<p id="section-2.1.1.5-1">This RPC allows a Verifier to acquire the evidence which was extended into specific PCRs.   A YANG tree diagram of this RPC is as follows:<a href="#section-2.1.1.5-1" class="pilcrow">¶</a></p>
-<div id="section-2.1.1.5-2">
+<p id="section-2.1.1.4-1">This RPC allows a Verifier to acquire the evidence which was extended into specific TPM PCRs. A YANG tree diagram of this RPC is as follows:<a href="#section-2.1.1.4-1" class="pilcrow">¶</a></p>
+<div id="section-2.1.1.4-2">
 <pre class="sourcecode lang-TREE">
     +---x log-retrieval
        +---w input
@@ -1232,19 +1248,31 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
                                +--ro template-hash?             binary
                                +--ro pcr-index?                 pcr
                                +--ro signature?                 binary
-</pre><a href="#section-2.1.1.5-2" class="pilcrow">¶</a>
+</pre><a href="#section-2.1.1.4-2" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
 <div id="data-nodes">
-<section id="section-2.1.1.6">
+<section id="section-2.1.1.5">
             <h5 id="name-data-nodes">
-<a href="#section-2.1.1.6" class="section-number selfRef">2.1.1.6. </a><a href="#name-data-nodes" class="section-name selfRef">Data Nodes</a>
+<a href="#section-2.1.1.5" class="section-number selfRef">2.1.1.5. </a><a href="#name-data-nodes" class="section-name selfRef">Data Nodes</a>
             </h5>
-<p id="section-2.1.1.6-1">This section provides a high level description of the data nodes containing the configuration and operational objects with the YANG model. For more details, please see the YANG model itself in <a href="#ref-ietf-tpm-remote-attestation" class="xref">Section 2.1.1.7</a>.<a href="#section-2.1.1.6-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.6-2">container 'rats-support-structures' - This houses the set of information relating to a device's TPM(s).<a href="#section-2.1.1.6-2" class="pilcrow">¶</a></p>
-<p id="section-2.1.1.6-3">container 'tpms' - Provides configuration and operational details for each supported TPM, including the tpm-firmware-version, PCRs which may be quoted, certificates which are associated with that TPM, and the current operational status.  Of note is the certificates which are associated with that TPM.  As a certificate is associated with a single Attestation key, knowledge of the certificate allows a specific TPM to be identified.<a href="#section-2.1.1.6-3" class="pilcrow">¶</a></p>
-<div id="section-2.1.1.6-4">
+<p id="section-2.1.1.5-1">This section provides a high level description of the data nodes containing the configuration and operational objects with the YANG model. For more details, please see the YANG model itself in <a href="#ref-ietf-tpm-remote-attestation" class="xref">Figure 1</a>.<a href="#section-2.1.1.5-1" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-2.1.1.5-2">
+              <dt id="section-2.1.1.5-2.1">
+Container 'rats-support-structures':  </dt>
+              <dd style="margin-left: 1.5em" id="section-2.1.1.5-2.2">
+                <p id="section-2.1.1.5-2.2.1">This houses the set of information relating to a device's TPM(s).<a href="#section-2.1.1.5-2.2.1" class="pilcrow">¶</a></p>
+</dd>
+              <dd class="break"></dd>
+<dt id="section-2.1.1.5-2.3">
+Container 'tpms':  </dt>
+              <dd style="margin-left: 1.5em" id="section-2.1.1.5-2.4">
+                <p id="section-2.1.1.5-2.4.1">Provides configuration and operational details for each supported TPM, including the tpm-firmware-version, PCRs which may be quoted, certificates which are associated with that TPM, and the current operational status. Of note are the certificates which are associated with that TPM. As a certificate is associated with a particular TPM attestation key, knowledge of the certificate allows a specific TPM to be identified.<a href="#section-2.1.1.5-2.4.1" class="pilcrow">¶</a></p>
+</dd>
+            <dd class="break"></dd>
+</dl>
+<div id="section-2.1.1.5-3">
 <pre class="sourcecode lang-TREE">
 +--rw tpms
    +--rw tpm* [name]
@@ -1266,20 +1294,20 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
             +--rw name            string
             +--rw keystore-ref?   leafref
             +--rw type?           enumeration
-</pre><a href="#section-2.1.1.6-4" class="pilcrow">¶</a>
+</pre><a href="#section-2.1.1.5-3" class="pilcrow">¶</a>
 </div>
-<p id="section-2.1.1.6-5">container 'attester-supported-algos' - Identifies which TCG algorithms are available for use the Attesting platform.  This allows an operator to limit algorithms available for use by RPCs to just a desired set from the universe of all allowed by TCG.<a href="#section-2.1.1.6-5" class="pilcrow">¶</a></p>
-<div id="section-2.1.1.6-6">
+<p id="section-2.1.1.5-4">container 'attester-supported-algos' - Identifies which TCG hash algorithms are available for use on the Attesting platform. This allows an operator to limit algorithms available for use by RPCs to just a desired set from the universe of all allowed hash algorithms by the TCG.<a href="#section-2.1.1.5-4" class="pilcrow">¶</a></p>
+<div id="section-2.1.1.5-5">
 <pre class="sourcecode lang-TREE">
      +--rw attester-supported-algos
         +--rw tpm12-asymmetric-signing*   identityref
         +--rw tpm12-hash*                 identityref
         +--rw tpm20-asymmetric-signing*   identityref
         +--rw tpm20-hash*                 identityref
-</pre><a href="#section-2.1.1.6-6" class="pilcrow">¶</a>
+</pre><a href="#section-2.1.1.5-5" class="pilcrow">¶</a>
 </div>
-<p id="section-2.1.1.6-7">container 'compute-nodes' - When there is more than one TPM supported, this container maintains the set of information related to the compute associated with a specific TPM.  This allows each specific TPM to identify on which 'compute-node' it belongs.<a href="#section-2.1.1.6-7" class="pilcrow">¶</a></p>
-<div id="section-2.1.1.6-8">
+<p id="section-2.1.1.5-6">container 'compute-nodes' - When there is more than one TPM supported, this container maintains the set of information related to the compute node associated with a specific TPM. This allows each specific TPM to identify to which 'compute-node' it belongs.<a href="#section-2.1.1.5-6" class="pilcrow">¶</a></p>
+<div id="section-2.1.1.5-7">
 <pre class="sourcecode lang-TREE">
 +--rw compute-nodes {tpm:TPMs}?
    +--ro compute-node* [node-id]
@@ -1287,16 +1315,18 @@ appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">�
       +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
       +--ro node-name?             string
       +--ro node-location?         string
-</pre><a href="#section-2.1.1.6-8" class="pilcrow">¶</a>
+</pre><a href="#section-2.1.1.5-7" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
-<div id="ref-ietf-tpm-remote-attestation">
-<section id="section-2.1.1.7">
+<div id="yang-module">
+<section id="section-2.1.1.6">
             <h5 id="name-yang-module">
-<a href="#section-2.1.1.7" class="section-number selfRef">2.1.1.7. </a><a href="#name-yang-module" class="section-name selfRef">YANG Module</a>
+<a href="#section-2.1.1.6" class="section-number selfRef">2.1.1.6. </a><a href="#name-yang-module" class="section-name selfRef">YANG Module</a>
             </h5>
-<div id="section-2.1.1.7-1">
+<div id="ref-ietf-tpm-remote-attestation">
+<figure id="figure-1">
+              <div id="section-2.1.1.6-1.1">
 <pre class="sourcecode lang-YANG">
 &lt;CODE BEGINS&gt; file "ietf-tpm-remote-attestation@2021-05-11.yang"
 module ietf-tpm-remote-attestation {
@@ -2344,7 +2374,9 @@ module ietf-tpm-remote-attestation {
   }
 }
 &lt;CODE ENDS&gt;
-</pre><a href="#section-2.1.1.7-1" class="pilcrow">¶</a>
+</pre>
+</div>
+<figcaption><a href="#figure-1" class="selfRef">Figure 1</a></figcaption></figure>
 </div>
 </section>
 </div>
@@ -2353,15 +2385,15 @@ module ietf-tpm-remote-attestation {
 <div id="ietf-tcg-algs">
 <section id="section-2.1.2">
           <h4 id="name-ietf-tcg-algs">
-<a href="#section-2.1.2" class="section-number selfRef">2.1.2. </a><a href="#name-ietf-tcg-algs" class="section-name selfRef">ietf-tcg-algs</a>
+<a href="#section-2.1.2" class="section-number selfRef">2.1.2. </a><a href="#name-ietf-tcg-algs" class="section-name selfRef">'ietf-tcg-algs'</a>
           </h4>
-<p id="section-2.1.2-1">Cryptographic algorithm types were initially included within -v14 NETCONF's iana-crypto-types.yang.  Unfortunately all this content including the algorithms needed here failed to make the -v15 used WGLC.   As a result this document has encoded the TCG Algorithm definitions of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span>, revision 1.32.  By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2-1">Cryptographic algorithm types were initially included within -v14 NETCONF's iana-crypto-types.yang.  Unfortunately, all this content including the algorithms needed here failed to make the -v15 used WGLC. As a result, this document has encoded the TCG Algorithm definitions of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span>, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
 <div id="features-1">
 <section id="section-2.1.2.1">
             <h5 id="name-features-2">
 <a href="#section-2.1.2.1" class="section-number selfRef">2.1.2.1. </a><a href="#name-features-2" class="section-name selfRef">Features</a>
             </h5>
-<p id="section-2.1.2.1-1">There are two types of features supported 'TPM12' and 'TPM20'. Support for either of these features indicates that a cryptoprocessor supporting the corresponding type of TCG API is present on an Attester.  Most commonly, only one type of cryptoprocessor will be available on an Attester.<a href="#section-2.1.2.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2.1-1">There are two types of features supported: 'TPM12' and 'TPM20'. Support for either of these features indicates that a cryptoprocessor supporting the corresponding type of TCG TPM API is present on an Attester. Most commonly, only one type of cryptoprocessor will be available on an Attester.<a href="#section-2.1.2.1-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="identities-1">
@@ -2369,10 +2401,18 @@ module ietf-tpm-remote-attestation {
             <h5 id="name-identities-2">
 <a href="#section-2.1.2.2" class="section-number selfRef">2.1.2.2. </a><a href="#name-identities-2" class="section-name selfRef">Identities</a>
             </h5>
-<p id="section-2.1.2.2-1">There are three types of identities in this model.<a href="#section-2.1.2.2-1" class="pilcrow">¶</a></p>
-<p id="section-2.1.2.2-2">The first are the cryptographic functions supportable by a TPM algorithm, these include: 'asymmetric', 'symmetric', 'hash', 'signing', 'anonymous_signing', 'encryption_mode', 'method', and 'object_type'.  The definitions of each of these are in Table 2 of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span>.<a href="#section-2.1.2.2-2" class="pilcrow">¶</a></p>
-<p id="section-2.1.2.2-3">The second are API specifications for tpms: 'tpm12' and 'tpm2'.<a href="#section-2.1.2.2-3" class="pilcrow">¶</a></p>
-<p id="section-2.1.2.2-4">The third are specific algorithm types.   Each algorithm type defines what cryptographic functions may be supported, and on which type of API specification.  It is not required that an implementation of a specific TPM will support all algorithm types.  The contents of each specific algorithm mirrors what is in Table 3 of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span>.<a href="#section-2.1.2.2-4" class="pilcrow">¶</a></p>
+<p id="section-2.1.2.2-1">There are three types of identities in this model:<a href="#section-2.1.2.2-1" class="pilcrow">¶</a></p>
+<ol start="1" type="1" class="normal type-1" id="section-2.1.2.2-2">
+<li id="section-2.1.2.2-2.1">
+                <strong>Cryptographic functions</strong> supported by a TPM algorithm; these include: 'asymmetric', 'symmetric', 'hash', 'signing', 'anonymous_signing', 'encryption_mode', 'method', and 'object_type'. The definitions of each of these are in Table 2 of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span>.<a href="#section-2.1.2.2-2.1" class="pilcrow">¶</a>
+</li>
+              <li id="section-2.1.2.2-2.2">
+                <strong>API specifications</strong> for TPMs: 'tpm12' and 'tpm20'<a href="#section-2.1.2.2-2.2" class="pilcrow">¶</a>
+</li>
+              <li id="section-2.1.2.2-2.3">
+                <strong>Specific algorithm types</strong>: Each algorithm type defines what cryptographic functions may be supported, and on which type of API specification. It is not required that an implementation of a specific TPM will support all algorithm types. The contents of each specific algorithm mirrors what is in Table 3 of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span>.<a href="#section-2.1.2.2-2.3" class="pilcrow">¶</a>
+</li>
+            </ol>
 </section>
 </div>
 <div id="ref-ietf-tcg-algs">
@@ -3080,7 +3120,7 @@ module ietf-tcg-algs {
 &lt;CODE ENDS&gt;
 </pre><a href="#section-2.1.2.3-1" class="pilcrow">¶</a>
 </div>
-<p id="section-2.1.2.3-2">Note that not all cryptographic functions are required for use by ietf-tpm-remote-attestation.yang.  However the full definition of Table 3 of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span> will allow use by additional YANG specifications.<a href="#section-2.1.2.3-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.2.3-2">Note that not all cryptographic functions are required for use by <code>ietf-tpm-remote-attestation.yang</code>. However the full definition of Table 3 of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span> will allow use by additional YANG specifications.<a href="#section-2.1.2.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -3092,10 +3132,10 @@ module ietf-tcg-algs {
 <div id="iana-considerations">
 <section id="section-3">
       <h2 id="name-iana-considerations">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA considerations</a>
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
 <p id="section-3-1">This document will include requests to IANA:<a href="#section-3-1" class="pilcrow">¶</a></p>
-<p id="section-3-2">To be defined yet.  But keeping up with changes to ietf-tcg-algs.yang will be necessary.<a href="#section-3-2" class="pilcrow">¶</a></p>
+<p id="section-3-2">To be defined yet. But keeping up with changes to <code>ietf-tcg-algs.yang</code> will be necessary.<a href="#section-3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="security-considerations">
@@ -3104,24 +3144,49 @@ module ietf-tcg-algs {
 <a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
 <p id="section-4-1">The YANG module specified in this document defines a schema for data that is designed to be accessed via network management protocols such as NETCONF <span>[<a href="#RFC6241" class="xref">RFC6241</a>]</span> or RESTCONF <span>[<a href="#RFC8040" class="xref">RFC8040</a>]</span>.  The lowest NETCONF layer is the secure transport layer, and the mandatory-to-implement secure transport is Secure Shell (SSH) <span>[<a href="#RFC6242" class="xref">RFC6242</a>]</span>.  The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement secure transport is TLS <span>[<a href="#RFC8446" class="xref">RFC8446</a>]</span>.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">There are a number of data nodes defined in this YANG module that are writable/creatable/deletable (i.e., config true, which is the default).  These data nodes may be considered sensitive or vulnerable in some network environments.  Write operations (e.g., edit-config) to these data nodes without proper protection can have a negative effect on network operations.  These are the subtrees and data nodes and their sensitivity/vulnerability:<a href="#section-4-2" class="pilcrow">¶</a></p>
-<p id="section-4-3">Container: '/rats-support-structures/attester-supported-algos'<a href="#section-4-3" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4-4.1">'tpm12-asymmetric-signing', 'tpm12-hash', 'tpm20-asymmetric-signing', and 'tpm20-hash' all could be populated with algorithms which are not supported by the underlying physical TPM installed by the equipment vendor.<a href="#section-4-4.1" class="pilcrow">¶</a>
-</li>
-      </ul>
-<p id="section-4-5">Container: '/rats-support-structures/tpms'<a href="#section-4-5" class="pilcrow">¶</a></p>
-<ul class="normal">
-<li class="normal" id="section-4-6.1">'name' - Although shown as 'rw', it is system generated.  Therefore it should not be possible for an operator to add or remove a TPM from the configuration.<a href="#section-4-6.1" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-4-6.2">'tpm20-pcr-bank' - It is possible to configure PCRs for extraction which are not being extended by system software.  This could unnecessarily use TPM resources.<a href="#section-4-6.2" class="pilcrow">¶</a>
-</li>
-        <li class="normal" id="section-4-6.3">'certificates' - It is possible to provision a certificate which does not correspond to a Attestation Identity Key (AIK) within the TPM.<a href="#section-4-6.3" class="pilcrow">¶</a>
-</li>
-      </ul>
-<p id="section-4-7">RPC: 'tpm12-challenge-response-attestation' - Need to verify that the certificate is provided is able to support Attestation on the targeted TPM.<a href="#section-4-7" class="pilcrow">¶</a></p>
-<p id="section-4-8">RPC: 'tpm20-challenge-response-attestation' - Need to verify that the certificate is provided is able to support Attestation on the targeted TPM.<a href="#section-4-8" class="pilcrow">¶</a></p>
-<p id="section-4-9">RPC: 'log-retrieval' - Pulling lots of logs can chew up system resources.<a href="#section-4-9" class="pilcrow">¶</a></p>
+<p id="section-4-2">There are a number of data nodes defined in this YANG module that are writable/creatable/deletable (i.e., <em>config true</em>, which is the default).  These data nodes may be considered sensitive or vulnerable in some network environments.  Write operations (e.g., <em>edit-config</em>) to these data nodes without proper protection can have a negative effect on network operations.  These are the subtrees and data nodes as well as their sensitivity/vulnerability:<a href="#section-4-2" class="pilcrow">¶</a></p>
+<span class="break"></span><dl class="dlParallel" id="section-4-3">
+        <dt id="section-4-3.1">
+Container '/rats-support-structures/attester-supported-algos':  </dt>
+        <dd style="margin-left: 1.5em" id="section-4-3.2">
+          <p id="section-4-3.2.1">'tpm12-asymmetric-signing', 'tpm12-hash', 'tpm20-asymmetric-signing', and 'tpm20-hash'. All could be populated with algorithms that are not supported by the underlying physical TPM installed by the equipment vendor.<a href="#section-4-3.2.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-4-3.3">
+Container: '/rats-support-structures/tpms':  </dt>
+        <dd style="margin-left: 1.5em" id="section-4-3.4">
+          <p id="section-4-3.4.1">'name': Although shown as 'rw', it is system generated. Therefore it should not be possible for an operator to add or remove a TPM from the configuration.<a href="#section-4-3.4.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-4-3.5"></dt>
+        <dd style="margin-left: 1.5em" id="section-4-3.6">
+          <p id="section-4-3.6.1">'tpm20-pcr-bank': It is possible to configure PCRs for extraction which are not being extended by system software.  This could unnecessarily use TPM resources.<a href="#section-4-3.6.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-4-3.7"></dt>
+        <dd style="margin-left: 1.5em" id="section-4-3.8">
+          <p id="section-4-3.8.1">'certificates': It is possible to provision a certificate which does not correspond to an Attestation Identity Key (AIK) within the TPM 1.2, or an Attestation Key (AK) within the TPM 2.0 respectively.<a href="#section-4-3.8.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-4-3.9">
+RPC 'tpm12-challenge-response-attestation':  </dt>
+        <dd style="margin-left: 1.5em" id="section-4-3.10">
+          <p id="section-4-3.10.1">It must be verified that the certificate is for an active AIK, i. e. the certificate provided is able to support Attestation on the targeted TPM 1.2.<a href="#section-4-3.10.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-4-3.11">
+RPC 'tpm20-challenge-response-attestation':  </dt>
+        <dd style="margin-left: 1.5em" id="section-4-3.12">
+          <p id="section-4-3.12.1">It must be verified that the certificate is for an active AK, i. e. the certificate provided is able to support Attestation on the targeted TPM 2.0.<a href="#section-4-3.12.1" class="pilcrow">¶</a></p>
+</dd>
+        <dd class="break"></dd>
+<dt id="section-4-3.13">
+RPC 'log-retrieval':  </dt>
+        <dd style="margin-left: 1.5em" id="section-4-3.14">
+          <p id="section-4-3.14.1">Pulling lots of logs can chew up system resources.<a href="#section-4-3.14.1" class="pilcrow">¶</a></p>
+</dd>
+      <dd class="break"></dd>
+</dl>
 </section>
 </div>
 <div id="acknowledgements">
@@ -3214,7 +3279,7 @@ module ietf-tcg-algs {
 <dl class="references">
 <dt id="I-D.ietf-netconf-keystore">[I-D.ietf-netconf-keystore]</dt>
         <dd>
-<span class="refAuthor">Watsen, K.</span>, <span class="refTitle">"A YANG Data Model for a Keystore"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-netconf-keystore-21</span>, <time datetime="2021-02-10" class="refDate">10 February 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-netconf-keystore-21.txt">https://www.ietf.org/archive/id/draft-ietf-netconf-keystore-21.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Watsen, K.</span>, <span class="refTitle">"A YANG Data Model for a Keystore"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-netconf-keystore-22</span>, <time datetime="2021-05-18" class="refDate">18 May 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-netconf-keystore-22.txt">https://www.ietf.org/archive/id/draft-ietf-netconf-keystore-22.txt</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-rats-architecture">[I-D.ietf-rats-architecture]</dt>
         <dd>
@@ -3246,7 +3311,7 @@ module ietf-tcg-algs {
 <dd class="break"></dd>
 <dt id="TCG-Algos">[TCG-Algos]</dt>
         <dd>
-<span class="refTitle">"TCG_Algorithm_Registry_r1p32_pub"</span>, <span>n.d.</span>, <span>&lt;<a href="hhttp://trustedcomputinggroup.org/resource/tcg-algorithm-registry/">hhttp://trustedcomputinggroup.org/resource/tcg-algorithm-registry/</a>&gt;</span>. </dd>
+<span class="refTitle">"TCG_Algorithm_Registry_r1p32_pub"</span>, <span>n.d.</span>, <span>&lt;<a href="https://trustedcomputinggroup.org/resource/tcg-algorithm-registry/">https://trustedcomputinggroup.org/resource/tcg-algorithm-registry/</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="TPM1.2">[TPM1.2]</dt>
         <dd>
