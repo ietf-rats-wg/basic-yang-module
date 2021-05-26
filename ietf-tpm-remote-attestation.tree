@@ -57,7 +57,7 @@ module: ietf-tpm-remote-attestation
     |  +--ro output
     |     +--ro tpm20-attestation-response* []
     |        +--ro certificate-name       certificate-name-ref
-    |        +--ro TPMS_QUOTE_INFO        binary
+    |        +--ro attestation-data       binary
     |        +--ro quote-signature?       binary
     |        +--ro up-time?               uint32
     |        +--ro unsigned-pcr-values* []
