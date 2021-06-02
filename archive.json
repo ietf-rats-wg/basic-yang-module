@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2021-05-26T15:18:41.535180+00:00",
+  "timestamp": "2021-06-02T14:25:47.585862+00:00",
   "repo": "ietf-rats-wg/basic-yang-module",
   "labels": [
     {
@@ -2091,6 +2091,34 @@
           "comments": []
         }
       ]
+    },
+    {
+      "number": 48,
+      "id": "MDExOlB1bGxSZXF1ZXN0NjUzOTEwNjQ2",
+      "title": "Update draft-ietf-rats-yang-tpm-charra.md",
+      "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/48",
+      "state": "MERGED",
+      "author": "henkbirkholz",
+      "authorAssociation": "MEMBER",
+      "assignees": [],
+      "labels": [],
+      "body": "typo in tag",
+      "createdAt": "2021-05-26T15:22:22Z",
+      "updatedAt": "2021-06-02T14:25:14Z",
+      "baseRepository": "ietf-rats-wg/basic-yang-module",
+      "baseRefName": "master",
+      "baseRefOid": "474cc6cdbcce37aefa00a4695b2f21e49fd48588",
+      "headRepository": "ietf-rats-wg/basic-yang-module",
+      "headRefName": "henkbirkholz-patch-1",
+      "headRefOid": "244eda64afe8790b16a4f5c52502a764c240e45f",
+      "closedAt": "2021-06-02T14:25:14Z",
+      "mergedAt": "2021-06-02T14:25:14Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "69999416c9dff839d4d7229e1103c14dbf5895c3"
+      },
+      "comments": [],
+      "reviews": []
     }
   ]
 }
