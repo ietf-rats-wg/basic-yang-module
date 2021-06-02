@@ -194,7 +194,7 @@ An example of an RPC challenge requesting PCRs 0-7 from a SHA-256 bank could loo
     <certificate-name>
       (identifier of a TPM signature key with which the Verifier is supposed
       to sign the attestation data)
-    <certificate-name>
+    </certificate-name>
     <nonce>
       0xe041307208d9f78f5b1bbecd19e2d152ad49de2fc5a7d8dbf769f6b8ffdeab9d
     </nonce>
