@@ -1,4 +1,4 @@
-+---x tpm20-challenge-response-attestation {taa:TPM20}?
++---x tpm20-challenge-response-attestation {taa:tpm}?
    +---w input
    |  +---w tpm20-attestation-challenge
    |     +---w nonce-value            binary
