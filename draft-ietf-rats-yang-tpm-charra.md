@@ -74,6 +74,8 @@ author:
 
 normative:
   RFC2119:
+  RFC6020:
+  RFC3688:
   RFC8174:
   RFC6991: ietf-yang-types
   RFC8348: ietf-hardware
@@ -192,11 +194,11 @@ An example of an RPC challenge requesting PCRs 0-7 from a SHA-256 bank could loo
   <tpm20-challenge-response-attestation>
       xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
     <certificate-name>
-      (identifier of a TPM signature key with which the Verifier is supposed
-      to sign the attestation data)
+      (identifier of a TPM signature key with which the Verifier is 
+      supposed to sign the attestation data)
     </certificate-name>
     <nonce>
-      0xe041307208d9f78f5b1bbecd19e2d152ad49de2fc5a7d8dbf769f6b8ffdeab9d
+      0xe041307208d9f78f5b1bbecd19e2d152ad49de2fc5a7d8dbf769f6b8ffdeab9
     </nonce>
     <tpm20-pcr-selection>
       <tpm20-hash-algo
@@ -318,9 +320,35 @@ Note that not all cryptographic functions are required for use by `ietf-tpm-remo
 
 # IANA Considerations
 
-This document will include requests to IANA:
+   This document registers two URIs in the IETF XML registry {{RFC3688}}.
+   Following the format in RFC 3688, the following registrations have
+   been made.
 
-To be defined yet. But keeping up with changes to `ietf-tcg-algs.yang` will be necessary.
+     URI: urn:ietf:params:xml:ns:yang:ietf-tcg-algs
+
+     Registrant Contact: The RATS WG of the IETF.
+
+     XML: N/A, the requested URI is an XML namespace.
+
+
+     URI: urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
+
+     Registrant Contact: The RATS WG of the IETF.
+
+     XML: N/A, the requested URI is an XML namespace.
+
+   This document registers two YANG modules in the YANG Module Names
+   registry {{RFC6020}}.
+
+     name:         ietf-tcg-algs
+     namespace:    urn:ietf:params:xml:ns:yang:ietf-tcg-algs
+     prefix:       taa
+     reference:    [IANA please enter this RFC number]
+
+     name:         ietf-tpm-remote-attestation
+     namespace:    urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
+     prefix:       tpm
+     reference:    [IANA please enter this RFC number]
 
 # Security Considerations
 
@@ -352,11 +380,12 @@ RPC 'log-retrieval':
 
 : Pulling lots of logs can chew up system resources.
 
-# Acknowledgements
-
-Not yet.
 
 # Change Log
+
+Changes from version 08 to version 09:
+
+* Minor formatting tweaks for shepherd.  IANA registered.
 
 Changes from version 05 to version 06:
 
