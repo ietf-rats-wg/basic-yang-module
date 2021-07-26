@@ -78,7 +78,6 @@ normative:
   RFC6991: ietf-yang-types
   RFC8348: ietf-hardware
   I-D.ietf-netconf-keystore: ietf-keystore
-  I-D.ietf-rats-reference-interaction-models: rats-interaction-models
   I-D.ietf-rats-architecture: rats-architecture
   I-D.ietf-rats-tpm-based-network-device-attest: RIV
 
@@ -117,6 +116,7 @@ informative:
   RFC8040:
   RFC6242:
   RFC8446:
+  I-D.ietf-rats-reference-interaction-models: rats-interaction-models
 
 
 --- abstract
@@ -174,7 +174,7 @@ In the following, RPCs for both TPM 1.2 and TPM 2.0 attestation procedures are d
 This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 1.2 compliant cryptoprocessor. Where the feature 'TPMs' is active, and one or more 'certificate-name' is not provided, all TPM 1.2 compliant cryptoprocessors will respond.  A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
-{::include tpm12-challenge-response-attestation.tree}
+{::include-dedent tpm12-challenge-response-attestation.tree}
 ~~~
 
 ##### 'tpm20-challenge-response-attestation'
@@ -182,7 +182,7 @@ This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) fr
 This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 2.0 compliant cryptoprocessor. Where the feature 'TPMs' is active, and one or more 'certificate-name' is not provided, all TPM 2.0 compliant cryptoprocessors will respond. A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
-{::include tpm20-challenge-response-attestation.tree}
+{::include-dedent tpm20-challenge-response-attestation.tree}
 ~~~
 
 An example of an RPC challenge requesting PCRs 0-7 from a SHA-256 bank could look like the following:
@@ -245,7 +245,7 @@ A successful response could be formatted as follows:
 This RPC allows a Verifier to acquire the evidence which was extended into specific TPM PCRs. A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
-{::include log-retrieval.tree}
+{::include-dedent log-retrieval.tree}
 ~~~
 
 #### Data Nodes
@@ -261,19 +261,19 @@ Container 'tpms':
 : Provides configuration and operational details for each supported TPM, including the tpm-firmware-version, PCRs which may be quoted, certificates which are associated with that TPM, and the current operational status. Of note are the certificates which are associated with that TPM. As a certificate is associated with a particular TPM attestation key, knowledge of the certificate allows a specific TPM to be identified.
 
 ~~~ TREE
-{::include tpms.tree}
+{::include-dedent tpms.tree}
 ~~~
 
 container 'attester-supported-algos' - Identifies which TCG hash algorithms are available for use on the Attesting platform. This allows an operator to limit algorithms available for use by RPCs to just a desired set from the universe of all allowed hash algorithms by the TCG.
 
 ~~~ TREE
-{::include attester-supported-algos.tree}
+{::include-dedent attester-supported-algos.tree}
 ~~~
 
 container 'compute-nodes' - When there is more than one TPM supported, this container maintains the set of information related to the compute node associated with a specific TPM. This allows each specific TPM to identify to which 'compute-node' it belongs.
 
 ~~~ TREE
-{::include compute-nodes.tree}
+{::include-dedent compute-nodes.tree}
 ~~~
 
 #### YANG Module
@@ -282,7 +282,7 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 
 ~~~ YANG
 <CODE BEGINS> file "ietf-tpm-remote-attestation@2021-05-11.yang"
-{::include ietf-tpm-remote-attestation.yang}
+{::include-dedent ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
 
@@ -310,7 +310,7 @@ There are three types of identities in this model:
 
 ~~~~ YANG
 <CODE BEGINS> file "ietf-tcg-algs@2021-05-11.yang"
-{::include ietf-tcg-algs@2021-05-11.yang}
+{::include-dedent ietf-tcg-algs@2021-05-11.yang}
 <CODE ENDS>
 ~~~~
 
