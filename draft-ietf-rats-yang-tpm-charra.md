@@ -318,9 +318,29 @@ Note that not all cryptographic functions are required for use by `ietf-tpm-remo
 
 # IANA Considerations
 
-This document will include requests to IANA:
+This document registers the following namespace URIs in the "IETF XML Registry" [RFC3688]:
 
-To be defined yet. But keeping up with changes to `ietf-tcg-algs.yang` will be necessary.
+   URI: urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
+   Registrant Contact: The IESG.
+   XML: N/A; the requested URI is an XML namespace.
+   
+   URI: urn:ietf:params:xml:ns:yang:ietf-tcg-algs
+   Registrant Contact: The IESG.
+   XML: N/A; the requested URI is an XML namespace.
+
+
+This document registers the following YANG modules in the "YANG Module
+Names" registry [RFC6020]:
+
+   Name: ietf-tpm-remote-attestation
+   Namespace: urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
+   Prefix: tpm
+   Reference: draft-ietf-rats-yang-tpm-charra (RFC form)
+
+   Name: ietf-tcg-algs
+   Namespace: urn:ietf:params:xml:ns:yang:ietf-tcg-algs
+   Prefix: taa
+   Reference: draft-ietf-rats-yang-tpm-charra (RFC form)
 
 # Security Considerations
 
