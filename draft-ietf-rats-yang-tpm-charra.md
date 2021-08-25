@@ -73,12 +73,12 @@ author:
   region: Massachusetts
 
 normative:
-  RFC2119:
   RFC6020:
   RFC3688:
-  RFC8174:
   RFC6991: ietf-yang-types
   RFC8348: ietf-hardware
+  IANA.xml-registry:
+  IANA.yang-parameters:
   I-D.ietf-netconf-keystore: ietf-keystore
   I-D.ietf-rats-architecture: rats-architecture
   I-D.ietf-rats-tpm-based-network-device-attest: RIV
@@ -107,8 +107,8 @@ normative:
       -
         ins: TCG
         name: Trusted Computing Group
-    date: 2021-04-14  
-  
+    date: 2021-04-14
+
   TCG-Algos:
     target: https://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
     title: "TCG_Algorithm_Registry_r1p32_pub"
@@ -194,7 +194,7 @@ An example of an RPC challenge requesting PCRs 0-7 from a SHA-256 bank could loo
   <tpm20-challenge-response-attestation>
       xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
     <certificate-name>
-      (identifier of a TPM signature key with which the Verifier is 
+      (identifier of a TPM signature key with which the Verifier is
       supposed to sign the attestation data)
     </certificate-name>
     <nonce>
@@ -320,29 +320,56 @@ Note that not all cryptographic functions are required for use by `ietf-tpm-remo
 
 # IANA Considerations
 
-This document registers the following namespace URIs in the "IETF XML Registry" [RFC3688]:
+This document registers the following namespace URIs in the
+{{ns ("ns" class of the IETF XML Registry)<IANA.xml-registry}}
+{{IANA.xml-registry}} as per {{RFC3688}}:
 
-   URI: urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
-   Registrant Contact: The IESG.
-   XML: N/A; the requested URI is an XML namespace.
-   
-   URI: urn:ietf:params:xml:ns:yang:ietf-tcg-algs
-   Registrant Contact: The IESG.
-   XML: N/A; the requested URI is an XML namespace.
+URI:
+: urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
+
+  Registrant Contact:
+  : The IESG.
+
+  XML:
+  : N/A; the requested URI is an XML namespace.
+
+URI:
+: urn:ietf:params:xml:ns:yang:ietf-tcg-algs
+
+  Registrant Contact:
+  : The IESG.
+
+  XML:
+  : N/A; the requested URI is an XML namespace.
 
 
-This document registers the following YANG modules in the "YANG Module
-Names" registry [RFC6020]:
+This document registers the following YANG modules in the
+"{{yang-parameters-1 (YANG Module Names)<IANA.yang-parameters}}"
+registry {{IANA.yang-parameters}} as per {{Section 14 of RFC6020}}:
 
-   Name: ietf-tpm-remote-attestation
-   Namespace: urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
-   Prefix: tpm
-   Reference: draft-ietf-rats-yang-tpm-charra (RFC form)
+Name:
+: ietf-tpm-remote-attestation
 
-   Name: ietf-tcg-algs
-   Namespace: urn:ietf:params:xml:ns:yang:ietf-tcg-algs
-   Prefix: taa
-   Reference: draft-ietf-rats-yang-tpm-charra (RFC form)
+  Namespace:
+  : urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
+
+  Prefix:
+  : tpm
+
+  Reference:
+  : draft-ietf-rats-yang-tpm-charra (RFC form)
+
+Name:
+: ietf-tcg-algs
+
+  Namespace:
+  : urn:ietf:params:xml:ns:yang:ietf-tcg-algs
+
+  Prefix:
+  : taa
+
+  Reference:
+  : draft-ietf-rats-yang-tpm-charra (RFC form)
 
 # Security Considerations
 
