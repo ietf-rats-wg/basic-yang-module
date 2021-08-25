@@ -74,6 +74,8 @@ author:
 
 normative:
   RFC2119:
+  RFC6020:
+  RFC3688:
   RFC8174:
   RFC6991: ietf-yang-types
   RFC8348: ietf-hardware
@@ -192,11 +194,11 @@ An example of an RPC challenge requesting PCRs 0-7 from a SHA-256 bank could loo
   <tpm20-challenge-response-attestation>
       xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
     <certificate-name>
-      (identifier of a TPM signature key with which the Verifier is supposed
-      to sign the attestation data)
+      (identifier of a TPM signature key with which the Verifier is 
+      supposed to sign the attestation data)
     </certificate-name>
     <nonce>
-      0xe041307208d9f78f5b1bbecd19e2d152ad49de2fc5a7d8dbf769f6b8ffdeab9d
+      0xe041307208d9f78f5b1bbecd19e2d152ad49de2fc5a7d8dbf769f6b8ffdeab9
     </nonce>
     <tpm20-pcr-selection>
       <tpm20-hash-algo
@@ -372,11 +374,12 @@ RPC 'log-retrieval':
 
 : Pulling lots of logs can chew up system resources.
 
-# Acknowledgements
-
-Not yet.
 
 # Change Log
+
+Changes from version 08 to version 09:
+
+* Minor formatting tweaks for shepherd.  IANA registered.
 
 Changes from version 05 to version 06:
 
