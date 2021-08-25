@@ -320,35 +320,29 @@ Note that not all cryptographic functions are required for use by `ietf-tpm-remo
 
 # IANA Considerations
 
-   This document registers two URIs in the IETF XML registry {{RFC3688}}.
-   Following the format in RFC 3688, the following registrations have
-   been made.
+This document registers the following namespace URIs in the "IETF XML Registry" [RFC3688]:
 
-     URI: urn:ietf:params:xml:ns:yang:ietf-tcg-algs
+   URI: urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
+   Registrant Contact: The IESG.
+   XML: N/A; the requested URI is an XML namespace.
+   
+   URI: urn:ietf:params:xml:ns:yang:ietf-tcg-algs
+   Registrant Contact: The IESG.
+   XML: N/A; the requested URI is an XML namespace.
 
-     Registrant Contact: The RATS WG of the IETF.
 
-     XML: N/A, the requested URI is an XML namespace.
+This document registers the following YANG modules in the "YANG Module
+Names" registry [RFC6020]:
 
+   Name: ietf-tpm-remote-attestation
+   Namespace: urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
+   Prefix: tpm
+   Reference: draft-ietf-rats-yang-tpm-charra (RFC form)
 
-     URI: urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
-
-     Registrant Contact: The RATS WG of the IETF.
-
-     XML: N/A, the requested URI is an XML namespace.
-
-   This document registers two YANG modules in the YANG Module Names
-   registry {{RFC6020}}.
-
-     name:         ietf-tcg-algs
-     namespace:    urn:ietf:params:xml:ns:yang:ietf-tcg-algs
-     prefix:       taa
-     reference:    [IANA please enter this RFC number]
-
-     name:         ietf-tpm-remote-attestation
-     namespace:    urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
-     prefix:       tpm
-     reference:    [IANA please enter this RFC number]
+   Name: ietf-tcg-algs
+   Namespace: urn:ietf:params:xml:ns:yang:ietf-tcg-algs
+   Prefix: taa
+   Reference: draft-ietf-rats-yang-tpm-charra (RFC form)
 
 # Security Considerations
 
