@@ -327,8 +327,8 @@ There are three types of identities in this model:
 #### YANG Module
 
 ~~~~ YANG
-<CODE BEGINS> file "ietf-tcg-algs@2021-05-11.yang"
-{::include-dedent ietf-tcg-algs@2021-05-11.yang}
+<CODE BEGINS> file "ietf-tcg-algs@2021-11-05.yang"
+{::include-dedent ietf-tcg-algs@2021-11-05.yang}
 <CODE ENDS>
 ~~~~
 
