@@ -77,6 +77,11 @@ normative:
   RFC3688:
   RFC6991: ietf-yang-types
   RFC8348: ietf-hardware
+  RFC6241:
+  RFC8040:
+  RFC6242:
+  RFC8446:
+  RFC8341:
   IANA.xml-registry:
   IANA.yang-parameters:
   I-D.ietf-netconf-keystore: ietf-keystore
@@ -114,13 +119,24 @@ normative:
     title: "TCG_Algorithm_Registry_r1p32_pub"
 
 informative:
-  RFC6241:
-  RFC8040:
-  RFC6242:
-  RFC8446:
   I-D.ietf-rats-reference-interaction-models: rats-interaction-models
 
+  NIST-915121:
+    target: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=915121
+    title: "True Randomness Can’t be Left to Chance: Why entropy is important for information security"
 
+  bios-log:
+    target: https://trustedcomputinggroup.org/wp-content/uploads/PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
+    title: "TCG PC Client Platform Firmware Profile Specification, Section 9.4.5.2"   
+
+  ima-log:
+    target: https://www.trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p30_13feb2021.pdf
+    title: "Canonical Event Log Format, Section 4.3"   
+    
+  netequip-boot-log:
+    target: https://www.kernel.org/doc/Documentation/ABI/testing/ima_policy
+    title: "IMA Policy Kernel Documentation"   
+    
 --- abstract
 
 This document defines YANG RPCs and a small number of configuration nodes required to retrieve attestation evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), included in the device components of the composite device the YANG server is running on.
@@ -141,7 +157,7 @@ Specific terms imported from {{TPM2.0-Key}} and used in this document include: E
 
 # The YANG Module for Basic Remote Attestation Procedures
 
-One or more TPMs MUST be embedded in a Composite Device that provides attestation evidence via the YANG module defined in this document. The ietf-basic-remote-attestation YANG module enables a composite device to take on the role of an Attester, in accordance with the Remote Attestation Procedures (RATS) architecture {{-rats-architecture}}, and the corresponding challenge-response interaction model defined in the {{-rats-interaction-models}} document. A fresh nonce with an appropriate amount of entropy MUST be supplied by the YANG client in order to enable a proof-of-freshness with respect to the attestation Evidence provided by the Attester running the YANG datastore. Further, this nonce is used to prevent replay attacks. The functions of this YANG module are restricted to 0-1 TPMs per hardware component.
+One or more TPMs MUST be embedded in a Composite Device that provides attestation evidence via the YANG module defined in this document. The ietf-basic-remote-attestation YANG module enables a composite device to take on the role of an Attester, in accordance with the Remote Attestation Procedures (RATS) architecture {{-rats-architecture}}, and the corresponding challenge-response interaction model defined in the {{-rats-interaction-models}} document. A fresh nonce with an appropriate amount of entropy {{NIST-915121}} MUST be supplied by the YANG client in order to enable a proof-of-freshness with respect to the attestation Evidence provided by the Attester running the YANG datastore. Further, this nonce is used to prevent replay attacks. The method for communicating the relationship of each individual TPM to specific measured component within the Composite Device is out of the scope of this document.
 
 ## YANG Modules
 
@@ -157,11 +173,11 @@ This module supports the following features:
 
 - 'TPMs': Indicates that multiple TPMs on the device can support remote attestation. This feature is applicable in cases where multiple line cards are present, each with its own TPM.
 
-- 'bios': Indicates that the device supports the retrieval of BIOS/UEFI event logs.
+- 'bios': Indicates that the device supports the retrieval of BIOS/UEFI event logs. {{bios-log}}
 
-- 'ima': Indicates that the device supports the retrieval of event logs from the Linux Integrity Measurement Architecture (IMA).
+- 'ima': Indicates that the device supports the retrieval of event logs from the Linux Integrity Measurement Architecture (IMA). {{ima-log}}
 
-- 'netequip_boot': Indicates that the device supports the retrieval of netequip boot event logs.
+- 'netequip_boot': Indicates that the device supports the retrieval of netequip boot event logs.  {{netequip-boot-log}}
 
 #### Identities
 
@@ -202,8 +218,8 @@ An example of an RPC challenge requesting PCRs 0-7 from a SHA-256 bank could loo
     </nonce>
     <tpm20-pcr-selection>
       <tpm20-hash-algo
-          xmlns:taa="urn:ietf:params:xml:ns:yang:ietf-tcg-algs">
-        taa:TPM_ALG_SHA256
+          xmlns="urn:ietf:params:xml:ns:yang:ietf-tcg-algs">
+        TPM_ALG_SHA256
       </tpm20-hash-algo>
       <pcr-index>0</pcr-index>
       <pcr-index>1</pcr-index>
@@ -226,8 +242,8 @@ A successful response could be formatted as follows:
   <tpm20-attestation-response
     xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
     <certificate-name
-        xmlns:ks=urn:ietf:params:xml:ns:yang:ietf-keystore>
-       ks:(instance of Certificate name in the Keystore)
+        xmlns="urn:ietf:params:xml:ns:yang:ietf-keystore">
+        (instance of Certificate name in the Keystore)
     </certificate-name>
     <attestation-data>
        (raw attestation data, i.e. the TPM quote; this includes
@@ -311,8 +327,8 @@ There are three types of identities in this model:
 #### YANG Module
 
 ~~~~ YANG
-<CODE BEGINS> file "ietf-tcg-algs@2021-05-11.yang"
-{::include-dedent ietf-tcg-algs@2021-05-11.yang}
+<CODE BEGINS> file "ietf-tcg-algs@2021-11-05.yang"
+{::include-dedent ietf-tcg-algs@2021-11-05.yang}
 <CODE ENDS>
 ~~~~
 
@@ -373,7 +389,7 @@ Name:
 
 # Security Considerations
 
-The YANG module specified in this document defines a schema for data that is designed to be accessed via network management protocols such as NETCONF {{RFC6241}} or RESTCONF {{RFC8040}}.  The lowest NETCONF layer is the secure transport layer, and the mandatory-to-implement secure transport is Secure Shell (SSH) {{RFC6242}}.  The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement secure transport is TLS {{RFC8446}}.
+The YANG module ietf-tpm-remote-attestation.yang specified in this document defines a schema for data that is designed to be accessed via network management protocols such as NETCONF {{RFC6241}} or RESTCONF {{RFC8040}}.  The lowest NETCONF layer is the secure transport layer, and the mandatory-to-implement secure transport is Secure Shell (SSH) {{RFC6242}}.  The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement secure transport is TLS {{RFC8446}}.
 
 There are a number of data nodes defined in this YANG module that are writable/creatable/deletable (i.e., *config true*, which is the default).  These data nodes may be considered sensitive or vulnerable in some network environments.  Write operations (e.g., *edit-config*) to these data nodes without proper protection can have a negative effect on network operations.  These are the subtrees and data nodes as well as their sensitivity/vulnerability:
 
@@ -391,18 +407,28 @@ Container: '/rats-support-structures/tpms':
 
 RPC 'tpm12-challenge-response-attestation':
 
-: It must be verified that the certificate is for an active AIK, i. e. the certificate provided is able to support Attestation on the targeted TPM 1.2.
+: It must be verified that the certificate is for an active AIK, i.e., the certificate provided is able to support Attestation on the targeted TPM 1.2.
 
 RPC 'tpm20-challenge-response-attestation':
 
-: It must be verified that the certificate is for an active AK, i. e. the certificate provided is able to support Attestation on the targeted TPM 2.0.
+: It must be verified that the certificate is for an active AK, i.e., the certificate provided is able to support Attestation on the targeted TPM 2.0.
 
 RPC 'log-retrieval':
 
-: Pulling lots of logs can chew up system resources.
+: Requesting a large volume of logs from the attester could require significant system resources and create a denial of service.
+
+
+Information collected through the RPCs above could reveal that specific versions of software and configurations of endpoints that could identify vulnerabilities on those systems.  Therefore RPCs should be protected by NACM {{RFC8341}} to limit the extraction of attestation data by only authorized Verifiers.
+
+For the YANG module ietf-tcg-algs.yang, please use care when selecting specific algorithms.  The introductory section of {{TCG-Algos}} highlights that some algorithms should be considered legacy, and recommends implementers and adopters diligently evaluate available information such as governmental, industrial, and academic research before selecting an algorithm for use.
 
 
 # Change Log
+
+
+Changes from version 08 to version 09:
+
+* AD Review comments
 
 Changes from version 08 to version 09:
 
