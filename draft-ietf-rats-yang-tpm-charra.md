@@ -134,8 +134,8 @@ informative:
     title: "Canonical Event Log Format, Section 4.3"   
     
   netequip-boot-log:
-    target: tbd
-    title: "tbd"   
+    target: https://www.kernel.org/doc/Documentation/ABI/testing/ima_policy
+    title: "IMA Policy Kernel Documentation"   
     
 --- abstract
 
