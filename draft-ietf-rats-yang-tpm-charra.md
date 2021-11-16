@@ -129,6 +129,14 @@ informative:
     target: https://trustedcomputinggroup.org/wp-content/uploads/PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
     title: "TCG PC Client Platform Firmware Profile Specification, Section 9.4.5.2"   
 
+  PC-Client-EFI-TPM-1.2:
+    target: https://trustedcomputinggroup.org/resource/tcg-efi-platform-specification/
+    title: "TCG EFI Platform Specification for TPM Family 1.1 or 1.2, Specification Version 1.22, Revision 15"
+    author:
+    - org: Trusted Computing Group
+    date: 2014-01-01
+
+
   ima-log:
     target: https://www.trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p30_13feb2021.pdf
     title: "Canonical Event Log Format, Section 4.3"   
