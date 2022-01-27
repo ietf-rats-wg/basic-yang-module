@@ -32,7 +32,7 @@ module ietf-tcg-algs {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision 2021-11-05 {
+  revision 2022-01-27 {
     description
       "Initial version";
     reference
@@ -316,8 +316,8 @@ module ietf-tcg-algs {
     description
       "SM4 symmetric block cipher";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
-       GB/T 32907-2016. ALG_ID: 0x0013";
+      "TCG Algorithm Registry Revision 01.32  Table 3 
+      ALG_ID: 0x0013";
   }
 
   identity TPM_ALG_RSASSA {
@@ -417,9 +417,8 @@ module ietf-tcg-algs {
        signature algorithm, an encryption scheme, or a key exchange 
        protocol";
     reference  
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
-       GB/T 32918.1-2016, GB/T 32918.2-2016, GB/T 32918.3-2016, GB/T
-       32918.4-2016, GB/T 32918.5-2017. ALG_ID: 0x001B";
+      "TCG Algorithm Registry Revision 01.32  Table 3 
+      ALG_ID: 0x001B";
   }
 
   identity TPM_ALG_ECSCHNORR {
