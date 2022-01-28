@@ -82,6 +82,10 @@ normative:
   RFC6242:
   RFC8446:
   RFC8341:
+  RFC2014:
+  RFC7748:
+  RFC8032:
+  RFC8017:
   IANA.xml-registry:
   IANA.yang-parameters:
   I-D.ietf-netconf-keystore: ietf-keystore
@@ -96,6 +100,15 @@ normative:
         ins: TCG
         name: Trusted Computing Group
     date: 2003-10-02
+    
+  TPM1.2-Structures:
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TPM-Main-Part-2-TPM-Structures_v1.2_rev116_01032011.pdf
+    title: "TPM Main Part 2 TPM Structures"
+
+  TPM1.2-Commands:
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TPM-Main-Part-3-Commands_v1.2_rev116_01032011.pdf
+    title: "TPM Main Part 3 Commands"
+
   TPM2.0:
     target: https://trustedcomputinggroup.org/resource/tpm-library-specification/
     title: "TPM 2.0 Library Specification"
@@ -104,6 +117,14 @@ normative:
         ins: TCG
         name: Trusted Computing Group
     date: 2013-03-15
+
+  TPM2.0-Arch:
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TPM-Rev-2.0-Part-1-Architecture-01.07-2014-03-13.pdf
+    title: "Trusted Platform Module Library - Part 1: Architecture"
+
+  TPM2.0-Structures:
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TPM-Rev-2.0-Part-2-Structures-01.38.pdf
+    title: "Trusted Platform Module Library - Part 2: Structures"
 
   TPM2.0-Key:
     target: https://trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_DevID_v1r2_02dec2020.pdf
@@ -115,8 +136,68 @@ normative:
     date: 2021-04-14
 
   TCG-Algos:
-    target: https://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
-    title: "TCG_Algorithm_Registry_r1p32_pub"
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TCG-_Algorithm_Registry_r1p32_pub.pdf
+    title: "TCG Algorithm Registry"
+
+  ISO/IEC 9797-1:
+    target: https://www.iso.org/standard/50375.html
+    title: "Message Authentication Codes (MACs) - ISO/IEC 9797-1:2011"
+  
+  ISO/IEC 9797-2:
+    target: https://www.iso.org/standard/51618.html
+    title: "Message Authentication Codes (MACs) - ISO/IEC 9797-2:2011"
+    
+  ISO/IEC 10116:
+    target: https://www.iso.org/standard/64575.html
+    title: "ISO/IEC 10116:2017 - Information technology"
+    
+  ISO/IEC 10118-3:
+    target: https://www.iso.org/standard/67116.html
+    title: "Dedicated hash-functions - ISO/IEC 10118-3:2018"
+    
+  ISO/IEC 14888-3:
+    target: https://www.iso.org/standard/76382.html 
+    title: "ISO/IEC 14888-3:2018 - Digital signatures with appendix"
+    
+  ISO/IEC 15946-1:
+    target: https://www.iso.org/standard/65480.html
+    title: "ISO/IEC 15946-1:2016 - Information technology"
+    
+  ISO/IEC 18033-3:
+    target: https://www.iso.org/standard/54531.html
+    title: "ISO/IEC 18033-3:2010 - Encryption algorithms"
+
+  IEEE Std 1363-2000:
+    target: https://standards.ieee.org/standard/1363-2000.html
+    title: "IEEE 1363-2000 - IEEE Standard Specifications for Public-Key Cryptography"
+    
+  IEEE Std 1363a-2004:
+    target: https://ieeexplore.ieee.org/document/1335427
+    title: "1363a-2004 - IEEE Standard Specifications for Public-Key Cryptography - Amendment 1: Additional Techniques"
+ 
+  NIST PUB FIPS 202:
+    target: https://csrc.nist.gov/publications/detail/fips/202/final
+    title: "SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions"
+ 
+  NIST SP800-38C:
+    target: https://csrc.nist.gov/publications/detail/sp/800-38c/final
+    title: "Recommendation for Block Cipher Modes of Operation: the CCM Mode for Authentication and Confidentiality"
+    
+  NIST SP800-38D:
+    target: https://csrc.nist.gov/publications/detail/sp/800-38d/final
+    title: "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC"
+    
+  NIST SP800-38F:
+    target: https://csrc.nist.gov/publications/detail/sp/800-38f/final
+    title: "Recommendation for Block Cipher Modes of Operation: Methods for Key Wrapping"
+    
+  NIST SP800-56A:
+    target: https://csrc.nist.gov/publications/detail/sp/800-56a/rev-3/final
+    title: "Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography"
+    
+  NIST SP800-108:
+    target: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-108.pdf
+    title: "Recommendation for Key Derivation Using Pseudorandom Functions"
 
 informative:
   I-D.ietf-rats-reference-interaction-models: rats-interaction-models
@@ -136,7 +217,6 @@ informative:
     - org: Trusted Computing Group
     date: 2014-01-01
 
-
   ima-log:
     target: https://www.trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p30_13feb2021.pdf
     title: "Canonical Event Log Format, Section 4.3"   
@@ -144,6 +224,7 @@ informative:
   netequip-boot-log:
     target: https://www.kernel.org/doc/Documentation/ABI/testing/ima_policy
     title: "IMA Policy Kernel Documentation"   
+ 
     
 --- abstract
 
