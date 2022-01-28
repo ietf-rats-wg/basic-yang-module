@@ -2,7 +2,7 @@
    +--rw tpm* [name]
       +--rw name                string
       +--ro hardware-based?     boolean
-      +--ro physical-index?     int32 {ietfhw:entity-mib}?
+      +--ro physical-index?     int32 {hw:entity-mib}?
       +--ro path?               string
       +--ro compute-node        compute-node-ref {tpm:tpms}?
       +--ro manufacturer?       string
