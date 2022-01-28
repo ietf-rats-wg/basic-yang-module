@@ -80,13 +80,24 @@ normative:
   RFC6241:
   RFC8040:
   RFC6242:
+  RFC6933:
   RFC8446:
   RFC8341:
-  IANA.xml-registry:
-  IANA.yang-parameters:
+  RFC7748:
+  RFC8032:
+  RFC8017:
+  
   I-D.ietf-netconf-keystore: ietf-keystore
   I-D.ietf-rats-architecture: rats-architecture
   I-D.ietf-rats-tpm-based-network-device-attest: RIV
+  
+  xml-registry:
+    target: https://www.iana.org/assignments/xml-registry/xml-registry.xhtml
+    title: IETF XML Registry
+    
+  yang-parameters:
+    target: https://www.iana.org/assignments/yang-parameters/yang-parameters.xhtml
+    title: YANG Parameters
 
   TPM1.2:
     target: https://trustedcomputinggroup.org/resource/tpm-main-specification/
@@ -96,6 +107,15 @@ normative:
         ins: TCG
         name: Trusted Computing Group
     date: 2003-10-02
+    
+  TPM1.2-Structures:
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TPM-Main-Part-2-TPM-Structures_v1.2_rev116_01032011.pdf
+    title: "TPM Main Part 2 TPM Structures"
+
+  TPM1.2-Commands:
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TPM-Main-Part-3-Commands_v1.2_rev116_01032011.pdf
+    title: "TPM Main Part 3 Commands"
+
   TPM2.0:
     target: https://trustedcomputinggroup.org/resource/tpm-library-specification/
     title: "TPM 2.0 Library Specification"
@@ -104,6 +124,14 @@ normative:
         ins: TCG
         name: Trusted Computing Group
     date: 2013-03-15
+
+  TPM2.0-Arch:
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TPM-Rev-2.0-Part-1-Architecture-01.07-2014-03-13.pdf
+    title: "Trusted Platform Module Library - Part 1: Architecture"
+
+  TPM2.0-Structures:
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TPM-Rev-2.0-Part-2-Structures-01.38.pdf
+    title: "Trusted Platform Module Library - Part 2: Structures"
 
   TPM2.0-Key:
     target: https://trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_DevID_v1r2_02dec2020.pdf
@@ -115,8 +143,83 @@ normative:
     date: 2021-04-14
 
   TCG-Algos:
-    target: https://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
-    title: "TCG_Algorithm_Registry_r1p32_pub"
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TCG-_Algorithm_Registry_r1p32_pub.pdf
+    title: "TCG Algorithm Registry"
+
+  ISO-IEC-9797-1:
+    target: https://www.iso.org/standard/50375.html
+    title: "Message Authentication Codes (MACs) - ISO/IEC 9797-1:2011"
+  
+  ISO-IEC-9797-2:
+    target: https://www.iso.org/standard/51618.html
+    title: "Message Authentication Codes (MACs) - ISO/IEC 9797-2:2011"
+    
+  ISO-IEC-10116:
+    target: https://www.iso.org/standard/64575.html
+    title: "ISO/IEC 10116:2017 - Information technology"
+    
+  ISO-IEC-10118-3:
+    target: https://www.iso.org/standard/67116.html
+    title: "Dedicated hash-functions - ISO/IEC 10118-3:2018"
+    
+  ISO-IEC-14888-3:
+    target: https://www.iso.org/standard/76382.html 
+    title: "ISO/IEC 14888-3:2018 - Digital signatures with appendix"
+    
+  ISO-IEC-15946-1:
+    target: https://www.iso.org/standard/65480.html
+    title: "ISO/IEC 15946-1:2016 - Information technology"
+    
+  ISO-IEC-18033-3:
+    target: https://www.iso.org/standard/54531.html
+    title: "ISO/IEC 18033-3:2010 - Encryption algorithms"
+
+  IEEE-Std-1363-2000:
+    target: https://standards.ieee.org/standard/1363-2000.html
+    title: "IEEE 1363-2000 - IEEE Standard Specifications for Public-Key Cryptography"
+    
+  IEEE-Std-1363a-2004:
+    target: https://ieeexplore.ieee.org/document/1335427
+    title: "1363a-2004 - IEEE Standard Specifications for Public-Key Cryptography - Amendment 1: Additional Techniques"
+ 
+  NIST-PUB-FIPS-202:
+    target: https://csrc.nist.gov/publications/detail/fips/202/final
+    title: "SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions"
+ 
+  NIST-SP800-38C:
+    target: https://csrc.nist.gov/publications/detail/sp/800-38c/final
+    title: "Recommendation for Block Cipher Modes of Operation: the CCM Mode for Authentication and Confidentiality"
+    
+  NIST-SP800-38D:
+    target: https://csrc.nist.gov/publications/detail/sp/800-38d/final
+    title: "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC"
+    
+  NIST-SP800-38F:
+    target: https://csrc.nist.gov/publications/detail/sp/800-38f/final
+    title: "Recommendation for Block Cipher Modes of Operation: Methods for Key Wrapping"
+    
+  NIST-SP800-56A:
+    target: https://csrc.nist.gov/publications/detail/sp/800-56a/rev-3/final
+    title: "Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography"
+    
+  NIST-SP800-108:
+    target: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-108.pdf
+    title: "Recommendation for Key Derivation Using Pseudorandom Functions"
+
+  PC-Client-EFI-TPM-1.2:
+    target: https://trustedcomputinggroup.org/resource/tcg-efi-platform-specification/
+    title: "TCG EFI Platform Specification for TPM Family 1.1 or 1.2, Specification Version 1.22, Revision 15"
+    author:
+    - org: Trusted Computing Group
+    date: 2014-01-01
+
+  ima-log:
+    target: https://www.trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p30_13feb2021.pdf
+    title: "Canonical Event Log Format, Section 4.3"   
+    
+  netequip-boot-log:
+    target: https://www.kernel.org/doc/Documentation/ABI/testing/ima_policy
+    title: "IMA Policy Kernel Documentation"   
 
 informative:
   I-D.ietf-rats-reference-interaction-models: rats-interaction-models
@@ -129,21 +232,7 @@ informative:
     target: https://trustedcomputinggroup.org/wp-content/uploads/PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
     title: "TCG PC Client Platform Firmware Profile Specification, Section 9.4.5.2"   
 
-  PC-Client-EFI-TPM-1.2:
-    target: https://trustedcomputinggroup.org/resource/tcg-efi-platform-specification/
-    title: "TCG EFI Platform Specification for TPM Family 1.1 or 1.2, Specification Version 1.22, Revision 15"
-    author:
-    - org: Trusted Computing Group
-    date: 2014-01-01
-
-
-  ima-log:
-    target: https://www.trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p30_13feb2021.pdf
-    title: "Canonical Event Log Format, Section 4.3"   
-    
-  netequip-boot-log:
-    target: https://www.kernel.org/doc/Documentation/ABI/testing/ima_policy
-    title: "IMA Policy Kernel Documentation"   
+ 
     
 --- abstract
 
@@ -169,11 +258,11 @@ One or more TPMs MUST be embedded in a Composite Device that provides attestatio
 
 ## YANG Modules
 
-In this section the several YANG modules are defined.
+In this section the several YANG modules are defined. 
 
 ### 'ietf-tpm-remote-attestation'
 
-This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, {{-ietf-keystore}}, and `ietf-tcg-algs.yang` {{ref-ietf-tcg-algs}}.
+This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, {{-ietf-keystore}}, and `ietf-tcg-algs.yang` {{ref-ietf-tcg-algs}}.  Additionally references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{PC-Client-EFI-TPM-1.2}}, {{ima-log}}, and {{netequip-boot-log}}.
 
 #### Features
 
@@ -307,14 +396,14 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 {: #ref-ietf-tpm-remote-attestation}
 
 ~~~ YANG
-<CODE BEGINS> file "ietf-tpm-remote-attestation@2021-11-16.yang"
+<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-11-16.yang"
 {::include-dedent ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
 
 ### 'ietf-tcg-algs'
 
-Cryptographic algorithm types were initially included within -v14 NETCONF's iana-crypto-types.yang.  Unfortunately, all this content including the algorithms needed here failed to make the -v15 used WGLC. As a result, this document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.
+This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC7748}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{PC-Client-EFI-TPM-1.2}}, {{ima-log}}, and {{netequip-boot-log}} exist within the YANG Model.
 
 #### Features
 
@@ -324,18 +413,18 @@ There are two types of features supported: 'TPM12' and 'TPM20'. Support for eith
 
 There are three types of identities in this model:
 
-1. **Cryptographic functions** supported by a TPM algorithm; these include: 'asymmetric', 'symmetric', 'hash', 'signing', 'anonymous_signing', 'encryption_mode', 'method', and 'object_type'. The definitions of each of these are in Table 2 of {{TCG-Algos}}.
+1. Cryptographic functions supported by a TPM algorithm; these include: 'asymmetric', 'symmetric', 'hash', 'signing', 'anonymous_signing', 'encryption_mode', 'method', and 'object_type'. The definitions of each of these are in Table 2 of {{TCG-Algos}}.
 
-2. **API specifications** for TPMs: 'tpm12' and 'tpm20'
+2. API specifications for TPMs: 'tpm12' and 'tpm20'
 
-3. **Specific algorithm types**: Each algorithm type defines what cryptographic functions may be supported, and on which type of API specification. It is not required that an implementation of a specific TPM will support all algorithm types. The contents of each specific algorithm mirrors what is in Table 3 of {{TCG-Algos}}.
+3. Specific algorithm types: Each algorithm type defines what cryptographic functions may be supported, and on which type of API specification. It is not required that an implementation of a specific TPM will support all algorithm types. The contents of each specific algorithm mirrors what is in Table 3 of {{TCG-Algos}}.
 
 {: #ref-ietf-tcg-algs}
 
 #### YANG Module
 
 ~~~~ YANG
-<CODE BEGINS> file "ietf-tcg-algs@2021-11-05.yang"
+<CODE BEGINS> file "ietf-tcg-algs@2022-01-27.yang"
 {::include-dedent ietf-tcg-algs@2021-11-05.yang}
 <CODE ENDS>
 ~~~~
@@ -345,8 +434,7 @@ Note that not all cryptographic functions are required for use by `ietf-tpm-remo
 # IANA Considerations
 
 This document registers the following namespace URIs in the
-{{ns ("ns" class of the IETF XML Registry)<IANA.xml-registry}}
-{{IANA.xml-registry}} as per {{RFC3688}}:
+{{xml-registry}} as per {{RFC3688}}:
 
 URI:
 : urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation
@@ -368,8 +456,7 @@ URI:
 
 
 This document registers the following YANG modules in the
-"{{yang-parameters-1 (YANG Module Names)<IANA.yang-parameters}}"
-registry {{IANA.yang-parameters}} as per {{Section 14 of RFC6020}}:
+registry {{yang-parameters}} as per Section 14 of {{RFC6020}}:
 
 Name:
 : ietf-tpm-remote-attestation
