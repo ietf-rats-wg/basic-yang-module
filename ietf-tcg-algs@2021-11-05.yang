@@ -7,7 +7,7 @@ module ietf-tcg-algs {
     "IETF RATS Working Group";
 
   contact
-    "WG Web:   <http://datatracker.ietf.org/wg/rats/>
+    "WG Web:   <https://datatracker.ietf.org/wg/rats/>
      WG List:  <mailto:rats@ietf.org>
      Author:   Eric Voit <mailto:evoit@cisco.com>";
 
