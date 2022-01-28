@@ -56,7 +56,8 @@ module ietf-tpm-remote-attestation {
     description
       "Initial version";
     reference
-      "draft-ietf-rats-yang-tpm-charra";
+      "RFC XXXX: A YANG Data Model for Challenge-Response-based Remote
+       Attestation Procedures using TPMs";
   }
 
   /*****************/
