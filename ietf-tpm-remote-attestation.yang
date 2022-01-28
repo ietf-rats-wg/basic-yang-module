@@ -139,7 +139,7 @@ module ietf-tpm-remote-attestation {
 
   identity attested_event_log_type {
     description
-      "Base identity allowing categorization of the reasons why and
+      "Base identity allowing categorization of the reasons why an
        attested measurement has been taken on an Attester.";
   }
 
