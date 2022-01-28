@@ -36,7 +36,8 @@ module ietf-tcg-algs {
     description
       "Initial version";
     reference
-      "RFC XXXX: tbd";
+      "RFC XXXX: A YANG Data Model for Challenge-Response-based Remote
+       Attestation Procedures using TPMs";
   }
 
   /*****************/
