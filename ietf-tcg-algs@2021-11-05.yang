@@ -46,7 +46,8 @@ module ietf-tcg-algs {
   feature tpm12 {
     description
       "This feature indicates algorithm support for the TPM 1.2 API
-       as per Section 4.8 of TPM Main Part 2 TPM Structures
+       as per Section 4.8 of TPM1.2-Structures:
+       TPM Main Part 2 TPM Structures
        https://trustedcomputinggroup.org/wp-content/uploads/
        TPM-main-1.2-Rev94-part-2.pdf";
   }
@@ -55,7 +56,7 @@ module ietf-tcg-algs {
     description
       "This feature indicates algorithm support for the TPM 2.0 API 
        as per Section 11.4 of Trusted Platform Module Library
-       Part 1: Architecture. See TPM2.0-Arch
+       Part 1: Architecture. See TPM2.0-Arch:
        https://trustedcomputinggroup.org/wp-content/uploads/
        TPM-Rev-2.0-Part-1-Architecture-01.07-2014-03-13.pdf";
   }
@@ -70,7 +71,7 @@ module ietf-tcg-algs {
       "A TCG recognized asymmetric algorithm with a public and 
        private key.";
     reference 
-      "TCG Algorithm Registry Revision 01.32 Table 2
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2,
       http://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
        TCG-_Algorithm_Registry_r1p32_pub";
   }
@@ -79,7 +80,7 @@ module ietf-tcg-algs {
     description
       "A TCG recognized symmetric algorithm with only a private key.";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 2";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2";
   }
 
   identity hash {
@@ -87,42 +88,42 @@ module ietf-tcg-algs {
       "A TCG recognized hash algorithm that compresses input data to 
        a digest value or indicates a method that uses a hash.";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 2";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2";
   }
 
   identity signing {
     description
       "A TCG recognized signing algorithm";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 2";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2";
   }
 
   identity anonymous_signing {
     description
       "A TCG recognized anonymous signing algorithm.";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 2";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2";
   }
 
   identity encryption_mode {
     description
       "A TCG recognized encryption mode.";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 2";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2";
   }  
 
   identity method {
     description
       "A TCG recognized method such as a mask generation function.";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 2";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2";
   }
   
   identity object_type {
     description
       "A TCG recognized object type.";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 2";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2";
   }
 
   identity cryptoprocessor {
@@ -136,7 +137,7 @@ module ietf-tcg-algs {
     description
       "Supportable by a TPM1.2.";
     reference
-      "TPM1.2-Structures
+      "TPM1.2-Structures:
        https://trustedcomputinggroup.org/wp-content/uploads/
        TPM-Main-Part-2-TPM-Structures_v1.2_rev116_01032011.pdf
        TPM_ALGORITHM_ID values, page 18";
@@ -148,7 +149,7 @@ module ietf-tcg-algs {
     description
       "Supportable by a TPM2.";
     reference  
-      "TPM2.0-Structures
+      "TPM2.0-Structures:
        https://trustedcomputinggroup.org/wp-content/uploads/
        TPM-Rev-2.0-Part-2-Structures-01.38.pdf
        The TCG Algorithm Registry. Table 9";
@@ -163,7 +164,7 @@ module ietf-tcg-algs {
     description
       "RSA algorithm";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and 
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        RFC 8017. ALG_ID: 0x0001";
   }
 
@@ -176,7 +177,7 @@ module ietf-tcg-algs {
        Algorithm, commonly called Triple Data Encryption Standard)
        Note: was banned in TPM1.2 v94";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and 
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 18033-3. ALG_ID: 0x0003";
   }
   
@@ -190,7 +191,7 @@ module ietf-tcg-algs {
        protection.  However it is still useful for hash algorithms 
        where protection is not required.";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 10118-3. ALG_ID: 0x0004";
   }
   
@@ -203,7 +204,7 @@ module ietf-tcg-algs {
     description
       "Hash Message Authentication Code (HMAC) algorithm";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3, 
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3, 
        ISO/IEC 9797-2 and RFC2014. ALG_ID: 0x0005";
   }
       
@@ -214,7 +215,7 @@ module ietf-tcg-algs {
     description
       "The AES algorithm with various key sizes";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3,
        ISO/IEC 18033-3. ALG_ID: 0x0006";
   }
 
@@ -226,7 +227,7 @@ module ietf-tcg-algs {
     description
       "hash-based mask-generation function";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3,
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3,
        IEEE Std 1363-2000 and IEEE Std 1363a-2004.
        ALG_ID: 0x0007";
   }
@@ -242,8 +243,8 @@ module ietf-tcg-algs {
        also refer to a data object that is neither signing nor 
        encrypting.";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
-       TCG TPM 2.0 library specification. ALG_ID: 0x0008";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3,
+       ALG_ID: 0x0008";
     }
 
   identity TPM_ALG_XOR {
@@ -255,8 +256,8 @@ module ietf-tcg-algs {
     description
       "The XOR encryption algorithm.";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
-       TCG TPM 2.0 library specification. ALG_ID: 0x000A";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3.
+       ALG_ID: 0x000A";
   }
 
   identity TPM_ALG_SHA256 {
@@ -266,7 +267,7 @@ module ietf-tcg-algs {
     description
       "The SHA 256 algorithm";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 10118-3. ALG_ID: 0x000B";
   }
 
@@ -277,7 +278,7 @@ module ietf-tcg-algs {
     description
       "The SHA 384 algorithm";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 10118-3. ALG_ID: 0x000C";
   }
 
@@ -288,7 +289,7 @@ module ietf-tcg-algs {
     description
       "The SHA 512 algorithm";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 10118-3. ALG_ID: 0x000D";
   }
 
@@ -298,8 +299,8 @@ module ietf-tcg-algs {
     description
       "NULL algorithm";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
-       TCG TPM 2.0 library specification. ALG_ID: 0x0010";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3.
+       ALG_ID: 0x0010";
   }
 
   identity TPM_ALG_SM3_256 {
@@ -309,7 +310,7 @@ module ietf-tcg-algs {
     description
       "The SM3 hash algorithm.";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 10118-3:2018. ALG_ID: 0x0012";
   }
 
@@ -320,7 +321,7 @@ module ietf-tcg-algs {
     description
       "SM4 symmetric block cipher";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3.
       ALG_ID: 0x0013";
   }
 
@@ -332,8 +333,8 @@ module ietf-tcg-algs {
     description
       "Signature algorithm defined in section 8.2 (RSASSAPKCS1-v1_5)";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and RFC 8017.
-       ALG_ID: 0x0014";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
+      RFC 8017.  ALG_ID: 0x0014";
   }
 
   identity TPM_ALG_RSAES {
@@ -344,8 +345,8 @@ module ietf-tcg-algs {
     description
       "Signature algorithm defined in section 7.2 (RSAES-PKCS1-v1_5)";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and RFC 8017
-       ALG_ID: 0x0015";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
+      RFC 8017. ALG_ID: 0x0015";
   }
 
   identity TPM_ALG_RSAPSS {
@@ -356,8 +357,8 @@ module ietf-tcg-algs {
     description
       "Padding algorithm defined in section 8.1 (RSASSA PSS)";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and RFC 8017.
-       ALG_ID: 0x0016";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
+       RFC 8017. ALG_ID: 0x0016";
   }
 
   identity TPM_ALG_OAEP {
@@ -368,8 +369,8 @@ module ietf-tcg-algs {
     description
       "Padding algorithm defined in section 7.1 (RSASSA OAEP)";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and RFC 8017.
-       ALG_ID: 0x0017";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
+       RFC 8017. ALG_ID: 0x0017";
   }
 
   identity TPM_ALG_ECDSA {
@@ -380,7 +381,7 @@ module ietf-tcg-algs {
     description
       "Signature algorithm using elliptic curve cryptography (ECC)";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 14888-3. ALG_ID: 0x0018";
   }            
 
@@ -392,7 +393,7 @@ module ietf-tcg-algs {
     description
       "Secret sharing using ECC";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST SP800-56A and RFC 7748. ALG_ID: 0x0019";
   }
 
@@ -405,7 +406,7 @@ module ietf-tcg-algs {
     description
       "Elliptic-curve based anonymous signing scheme";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        TCG TPM 2.0 library specification. ALG_ID: 0x001A";
   }
 
@@ -421,7 +422,7 @@ module ietf-tcg-algs {
        signature algorithm, an encryption scheme, or a key exchange 
        protocol";
     reference  
-      "TCG Algorithm Registry Revision 01.32  Table 3 
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3.
       ALG_ID: 0x001B";
   }
 
@@ -433,8 +434,8 @@ module ietf-tcg-algs {
     description
       "Elliptic-curve based Schnorr signature";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
-       TCG TPM 2.0 library specification. ALG_ID: 0x001C";
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3. 
+      ALG_ID: 0x001C";
   }
 
   identity TPM_ALG_ECMQV {
@@ -445,7 +446,7 @@ module ietf-tcg-algs {
     description
       "Two-phase elliptic-curve key";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST SP800-56A. ALG_ID: 0x001D";
   }
 
@@ -457,7 +458,7 @@ module ietf-tcg-algs {
     description
       "Concatenation key derivation function";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST SP800-56A  (approved alternative1) section 5.8.1.
        ALG_ID: 0x0020";
   }
@@ -470,7 +471,7 @@ module ietf-tcg-algs {
     description
       "Key derivation function";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        IEEE 1363a-2004 KDF2 section 13.2. ALG_ID: 0x0021";
   }
 
@@ -479,7 +480,7 @@ module ietf-tcg-algs {
     description
       "A key derivation method";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST SP800-108 - Section 5.1 KDF. ALG_ID: 0x0022";
   }
 
@@ -491,7 +492,7 @@ module ietf-tcg-algs {
     description
       "Prime field ECC";
     reference  
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 15946-1. ALG_ID: 0x0023";
   }
 
@@ -501,7 +502,7 @@ module ietf-tcg-algs {
     description
       "Object type for a symmetric block cipher";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        TCG TPM 2.0 library specification. ALG_ID: 0x0025";
   }
 
@@ -512,7 +513,7 @@ module ietf-tcg-algs {
     description
       "The Camellia algorithm";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 18033-3. ALG_ID: 0x0026";
   }
 
@@ -523,7 +524,7 @@ module ietf-tcg-algs {
     description
       "ISO/IEC 10118-3 - the SHA 256 algorithm";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST PUB FIPS 202. ALG_ID: 0x0027";
   }
 
@@ -534,7 +535,7 @@ module ietf-tcg-algs {
     description
       "The SHA 384 algorithm";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST PUB FIPS 202. ALG_ID: 0x0028";
   }
 
@@ -545,7 +546,7 @@ module ietf-tcg-algs {
     description
       "The SHA 512 algorithm";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST PUB FIPS 202. ALG_ID: 0x0029";
   }
 
@@ -557,7 +558,7 @@ module ietf-tcg-algs {
     description
       "block Cipher-based Message Authentication Code (CMAC)";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 9797-1:2011 Algorithm 5. ALG_ID: 0x003F";
   }
 
@@ -569,7 +570,7 @@ module ietf-tcg-algs {
     description
       "Counter mode";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 10116. ALG_ID: 0x0040";
   }
 
@@ -580,7 +581,7 @@ module ietf-tcg-algs {
     description
       "Output Feedback mode";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 10116. ALG_ID: 0x0041";
   }
 
@@ -592,7 +593,7 @@ module ietf-tcg-algs {
     description
       "Cipher Block Chaining mode";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 10116. ALG_ID: 0x0042";
   }
 
@@ -604,7 +605,7 @@ module ietf-tcg-algs {
     description
       "Cipher Feedback mode";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 10116. ALG_ID: 0x0043";
   }
 
@@ -616,7 +617,7 @@ module ietf-tcg-algs {
     description
       "Electronic Codebook mode";
     reference 
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        ISO/IEC 10116. ALG_ID: 0x0044";
   }
 
@@ -630,7 +631,7 @@ module ietf-tcg-algs {
       "Counter with Cipher Block Chaining-Message Authentication 
       Code (CCM)";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST SP800-38C. ALG_ID: 0x0050";
   }
 
@@ -643,7 +644,7 @@ module ietf-tcg-algs {
     description
       "Galois/Counter Mode (GCM)";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST SP800-38D. ALG_ID: 0x0051";
   }
   
@@ -656,7 +657,7 @@ module ietf-tcg-algs {
     description
       "AES Key Wrap (KW)";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST SP800-38F. ALG_ID: 0x0052";
   }
   
@@ -669,7 +670,7 @@ module ietf-tcg-algs {
     description
       "AES Key Wrap with Padding (KWP)";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST SP800-38F. ALG_ID: 0x0053";
   }
   
@@ -682,7 +683,7 @@ module ietf-tcg-algs {
     description
       "Authenticated-Encryption Mode";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        NIST SP800-38F. ALG_ID: 0x0054";
   }
    
@@ -694,7 +695,7 @@ module ietf-tcg-algs {
     description
       "Edwards-curve Digital Signature Algorithm (PureEdDSA)";
     reference
-      "TCG Algorithm Registry Revision 01.32  Table 3 and
+      "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
        RFC 8032. ALG_ID: 0x0060";
   }
 }
