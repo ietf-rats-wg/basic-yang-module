@@ -52,7 +52,7 @@ module ietf-tpm-remote-attestation {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision 2021-11-16 {
+  revision 2022-01-27 {
     description
       "Initial version";
     reference
