@@ -252,7 +252,7 @@ One or more TPMs MUST be embedded in a Composite Device that provides attestatio
 
 ## YANG Modules
 
-In this section the several YANG modules are defined.   The following references are embedded within these YANG modules: {{}}
+In this section the several YANG modules are defined. 
 
 ### 'ietf-tpm-remote-attestation'
 
