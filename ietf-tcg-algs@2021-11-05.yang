@@ -145,7 +145,7 @@ module ietf-tcg-algs {
   }
   
   identity tpm20 {
-    if-feature "tpm12";
+    if-feature "tpm20";
     base cryptoprocessor;
     description
       "Supportable by a TPM2.";
