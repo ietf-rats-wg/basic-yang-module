@@ -55,9 +55,9 @@ module ietf-tcg-algs {
     description
       "This feature indicates algorithm support for the TPM 2.0 API 
        as per Section 11.4 of Trusted Platform Module Library
-       Part 1: Architecture
+       Part 1: Architecture. See TPM2.0-Arch
        https://trustedcomputinggroup.org/wp-content/uploads/
-       TPM-Rev-2.0-Part-1-Architecture-01.38.pdf";
+       TPM-Rev-2.0-Part-1-Architecture-01.07-2014-03-13.pdf";
   }
 
 
@@ -136,7 +136,9 @@ module ietf-tcg-algs {
     description
       "Supportable by a TPM1.2.";
     reference
-      "TPM-Main-Part-2-TPM-Structures_v1.2_rev116_01032011.pdf
+      "TPM1.2-Structures
+       https://trustedcomputinggroup.org/wp-content/uploads/
+       TPM-Main-Part-2-TPM-Structures_v1.2_rev116_01032011.pdf
        TPM_ALGORITHM_ID values, page 18";
   }
   
@@ -146,7 +148,9 @@ module ietf-tcg-algs {
     description
       "Supportable by a TPM2.";
     reference  
-      "TPM-Rev-2.0-Part-2-Structures-01.38.pdf
+      "TPM2.0-Structures
+       https://trustedcomputinggroup.org/wp-content/uploads/
+       TPM-Rev-2.0-Part-2-Structures-01.38.pdf
        The TCG Algorithm Registry. Table 9";
   } 
   
