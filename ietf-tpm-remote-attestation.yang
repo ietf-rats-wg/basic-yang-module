@@ -431,8 +431,9 @@ module ietf-tpm-remote-attestation {
   }
   grouping boot-event-log {
     description
-      "Defines an event log corresponding to the event that extended 
-       the PCR";
+      "Defines a specific instance of an event log entry 
+       which corresponds to the information used to 
+       extended the PCR";
     leaf event-number {
       type uint32;
       description
