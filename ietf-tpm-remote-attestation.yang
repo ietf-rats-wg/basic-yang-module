@@ -18,7 +18,7 @@ module ietf-tpm-remote-attestation {
   organization
     "IETF RATS (Remote ATtestation procedureS) Working Group";
   contact
-    "WG Web  : <http://datatracker.ietf.org/wg/rats/>
+    "WG Web  : <https://datatracker.ietf.org/wg/rats/>
      WG List : <mailto:rats@ietf.org>
      Author  : Eric Voit <evoit@cisco.com>
      Author  : Henk Birkholz <henk.birkholz@sit.fraunhofer.de>
