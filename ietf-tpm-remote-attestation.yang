@@ -442,7 +442,9 @@ module ietf-tpm-remote-attestation {
     leaf event-type {
         type uint32;
         description
-          "log event type";
+          "BIOS Log Event Type:
+           https://trustedcomputinggroup.org/wp-content/uploads/
+           TCG_PCClient_PFP_r1p05_v23_pub.pdf  Section 10.4.1";
     }
     leaf pcr-index {
       type pcr;
