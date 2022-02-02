@@ -146,6 +146,10 @@ normative:
     target: https://trustedcomputinggroup.org/wp-content/uploads/TCG-_Algorithm_Registry_r1p32_pub.pdf
     title: "TCG Algorithm Registry"
 
+  BIOS Log Event Type:
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TCG_PCClient_PFP_r1p05_v23_pub.pdf
+    title: "TCG PC Client Platform Firmware Profile Specification"
+
   ISO-IEC-9797-1:
     target: https://www.iso.org/standard/50375.html
     title: "Message Authentication Codes (MACs) - ISO/IEC 9797-1:2011"
@@ -262,7 +266,7 @@ In this section the several YANG modules are defined.
 
 ### 'ietf-tpm-remote-attestation'
 
-This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, {{-ietf-keystore}}, and `ietf-tcg-algs.yang` {{ref-ietf-tcg-algs}}.  Additionally references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{PC-Client-EFI-TPM-1.2}}, {{ima-log}}, and {{netequip-boot-log}}.
+This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, {{-ietf-keystore}}, and `ietf-tcg-algs.yang` {{ref-ietf-tcg-algs}}.  Additionally references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{PC-Client-EFI-TPM-1.2}}, {{ima-log}},  {{BIOS Log Event Type}} and {{netequip-boot-log}}.
 
 #### Features
 
