@@ -73,8 +73,8 @@ module ietf-tcg-algs {
        private key.";
     reference 
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2,
-      http://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
-       TCG-_Algorithm_Registry_r1p32_pub";
+       https://trustedcomputinggroup.org/wp-content/uploads/TCG-
+       _Algorithm_Registry_r1p32_pub.pdf";
   }
 
   identity symmetric {
@@ -312,7 +312,7 @@ module ietf-tcg-algs {
       "The SM3 hash algorithm.";
     reference
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
-       ISO/IEC 10118-3:2018. ALG_ID: 0x0012";
+       ISO/IEC 10118-3. ALG_ID: 0x0012";
   }
 
   identity TPM_ALG_SM4 {
@@ -473,7 +473,8 @@ module ietf-tcg-algs {
       "Key derivation function";
     reference
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
-       IEEE 1363a-2004 KDF2 section 13.2. ALG_ID: 0x0021";
+       IEEE Std 1363a-2004 KDF2 section 13.2. 
+       ALG_ID: 0x0021";
   }
 
   identity TPM_ALG_KDF1_SP800_108 {
