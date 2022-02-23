@@ -85,7 +85,7 @@ module ietf-tpm-remote-attestation {
     description
       "The device supports the bios logs.";
     reference
-      "PC-Client-EFI-TPM-1.2:
+      "bios-log:
        https://trustedcomputinggroup.org/wp-content/uploads/
        PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
        Section 9.4.5.2";
