@@ -400,7 +400,7 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 {: #ref-ietf-tpm-remote-attestation}
 
 ~~~ YANG
-<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-11-16.yang"
+<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-02-16.yang"
 {::include-dedent ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
@@ -428,7 +428,7 @@ There are three types of identities in this model:
 #### YANG Module
 
 ~~~~ YANG
-<CODE BEGINS> file "ietf-tcg-algs@2022-01-27.yang"
+<CODE BEGINS> file "ietf-tcg-algs@2022-02-16.yang"
 {::include-dedent ietf-tcg-algs@2021-11-05.yang}
 <CODE ENDS>
 ~~~~
