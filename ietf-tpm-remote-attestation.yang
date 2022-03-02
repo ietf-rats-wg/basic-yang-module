@@ -4,25 +4,15 @@ module ietf-tpm-remote-attestation {
 
   import ietf-yang-types {
     prefix yang;
-    reference
-      "RFC 6991: Common YANG Data Types.";
   }
   import ietf-hardware {
     prefix hw;
-    reference
-      "RFC 8348: A YANG Data Model for Hardware Management.";
   }
   import ietf-keystore {
     prefix ks;
-    reference
-      "draft-ietf-netconf-keystore: 
-       A YANG Data Model for a Keystore.";
   }
   import ietf-tcg-algs {
     prefix taa;
-    reference
-      "RFC XXXX: A YANG Data Model for Challenge-Response-based 
-       Remote Attestation Procedures using TPMs.";
   }
 
   organization
