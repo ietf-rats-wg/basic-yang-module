@@ -258,7 +258,7 @@ In this section the several YANG modules are defined.
 
 ### 'ietf-tpm-remote-attestation'
 
-This YANG module imports modules from {{-ietf-yang-types}}, {{-ietf-hardware}}, {{-ietf-keystore}}, and `ietf-tcg-algs.yang` {{ref-ietf-tcg-algs}}.  Additionally references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{bios-log}}, {{ima-log}},  {{BIOS-Log-Event-Type}} and {{netequip-boot-log}}.
+This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{bios-log}}, {{ima-log}},  {{BIOS-Log-Event-Type}} and {{netequip-boot-log}}.
 
 #### Features
 
