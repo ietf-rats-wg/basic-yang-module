@@ -12,7 +12,7 @@ module ietf-tcg-algs {
      Author:   Eric Voit <mailto:evoit@cisco.com>";
 
   description
-    "This module defines a identities for asymmetric algorithms.
+    "This module defines identities for asymmetric algorithms.
     
      Copyright (c) 2022 IETF Trust and the persons identified
      as authors of the code. All rights reserved.
@@ -32,7 +32,7 @@ module ietf-tcg-algs {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision 2022-02-16 {
+  revision 2022-03-07 {
     description
       "Initial version";
     reference
@@ -73,8 +73,8 @@ module ietf-tcg-algs {
        private key.";
     reference 
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2,
-      http://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
-       TCG-_Algorithm_Registry_r1p32_pub";
+      https://trustedcomputinggroup.org/resource/
+       tcg-algorithm-registry/TCG-_Algorithm_Registry_r1p32_pub";
   }
 
   identity symmetric {
@@ -189,7 +189,7 @@ module ietf-tcg-algs {
     base tpm20;
     description
       "SHA1 algorithm - Deprecated due to insufficient cryptographic 
-       protection.  However it is still useful for hash algorithms 
+       protection.  However, it is still useful for hash algorithms 
        where protection is not required.";
     reference
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
