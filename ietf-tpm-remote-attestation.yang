@@ -53,7 +53,7 @@ module ietf-tpm-remote-attestation {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2022-03-02 {
+  revision 2022-03-07 {
     description
       "Initial version";
     reference
@@ -220,8 +220,8 @@ module ietf-tpm-remote-attestation {
          
          Note that a nonce sent into a TPM will typically be 160 or 256
          binary digits long.  (This is 20 or 32 bytes.) So if fewer
-         binary are sent, this nonce object will be padded 
-         with leading zeros any in Quotes returned from the TPM.  
+         binary digits are sent, this nonce object will be padded 
+         with leading zeros within Quotes returned from the TPM.  
          Additionally if more bytes are sent, the nonce will be trimmed
          to the most significant binary digits.";
     }
@@ -388,11 +388,11 @@ module ietf-tpm-remote-attestation {
          single PCR has changed?
          To help this happen, if the Attester does know specific PCR
          values, the Attester can provide these individual values via
-         'unsigned-pcr-values'.   By comparing this information to the
+         'unsigned-pcr-values'.   By comparing this information to
          what has previously been validated, it is possible for a
          Verifier to confirm the Attester's signature while eliminating
          significant processing.  There should never be a result where
-         an unsigned PCR value is actually that that within a quote.
+         an unsigned PCR value is actually that within a quote.
          If there is a difference, a signed result which has been 
          verified from retrieved logs is considered definitive.";
       uses tpm20-hash-algo;
@@ -495,7 +495,7 @@ module ietf-tpm-remote-attestation {
   }
   grouping ima-event {
     description
-      "Defines an hash log extend event for IMA measurements";
+      "Defines a hash log extend event for IMA measurements";
     reference
       "ima-log:
        https://www.trustedcomputinggroup.org/wp-content/uploads/
@@ -732,7 +732,7 @@ module ietf-tpm-remote-attestation {
               description
                 "Content of an log event which matches 1:1 with a
                  unique event record contained within the log.  Log
-                 entries subsequent to this will be passed to the
+                 entries after this will be passed to the
                  requester.  Note: if log entry values are not unique,
                  this MUST return an error.";
             }
@@ -746,7 +746,7 @@ module ietf-tpm-remote-attestation {
               description
                 "The last numeric index number of a log entry.
                  Zero means to start at the beginning of the log.
-                 Entries subsequent to this will be passed to the
+                 Entries after this will be passed to the
                  requester.";
             }
           }
@@ -755,7 +755,7 @@ module ietf-tpm-remote-attestation {
               type yang:date-and-time;
               description
                 "Timestamp from which to start the extraction.  The 
-                 next log entry subsequent to this timestamp is to 
+                 next log entry after this timestamp is to 
                  be sent.";
             }
             description
@@ -952,7 +952,7 @@ module ietf-tpm-remote-attestation {
             enum operational {
               value 0;
               description
-                "The TPM currently is currently running normally and
+                "The TPM currently is running normally and
                  is ready to accept and process TPM quotes.";
               reference
                 "TPM2.0-Arch:
