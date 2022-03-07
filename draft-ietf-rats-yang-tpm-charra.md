@@ -91,14 +91,6 @@ normative:
   I-D.ietf-netconf-keystore: ietf-keystore
   I-D.ietf-rats-architecture: rats-architecture
   I-D.ietf-rats-tpm-based-network-device-attest: RIV
-  
-  xml-registry:
-    target: https://www.iana.org/assignments/xml-registry/xml-registry.xhtml
-    title: IETF XML Registry
-    
-  yang-parameters:
-    target: https://www.iana.org/assignments/yang-parameters/yang-parameters.xhtml
-    title: YANG Parameters
 
   TPM1.2:
     target: https://trustedcomputinggroup.org/resource/tpm-main-specification/
@@ -230,6 +222,14 @@ informative:
     target: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=915121
     title: "True Randomness Can’t be Left to Chance: Why entropy is important for information security" 
     
+  yang-parameters:
+    target: https://www.iana.org/assignments/yang-parameters/yang-parameters.xhtml
+    title: YANG Parameters
+
+  xml-registry:
+    target: https://www.iana.org/assignments/xml-registry/xml-registry.xhtml
+    title: IETF XML Registry
+
 --- abstract
 
 This document defines YANG RPCs and a small number of configuration nodes required to retrieve attestation evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), or equivalent hardware implementations that include the protected capabilities as provided by TPMs as well as a corresponding software stack, included in the device components of the composite device the YANG server is running on.
