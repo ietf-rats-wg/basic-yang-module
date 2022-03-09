@@ -12,7 +12,7 @@ module ietf-tcg-algs {
      Author:   Eric Voit <mailto:evoit@cisco.com>";
 
   description
-    "This module defines a identities for asymmetric algorithms.
+    "This module defines identities for asymmetric algorithms.
     
      Copyright (c) 2022 IETF Trust and the persons identified
      as authors of the code. All rights reserved.
@@ -32,7 +32,7 @@ module ietf-tcg-algs {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision 2022-02-16 {
+  revision 2022-03-09 {
     description
       "Initial version";
     reference
