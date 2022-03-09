@@ -91,7 +91,7 @@ module ietf-tpm-remote-attestation {
     reference
       "ima-log:
        https://www.trustedcomputinggroup.org/wp-content/uploads/
-       TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3";
+       TCG_IWG_CEL_v1_r0p41_pub.pdf  Section 4.3";
   }
 
   feature netequip_boot {
@@ -499,7 +499,7 @@ module ietf-tpm-remote-attestation {
     reference
       "ima-log:
        https://www.trustedcomputinggroup.org/wp-content/uploads/
-       TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3";
+       TCG_IWG_CEL_v1_r0p41_pub.pdf  Section 4.3";
     leaf event-number {
       type uint64;
       description
@@ -956,7 +956,8 @@ module ietf-tpm-remote-attestation {
                  is ready to accept and process TPM quotes.";
               reference
                 "TPM2.0-Arch:
-                 TPM-Rev-2.0-Part-1-Architecture-01.07-2014-03-13.pdf
+                 https://trustedcomputinggroup.org/wp-content/uploads/
+                 TCG_TPM2_r1p59_Part1_Architecture_pub.pdf
                  Section 12";
             }
             enum non-operational {
@@ -1006,7 +1007,8 @@ module ietf-tpm-remote-attestation {
                   reference
                     "TPM2.0-Key:
                      https://trustedcomputinggroup.org/wp-content/
-                     uploads/TCG_IWG_DevID_v1r2_02dec2020.pdf
+                     uploads/TPM-2p0-Keys-for-Device-Identity-
+                     and-Attestation_v1_r12_pub10082021.pdf
                      Section 3.11";
                 }
                 enum initial-attestation-certificate {
@@ -1016,7 +1018,8 @@ module ietf-tpm-remote-attestation {
                   reference
                     "TPM2.0-Key:
                      https://trustedcomputinggroup.org/wp-content/
-                     uploads/TCG_IWG_DevID_v1r2_02dec2020.pdf
+                     uploads/TPM-2p0-Keys-for-Device-Identity-
+                     and-Attestation_v1_r12_pub10082021.pdf
                      Section 3.2";
                 }
                 enum local-attestation-certificate {
@@ -1026,7 +1029,8 @@ module ietf-tpm-remote-attestation {
                   reference
                     "TPM2.0-Key:
                      https://trustedcomputinggroup.org/wp-content/
-                     uploads/TCG_IWG_DevID_v1r2_02dec2020.pdf
+                     uploads/TPM-2p0-Keys-for-Device-Identity-
+                     and-Attestation_v1_r12_pub10082021.pdf
                      Section 3.2";
                 }
               }
