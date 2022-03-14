@@ -199,9 +199,7 @@ module ietf-tpm-remote-attestation {
       default "taa:TPM_ALG_SHA1";
       description
         "The hash scheme that is used to hash a TPM1.2 PCR. This
-         MUST be one of those supported by a platform.  This assumes
-         that an algorithm other than SHA1 can be supported on some
-         TPM1.2 cryptoprocessor variant.";
+         MUST be one of those supported by a platform.";
     }
   }
 
