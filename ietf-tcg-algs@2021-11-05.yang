@@ -73,8 +73,8 @@ module ietf-tcg-algs {
        private key.";
     reference 
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2,
-      http://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
-       TCG-_Algorithm_Registry_r1p32_pub";
+      https://trustedcomputinggroup.org/resource/
+       tcg-algorithm-registry/TCG-_Algorithm_Registry_r1p32_pub";
   }
 
   identity symmetric {
@@ -188,7 +188,7 @@ module ietf-tcg-algs {
     base tpm20;
     description
       "SHA1 algorithm - Deprecated due to insufficient cryptographic 
-       protection.  However it is still useful for hash algorithms 
+       protection.  However, it is still useful for hash algorithms 
        where protection is not required.";
     reference
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
