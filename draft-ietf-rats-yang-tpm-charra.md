@@ -264,7 +264,7 @@ This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {
 
 This module supports the following features:
 
-- 'TPMs': Indicates that multiple TPMs on the device can support remote attestation. This feature is applicable in cases where multiple line cards are present, each with its own TPM.
+- 'TPMs': Indicates that multiple TPMs on the device can support remote attestation. For example, this feature could be used in cases where multiple line cards are present, each with its own TPM.
 
 - 'bios': Indicates that the device supports the retrieval of BIOS/UEFI event logs. {{bios-log}}
 
