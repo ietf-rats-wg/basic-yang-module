@@ -722,20 +722,7 @@ module ietf-tpm-remote-attestation {
         }
         choice index-type {
           description
-            "Last log entry received, log index number, or timestamp.";
-          case last-entry {
-            description
-              "The last entry of the log already retrieved.";
-            leaf last-entry-value {
-              type binary;
-              description
-                "Content of an log event which matches 1:1 with a
-                 unique event record contained within the log.  Log
-                 entries subsequent to this will be passed to the
-                 requester.  Note: if log entry values are not unique,
-                 this MUST return an error.";
-            }
-          }
+            "Choice of log index number or timestamp.";
           case index {
             description
               "Numeric index of the last log entry retrieved, or 
@@ -988,6 +975,7 @@ module ietf-tpm-remote-attestation {
                  associated within key within a TPM.";
             }
             leaf keystore-ref {
+              if-feature "ks:asymmetric-keys";
               type leafref {
                 path "/ks:keystore/ks:asymmetric-keys/ks:asymmetric-key"
                    + "/ks:certificates/ks:certificate/ks:name";
