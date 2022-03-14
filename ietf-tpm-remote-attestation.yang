@@ -202,9 +202,7 @@ module ietf-tpm-remote-attestation {
       default "taa:TPM_ALG_SHA1";
       description
         "The hash scheme that is used to hash a TPM1.2 PCR. This
-         MUST be one of those supported by a platform.  This assumes
-         that an algorithm other than SHA1 can be supported on some
-         TPM1.2 cryptoprocessor variant.";
+         MUST be one of those supported by a platform.";
     }
   }
 
@@ -304,20 +302,6 @@ module ietf-tpm-remote-attestation {
       type string;
       description
         "Unique system generated name for a TPM on a device.";
-    }
-  }
-
-  grouping tpm-name-selector {
-    description
-      "One or more TPM on a device.";
-    leaf-list name {
-      type string;
-      config false;
-      description
-        "Name of one or more unique TPMs on a device.  If this object
-         exists, a selection should pull only the objects related to
-         these TPM(s).  If it does not exist, all qualifying TPMs that
-         are 'hardware-based' equals true on the device are selected.";
     }
   }
 
@@ -442,7 +426,10 @@ module ietf-tpm-remote-attestation {
     leaf event-number {
       type uint32;
       description
-        "Unique event number of this event";
+        "Unique event number of this event which monotonically 
+         increases.  The maximum event number should not be
+         reached, nor is wrapping back to an earlier number
+         supported.";
     }
     leaf event-type {
         type uint32;
@@ -490,10 +477,10 @@ module ietf-tpm-remote-attestation {
       "Measurement log created by the BIOS/UEFI.";
     list bios-event-entry {
       key event-number;
-        description
-          "Ordered list of TCG described event log
-           that extended the PCRs in the order they
-           were logged";
+      description
+        "Ordered list of TCG described event log
+         that extended the PCRs in the order they
+         were logged";
       uses boot-event-log;
     }
   }
@@ -507,7 +494,10 @@ module ietf-tpm-remote-attestation {
     leaf event-number {
       type uint64;
       description
-        "Unique number for this event for sequencing";
+        "Unique event number of this event which monotonically 
+         increases.  The maximum event number should not be
+         reached, nor is wrapping back to an earlier number
+         supported.";
     }
     leaf ima-template {
       type string;
@@ -721,10 +711,19 @@ module ietf-tpm-remote-attestation {
        the last line received. The number of lines returned can be
        limited. The type of log is a choice that can be augmented.";
     input {
+      uses log-identifier;
       list log-selector {
         description
-          "Selection of log entries to be reported.";    
-        uses tpm-name-selector;
+          "Only log entries which meet all the selection criteria provided 
+           are to be returned by the RPC output.";   
+        leaf-list name {
+          type string;
+          description
+            "Name of one or more unique TPMs on a device.  If this object
+             exists, a selection should pull only the objects related to
+             these TPM(s).  If it does not exist, all qualifying TPMs that
+             are 'hardware-based' equals true on the device are selected.";
+        }
         choice index-type {
           description
             "Last log entry received, log index number, or timestamp.";
@@ -773,7 +772,6 @@ module ietf-tpm-remote-attestation {
              means all of them.";
         }
       }
-      uses log-identifier;
     }
     output {
       container system-event-logs {
@@ -858,9 +856,10 @@ module ietf-tpm-remote-attestation {
         leaf hardware-based {
           type boolean;
           config false;
+          mandatory true;
           description
-            "Answers the question: is this TPM is a hardware based
-             TPM?";
+            "System generated indication of whether this is a
+             hardware based TPM.";
         }
         leaf physical-index {
           if-feature "hw:entity-mib";
@@ -993,6 +992,7 @@ module ietf-tpm-remote-attestation {
                  associated within key within a TPM.";
             }
             leaf keystore-ref {
+              if-feature "ks:asymmetric-keys";
               type leafref {
                 path "/ks:keystore/ks:asymmetric-keys/ks:asymmetric-key"
                    + "/ks:certificates/ks:certificate/ks:name";
