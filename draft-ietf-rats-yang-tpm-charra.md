@@ -231,7 +231,7 @@ informative:
 
 --- abstract
 
-This document defines YANG RPCs and a small number of configuration nodes required to retrieve attestation evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), or equivalent hardware implementations that include the protected capabilities as provided by TPMs as well as a corresponding software stack, included in the device components of the composite device the YANG server is running on.
+This document defines YANG RPCs and a few configuration nodes required to retrieve attestation evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), or equivalent hardware implementations that include the protected capabilities as provided by TPMs as well as a corresponding software stack, included in the device components of the composite device the YANG server is running on.
 
 --- middle
 
@@ -257,7 +257,7 @@ In this section the several YANG modules are defined.
 
 ### 'ietf-tpm-remote-attestation'
 
-This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{bios-log}}, {{ima-log}},  {{BIOS-Log-Event-Type}} and {{netequip-boot-log}}.
+This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally, references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{bios-log}}, {{ima-log}},  {{BIOS-Log-Event-Type}} and {{netequip-boot-log}}.
 
 #### Features
 
@@ -489,7 +489,7 @@ Container '/rats-support-structures/attester-supported-algos':
 
 Container: '/rats-support-structures/tpms':
 
-: 'name': Although shown as 'rw', it is system generated. Therefore it should not be possible for an operator to add or remove a TPM from the configuration.
+: 'name': Although shown as 'rw', it is system generated. Therefore, it should not be possible for an operator to add or remove a TPM from the configuration.
 
 : 'tpm20-pcr-bank': It is possible to configure PCRs for extraction which are not being extended by system software.  This could unnecessarily use TPM resources.
 
@@ -508,7 +508,7 @@ RPC 'log-retrieval':
 : Requesting a large volume of logs from the attester could require significant system resources and create a denial of service.
 
 
-Information collected through the RPCs above could reveal that specific versions of software and configurations of endpoints that could identify vulnerabilities on those systems.  Therefore RPCs should be protected by NACM {{RFC8341}} with a default setting of deny-all to limit the extraction of attestation data by only authorized Verifiers.
+Information collected through the RPCs above could reveal that specific versions of software and configurations of endpoints that could identify vulnerabilities on those systems.  Therefore, RPCs should be protected by NACM {{RFC8341}} with a default setting of deny-all to limit the extraction of attestation data by only authorized Verifiers.
 
 For the YANG module ietf-tcg-algs.yang, please use care when selecting specific algorithms.  The introductory section of {{TCG-Algos}} highlights that some algorithms should be considered legacy, and recommends implementers and adopters diligently evaluate available information such as governmental, industrial, and academic research before selecting an algorithm for use.
 
