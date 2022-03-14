@@ -84,7 +84,6 @@ normative:
   RFC6933:
   RFC8446:
   RFC8341:
-  RFC7748:
   RFC8032:
   RFC8017:
   
@@ -232,17 +231,17 @@ informative:
 
 --- abstract
 
-This document defines YANG RPCs and a small number of configuration nodes required to retrieve attestation evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), or equivalent hardware implementations that include the protected capabilities as provided by TPMs as well as a corresponding software stack, included in the device components of the composite device the YANG server is running on.
+This document defines YANG RPCs and a few configuration nodes required to retrieve attestation evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), or equivalent hardware implementations that include the protected capabilities as provided by TPMs as well as a corresponding software stack, included in the device components of the composite device the YANG server is running on.
 
 --- middle
 
 # Introduction
 
-This document is based on the general terminology defined in the {{-rats-architecture}} and uses the operational context defined in {{-RIV}} as well as the interaction model and information elements defined in {{-rats-interaction-models}}. The currently supported hardware security modules (HSMs) are the Trusted Platform Modules (TPMs) {{TPM1.2}} and {{TPM2.0}} as specified by the Trusted Computing Group (TCG). One or more TPMs embedded in the components of a Composite Device are required in order to use the YANG module defined in this document. A TPM is used as a root of trust for reporting (RTR) in order to retrieve attestation Evidence from a composite device (*TPM Quote* primitive operation). Additionally, it is used as a root of trust for storage (RTS) in order to retain shielded secrets and store system measurements using a folding hash function (*TPM PCR Extend* primitive operation).
+This document is based on the general terminology defined in the {{-rats-architecture}} and uses the operational context defined in {{-RIV}} as well as the interaction model and information elements defined in {{-rats-interaction-models}}. The currently supported hardware security modules (HSMs) are the Trusted Platform Modules (TPMs) {{TPM1.2}} and {{TPM2.0}} as specified by the Trusted Computing Group (TCG). One TPM, or multiple TPMs in the case of a Composite Device, are required in order to use the YANG module defined in this document. Each TPM is used as a root of trust for storage (RTS) in order to store system security measurement Evidence.  And each TPM is used as a root of trust for reporting (RTR) in order to retrieve attestation Evidence.  This is done by using a YANG RPC to request a quote which exposes a rolling hash the security measurements held internally within the TPM.
 
 Specific terms imported from {{-rats-architecture}} and used in this document include: Attester, Composite Device, Evidence.
 
-Specific terms imported from {{TPM2.0-Key}} and used in this document include: Endorsement Key (EK), Initial Attestation Key (IAK), Local Attestation Key (LAK).
+Specific terms imported from {{TPM2.0-Key}} and used in this document include: Endorsement Key (EK), Initial Attestation Key (IAK), Attestation Identity Key (AIK), Local Attestation Key (LAK).
 
 ## Requirements notation
 
@@ -258,13 +257,13 @@ In this section the several YANG modules are defined.
 
 ### 'ietf-tpm-remote-attestation'
 
-This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{bios-log}}, {{ima-log}},  {{BIOS-Log-Event-Type}} and {{netequip-boot-log}}.
+This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally, references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{bios-log}}, {{ima-log}},  {{BIOS-Log-Event-Type}} and {{netequip-boot-log}}.
 
 #### Features
 
 This module supports the following features:
 
-- 'TPMs': Indicates that multiple TPMs on the device can support remote attestation. This feature is applicable in cases where multiple line cards are present, each with its own TPM.
+- 'TPMs': Indicates that multiple TPMs on the device can support remote attestation. For example, this feature could be used in cases where multiple line cards are present, each with its own TPM.
 
 - 'bios': Indicates that the device supports the retrieval of BIOS/UEFI event logs. {{bios-log}}
 
@@ -365,7 +364,7 @@ This section provides a high level description of the data nodes containing the 
 
 Container 'rats-support-structures':
 
-: This houses the set of information relating to a device's TPM(s).
+: This houses the set of information relating to remote attestation for a device.  This includes specific device TPM(s), the compute nodes (such as line cards) on which the TPM(s) reside, and the algorithms supported across the platform.
 
 Container 'tpms':
 
@@ -392,14 +391,14 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 {: #ref-ietf-tpm-remote-attestation}
 
 ~~~ YANG
-<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-02-16.yang"
+<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-03-09.yang"
 {::include-dedent ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
 
 ### 'ietf-tcg-algs'
 
-This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC2104}}, {{RFC7748}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, {{ima-log}}, and {{netequip-boot-log}} exist within the YANG Model.
+This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC2104}}, {{RFC8017}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, {{ima-log}}, and {{netequip-boot-log}} exist within the YANG Model.
 
 #### Features
 
@@ -420,7 +419,7 @@ There are three types of identities in this model:
 #### YANG Module
 
 ~~~~ YANG
-<CODE BEGINS> file "ietf-tcg-algs@2022-02-16.yang"
+<CODE BEGINS> file "ietf-tcg-algs@2022-03-09.yang"
 {::include-dedent ietf-tcg-algs@2021-11-05.yang}
 <CODE ENDS>
 ~~~~
@@ -486,30 +485,30 @@ There are a number of data nodes defined in this YANG module that are writable/c
 
 Container '/rats-support-structures/attester-supported-algos':
 
-: 'tpm12-asymmetric-signing', 'tpm12-hash', 'tpm20-asymmetric-signing', and 'tpm20-hash'. All could be populated with algorithms that are not supported by the underlying physical TPM installed by the equipment vendor.
+: 'tpm12-asymmetric-signing', 'tpm12-hash', 'tpm20-asymmetric-signing', and 'tpm20-hash'. All could be populated with algorithms that are not supported by the underlying physical TPM installed by the equipment vendor.  A vendor should restrict the ability to configure unsupported algorithms.
 
 Container: '/rats-support-structures/tpms':
 
-: 'name': Although shown as 'rw', it is system generated. Therefore it should not be possible for an operator to add or remove a TPM from the configuration.
+: 'name': Although shown as 'rw', it is system generated. Therefore, it should not be possible for an operator to add or remove a TPM from the configuration.
 
 : 'tpm20-pcr-bank': It is possible to configure PCRs for extraction which are not being extended by system software.  This could unnecessarily use TPM resources.
 
-: 'certificates': It is possible to provision a certificate which does not correspond to an Attestation Identity Key (AIK) within the TPM 1.2, or an Attestation Key (AK) within the TPM 2.0 respectively.
+: 'certificates': It is possible to provision a certificate which does not correspond to an Attestation Identity Key (AIK) within the TPM 1.2, or an Attestation Key (AK) within the TPM 2.0 respectively. In such a case, calls to an RPC requesting this specific certificate could result in either no response or a response for an unexpected TPM.
 
 RPC 'tpm12-challenge-response-attestation':
 
-: It must be verified that the certificate is for an active AIK, i.e., the certificate provided is able to support Attestation on the targeted TPM 1.2.
+: The receiver of the RPC response must verify that the certificate is for an active AIK, i.e., the certificate has been confirmed by a third party as being able to support Attestation on the targeted TPM 1.2.
 
 RPC 'tpm20-challenge-response-attestation':
 
-: It must be verified that the certificate is for an active AK, i.e., the quote signature associated with RPC response has been generated by an entity legitimately able to perform Attestation on the targeted TPM 2.0.
+: The receiver of the RPC response must verify that the certificate is for an active AK, i.e., the private key confirmation of the quote signature within the RPC response has been confirmed by a third party to belong to an entity legitimately able to perform Attestation on the targeted TPM 2.0.
 
 RPC 'log-retrieval':
 
 : Requesting a large volume of logs from the attester could require significant system resources and create a denial of service.
 
 
-Information collected through the RPCs above could reveal that specific versions of software and configurations of endpoints that could identify vulnerabilities on those systems.  Therefore RPCs should be protected by NACM {{RFC8341}} with a default setting of deny-all to limit the extraction of attestation data by only authorized Verifiers.
+Information collected through the RPCs above could reveal that specific versions of software and configurations of endpoints that could identify vulnerabilities on those systems.  Therefore, RPCs should be protected by NACM {{RFC8341}} with a default setting of deny-all to limit the extraction of attestation data by only authorized Verifiers.
 
 For the YANG module ietf-tcg-algs.yang, please use care when selecting specific algorithms.  The introductory section of {{TCG-Algos}} highlights that some algorithms should be considered legacy, and recommends implementers and adopters diligently evaluate available information such as governmental, industrial, and academic research before selecting an algorithm for use.
 
