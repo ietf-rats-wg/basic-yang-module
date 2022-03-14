@@ -238,7 +238,7 @@ This document defines YANG RPCs and a small number of configuration nodes requir
 
 # Introduction
 
-This document is based on the general terminology defined in the {{-rats-architecture}} and uses the operational context defined in {{-RIV}} as well as the interaction model and information elements defined in {{-rats-interaction-models}}. The currently supported hardware security modules (HSMs) are the Trusted Platform Modules (TPMs) {{TPM1.2}} and {{TPM2.0}} as specified by the Trusted Computing Group (TCG). One or more TPMs embedded in the components of a Composite Device are required in order to use the YANG module defined in this document. A TPM is used as a root of trust for reporting (RTR) in order to retrieve attestation Evidence from a composite device (*TPM Quote* primitive operation). Additionally, it is used as a root of trust for storage (RTS) in order to retain shielded secrets and store system measurements using a folding hash function (*TPM PCR Extend* primitive operation).
+This document is based on the general terminology defined in the {{-rats-architecture}} and uses the operational context defined in {{-RIV}} as well as the interaction model and information elements defined in {{-rats-interaction-models}}. The currently supported hardware security modules (HSMs) are the Trusted Platform Modules (TPMs) {{TPM1.2}} and {{TPM2.0}} as specified by the Trusted Computing Group (TCG). One TPM, or multiple TPMs in the case of a Composite Device, are required in order to use the YANG module defined in this document. Each TPM is used as a root of trust for storage (RTS) in order to store system security measurement Evidence.  And each TPM is used as a root of trust for reporting (RTR) in order to retrieve attestation Evidence.  This is done by using a YANG RPC to request a quote which exposes a rolling hash the security measurements held internally within the TPM.
 
 Specific terms imported from {{-rats-architecture}} and used in this document include: Attester, Composite Device, Evidence.
 
@@ -392,7 +392,7 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 {: #ref-ietf-tpm-remote-attestation}
 
 ~~~ YANG
-<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-02-16.yang"
+<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-03-09.yang"
 {::include-dedent ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
@@ -420,7 +420,7 @@ There are three types of identities in this model:
 #### YANG Module
 
 ~~~~ YANG
-<CODE BEGINS> file "ietf-tcg-algs@2022-02-16.yang"
+<CODE BEGINS> file "ietf-tcg-algs@2022-03-09.yang"
 {::include-dedent ietf-tcg-algs@2021-11-05.yang}
 <CODE ENDS>
 ~~~~
