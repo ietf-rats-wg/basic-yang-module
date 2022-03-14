@@ -4,7 +4,7 @@ module ietf-tcg-algs {
   prefix taa;
 
   organization
-    "IETF RATS Working Group";
+    "IETF RATS (Remote ATtestation procedureS) Working Group";
 
   contact
     "WG Web:   <https://datatracker.ietf.org/wg/rats/>
@@ -32,7 +32,7 @@ module ietf-tcg-algs {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision 2022-03-07 {
+  revision 2022-03-09 {
     description
       "Initial version";
     reference
@@ -59,7 +59,7 @@ module ietf-tcg-algs {
        as per Section 11.4 of Trusted Platform Module Library
        Part 1: Architecture. See TPM2.0-Arch:
        https://trustedcomputinggroup.org/wp-content/uploads/
-       TPM-Rev-2.0-Part-1-Architecture-01.07-2014-03-13.pdf";
+       TCG_TPM2_r1p59_Part1_Architecture_pub.pdf";
   }
 
 
@@ -73,8 +73,8 @@ module ietf-tcg-algs {
        private key.";
     reference 
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 2,
-      http://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
-       TCG-_Algorithm_Registry_r1p32_pub";
+      https://trustedcomputinggroup.org/resource/
+       tcg-algorithm-registry/TCG-_Algorithm_Registry_r1p32_pub";
   }
 
   identity symmetric {
@@ -141,7 +141,7 @@ module ietf-tcg-algs {
       "TPM1.2-Structures:
        https://trustedcomputinggroup.org/wp-content/uploads/
        TPM-Main-Part-2-TPM-Structures_v1.2_rev116_01032011.pdf
-       TPM_ALGORITHM_ID values, page 18";
+       TPM_ALGORITHM_ID values, Section 4.8";
   }
   
   identity tpm20 {
@@ -152,8 +152,7 @@ module ietf-tcg-algs {
     reference  
       "TPM2.0-Structures:
        https://trustedcomputinggroup.org/wp-content/uploads/
-       TPM-Rev-2.0-Part-2-Structures-01.38.pdf
-       The TCG Algorithm Registry. Table 9";
+       TPM-Rev-2.0-Part-2-Structures-01.38.pdf";
   } 
   
   identity TPM_ALG_RSA {
@@ -206,7 +205,7 @@ module ietf-tcg-algs {
       "Hash Message Authentication Code (HMAC) algorithm";
     reference
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3, 
-       ISO/IEC 9797-2 and RFC2014. ALG_ID: 0x0005";
+       ISO/IEC 9797-2 and RFC2104. ALG_ID: 0x0005";
   }
       
   identity TPM_ALG_AES  {
@@ -332,7 +331,8 @@ module ietf-tcg-algs {
     base asymmetric;
     base signing;  
     description
-      "Signature algorithm defined in section 8.2 (RSASSAPKCS1-v1_5)";
+      "RFC 8017 Signature algorithm defined in section 8.2 
+      (RSASSAPKCS1-v1_5)";
     reference
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
       RFC 8017.  ALG_ID: 0x0014";
@@ -344,7 +344,8 @@ module ietf-tcg-algs {
     base asymmetric;
     base encryption_mode;
     description
-      "Signature algorithm defined in section 7.2 (RSAES-PKCS1-v1_5)";
+      "RFC 8017 Signature algorithm defined in section 7.2 
+      (RSAES-PKCS1-v1_5)";
     reference
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
       RFC 8017. ALG_ID: 0x0015";
@@ -395,7 +396,7 @@ module ietf-tcg-algs {
       "Secret sharing using ECC";
     reference
       "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and 
-       NIST SP800-56A and RFC 7748. ALG_ID: 0x0019";
+       NIST SP800-56A. ALG_ID: 0x0019";
   }
 
   identity TPM_ALG_ECDAA {
@@ -500,6 +501,7 @@ module ietf-tcg-algs {
   identity TPM_ALG_SYMCIPHER {
     if-feature "tpm20";
     base tpm20;
+    base symmetric;
     description
       "Object type for a symmetric block cipher";
     reference
