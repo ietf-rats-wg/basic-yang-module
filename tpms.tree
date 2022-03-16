@@ -1,7 +1,7 @@
 +--rw tpms
    +--rw tpm* [name]
       +--rw name                string
-      +--ro hardware-based?     boolean
+      +--ro hardware-based      boolean
       +--ro physical-index?     int32 {hw:entity-mib}?
       +--ro path?               string
       +--ro compute-node        compute-node-ref {tpm:mtpm}?
@@ -16,5 +16,5 @@
       +--rw certificates
          +--rw certificate* [name]
             +--rw name            string
-            +--rw keystore-ref?   leafref
+            +--rw keystore-ref?   leafref {ks:asymmetric-keys}?
             +--rw type?           enumeration
