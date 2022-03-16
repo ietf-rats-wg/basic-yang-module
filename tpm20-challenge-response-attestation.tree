@@ -1,11 +1,12 @@
-+---x tpm20-challenge-response-attestation {taa:TPM20}?
++---x tpm20-challenge-response-attestation {taa:tpm20}?
    +---w input
    |  +---w tpm20-attestation-challenge
    |     +---w nonce-value            binary
    |     +---w tpm20-pcr-selection* []
-   |     |  +---w TPM20-hash-algo?   identityref
-   |     |  +---w pcr-index*         tpm:pcr
-   |     +---w certificate-name*      certificate-name-ref {tpm:mtpm}?
+   |     |  +---w tpm20-hash-algo?   identityref
+   |     |  +---w pcr-index*         pcr
+   |     +---w certificate-name*      certificate-name-ref
+   |             {tpm:mtpm}?
    +--ro output
       +--ro tpm20-attestation-response* []
          +--ro certificate-name       certificate-name-ref
@@ -13,7 +14,7 @@
          +--ro quote-signature?       binary
          +--ro up-time?               uint32
          +--ro unsigned-pcr-values* []
-            +--ro TPM20-hash-algo?   identityref
+            +--ro tpm20-hash-algo?   identityref
             +--ro pcr-values* [pcr-index]
                +--ro pcr-index    pcr
                +--ro pcr-value?   binary
