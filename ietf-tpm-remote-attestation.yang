@@ -1002,7 +1002,7 @@ module ietf-tpm-remote-attestation {
               if-feature "ks:asymmetric-keys";
               type leafref {
                 path "/ks:keystore/ks:asymmetric-keys/ks:asymmetric-key"
-                   + "/ks:certificates/ks:certificate/ks:name";
+                   + "/ks:name";
               }
               description
                 "A reference to a specific certificate of an
