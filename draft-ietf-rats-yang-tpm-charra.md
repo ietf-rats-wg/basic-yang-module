@@ -210,10 +210,6 @@ normative:
     target: https://trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p41_pub.pdf
     title: "Canonical Event Log Format, Section 4.3"
 
-  netequip-boot-log:
-    target: https://www.kernel.org/doc/Documentation/ABI/testing/ima_policy
-    title: "IMA Policy Kernel Documentation"
-
   UEFI-Secure-Boot:
     target: https://uefi.org/sites/default/files/resources/UEFI_Spec_2_9_2021_03_18.pdf
     title: "Unified Extensible Firmware Interface (UEFI) Specification Version 2.9 (March 2021), Section 32.1 (Secure Boot)"
@@ -265,7 +261,7 @@ In this section the several YANG modules are defined.
 
 ### 'ietf-tpm-remote-attestation'
 
-This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally, references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{bios-log}}, {{ima-log}},  {{BIOS-Log-Event-Type}} and {{netequip-boot-log}}.
+This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally, references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{bios-log}}, {{ima-log}},  {{BIOS-Log-Event-Type}}, as well as {{ima} and {{netequip-boot-log}}.
 
 #### Features
 
@@ -275,9 +271,9 @@ This module supports the following features:
 
 - 'bios': Indicates that the device supports the retrieval of BIOS/UEFI event logs. {{bios-log}}
 
-- 'ima': Indicates that the device supports the retrieval of event logs from the Linux Integrity Measurement Architecture (IMA). {{ima-log}}
+- 'ima': Indicates that the device supports the retrieval of event logs from the Linux Integrity Measurement Architecture (IMA {{ima-log}}). Also see {{ima}}.
 
-- 'netequip_boot': Indicates that the device supports the retrieval of netequip boot event logs.  {{netequip-boot-log}}
+- 'netequip_boot': Indicates that the device supports the retrieval of netequip boot event logs. See {{ima}} and {{netequip-boot-log}}.
 
 #### Identities
 
@@ -406,7 +402,7 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 
 ### 'ietf-tcg-algs'
 
-This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC2104}}, {{RFC8017}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, {{ima-log}}, and {{netequip-boot-log}} exist within the YANG Model.
+This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC2104}}, {{RFC8017}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, {{ima-log}}, as well as {{ima}} and {{netequip-boot-log}} exist within the YANG Model.
 
 #### Features
 
@@ -523,7 +519,7 @@ For the YANG module ietf-tcg-algs.yang, please use care when selecting specific 
 
 --- back
 
-# Integrity Measurement Architecture (IMA)
+# Integrity Measurement Architecture (IMA) {#ima}
 
 IMA extends the principles of Measured Boot {{TPM2.0-Arch}} and Secure Boot {{UEFI-Secure-Boot}} to the Linux operating system, applying it to operating system applications and files.
 IMA has been part of the Linux integrity subsystem of the Linux kernel since 2009 (kernel version 2.6.30). The IMA mechanism represented by the YANG module in this specification is rooted in the kernel version 5.16 {{IMA-Kernel-Source}}.
@@ -546,7 +542,7 @@ Built-in policies can be passed as boot arguments to the kernel.
 Custom IMA policies can be defined once during runtime or be hard-compiled into a custom kernel.
 If no policy is defined, no measurements are taken and IMA is effectively disabled.
 
-# IMA for Network Equipment Boot Logs
+# IMA for Network Equipment Boot Logs {#netequip-boot-log}
 
 Network equipment can generally implement similar IMA-protected functions to generate measurements (Claims) about the boot process of a device and enable corresponding remote attestation.
 Network Equipment Boot Logs combine the measurement and logging of boot components and operating system components (executables and files) into a single log file in identical IMA format.
