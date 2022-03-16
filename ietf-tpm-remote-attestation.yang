@@ -53,7 +53,7 @@ module ietf-tpm-remote-attestation {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2022-03-09 {
+  revision 2022-03-15 {
     description
       "Initial version";
     reference
@@ -65,7 +65,7 @@ module ietf-tpm-remote-attestation {
   /*   Features    */
   /*****************/
 
-  feature tpms {
+  feature mtpm {
     description
       "The device supports the remote attestation of multiple
        TPM based cryptoprocessors.";
@@ -112,9 +112,8 @@ module ietf-tpm-remote-attestation {
     }
     description
       "Valid index number for a PCR.  A {{TPM2.0}} compliant PCR index 
-      extends from 0-31.  Custom TPM implementations can have additional 
-      PCRs.  An implementation may deviate away the range constraint 
-      should a platform wish to support more PCRs.";
+      extends from 0-31.  At this time a typical TPM would have no
+      more than 32 PCRS.";
   }
 
   typedef compute-node-ref {
@@ -208,8 +207,8 @@ module ietf-tpm-remote-attestation {
 
   grouping nonce {
     description
-      "A random number intended to be used once to show freshness
-       and to allow the detection of replay attacks.";
+      "A random number intended to guarantee freshness and for use
+       as part of a replay-detection mechanism.";
     leaf nonce-value {
       type binary;
       mandatory true;
@@ -467,7 +466,7 @@ module ietf-tpm-remote-attestation {
         "Size of the event data";
     }
     leaf-list event-data {
-      type uint8;
+      type binary;
       description
         "The event data size determined by event-size";
     }
@@ -628,7 +627,7 @@ module ietf-tpm-remote-attestation {
         uses tpm12-pcr-selection;
         uses nonce;
         leaf-list certificate-name {
-          if-feature "tpm:tpms";
+          if-feature "tpm:mtpm";
           type certificate-name-ref;
           must "/tpm:rats-support-structures/tpm:tpms"
              + "/tpm:tpm[tpm:firmware-version='taa:tpm12']"
@@ -675,7 +674,7 @@ module ietf-tpm-remote-attestation {
         uses nonce;
         uses tpm20-pcr-selection;
         leaf-list certificate-name {
-          if-feature "tpm:tpms";
+          if-feature "tpm:mtpm";
           type certificate-name-ref;
           must "/tpm:rats-support-structures/tpm:tpms"
              + "/tpm:tpm[tpm:firmware-version='taa:tpm20']"
@@ -804,7 +803,7 @@ module ietf-tpm-remote-attestation {
        parties to discover the information necessary to use the
        remote attestation RPCs appropriately.";
     container compute-nodes {
-      if-feature "tpm:tpms";
+      if-feature "tpm:mtpm";
       description
         "Holds the set device subsystems/components in this composite
          device that support TPM operations.";
@@ -880,7 +879,7 @@ module ietf-tpm-remote-attestation {
              reboots.";
         }
         leaf compute-node {
-          if-feature "tpm:tpms";
+          if-feature "tpm:mtpm";
           type compute-node-ref;
           config false;
           mandatory true;
