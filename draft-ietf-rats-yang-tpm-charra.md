@@ -204,26 +204,30 @@ normative:
 
   bios-log:
     target: https://trustedcomputinggroup.org/wp-content/uploads/PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
-    title: "TCG PC Client Platform Firmware Profile Specification, Section 9.4.5.2" 
+    title: "TCG PC Client Platform Firmware Profile Specification, Section 9.4.5.2"
 
   ima-log:
     target: https://trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p41_pub.pdf
-    title: "Canonical Event Log Format, Section 4.3"   
-    
+    title: "Canonical Event Log Format, Section 4.3"
+
   netequip-boot-log:
     target: https://www.kernel.org/doc/Documentation/ABI/testing/ima_policy
-    title: "IMA Policy Kernel Documentation"   
+    title: "IMA Policy Kernel Documentation"
+
+  UEFI-Secure-Boot:
+    target: https://uefi.org/sites/default/files/resources/UEFI_Spec_2_9_2021_03_18.pdf
+    title: "Unified Extensible Firmware Interface (UEFI) Specification Version 2.9 (March 2021), Section 32.1 (Secure Boot)"
 
 informative:
   I-D.ietf-rats-reference-interaction-models: rats-interaction-models
 
+  IMA-Kernel-Source:
+    target: https://github.com/torvalds/linux/blob/df0cc57e057f18e44dac8e6c18aba47ab53202f9/security/integrity/ima/
+    title: "Linux Integrity Measurement Architecture (IMA): Kernel Sourcecode"
+
   NIST-915121:
     target: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=915121
     title: "True Randomness Can’t be Left to Chance: Why entropy is important for information security" 
-
-  IMA-Kernel-Source:
-    target: https://github.com/torvalds/linux/blob/df0cc57e057f18e44dac8e6c18aba47ab53202f9/security/integrity/ima/
-    title: "Linux Integrity Measurement Architecture (IMA): Kernel Sourcecode" 
 
   yang-parameters:
     target: https://www.iana.org/assignments/yang-parameters/yang-parameters.xhtml
@@ -521,13 +525,13 @@ For the YANG module ietf-tcg-algs.yang, please use care when selecting specific 
 
 # Integrity Measurement Architecture (IMA)
 
-IMA extends the principles of Measured Boot and Secure Boot to the Linux operating system, applying it to operating system applications and files.
-IMA has been part of the Linux integrity subsystem of the Linux kernel since 2009 (kernel version 2.6.30). The IMA mechanism represented by the YANG module in this specification is rooted in the kernel version FIXME {{IMA-Kernel-Source}}.
+IMA extends the principles of Measured Boot {{TPM2.0-Arch}} and Secure Boot {{UEFI-Secure-Boot}} to the Linux operating system, applying it to operating system applications and files.
+IMA has been part of the Linux integrity subsystem of the Linux kernel since 2009 (kernel version 2.6.30). The IMA mechanism represented by the YANG module in this specification is rooted in the kernel version 5.16 {{IMA-Kernel-Source}}.
 IMA enables the protection of system integrity by collecting (commonly referred to as measuring) and storing measurements (called Claims in the context of IETF RATS) of files before execution so that these measurements can be used later, at system runtime, in remote attestation procedures.
 IMA acts in support of the appraisal of Evidence (which includes measurement Claims) by leveraging reference integrity measurements stored in extended file attributes.
 
-In support of the appraisal of Evidence, IMA maintains an ordered list of measurements in kernel-space, the Stored Measurement Log (SML) for all files that have been measured before execution since the operating system was started.
-Although IMA can be used without a TPM, it is typically used in conjunction with a TPM to anchor the integrity of the SML in a hardware-protected secure storage location, i.e., TPM Platform Configuration Registers (PCRs) provided by TPMs.
+In support of the appraisal of Evidence, IMA maintains an ordered list of measurements in kernel-space, the Stored Measurement Log (SML), for all files that have been measured before execution since the operating system was started.
+Although IMA can be used without a TPM, it is typically used in conjunction with a TPM to anchor the integrity of the SML in a hardware-protected secure storage location, i.e., Platform Configuration Registers (PCRs) provided by TPMs.
 IMA provides the SML in both binary and ASCII representations in the Linux security file system *securityfs* (`/sys/kernel/security/ima/`).
 
 IMA templates define the format of the SML, i.e., which fields are included in a log record.
