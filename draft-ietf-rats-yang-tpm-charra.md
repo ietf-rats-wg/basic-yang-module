@@ -73,7 +73,7 @@ author:
   region: Massachusetts
 
 normative:
-  RFC2014:
+  RFC2104:
   RFC6020:
   RFC3688:
   RFC6991: ietf-yang-types
@@ -118,7 +118,7 @@ normative:
     date: 2013-03-15
 
   TPM2.0-Arch:
-    target: https://trustedcomputinggroup.org/wp-content/uploads/TPM-Rev-2.0-Part-1-Architecture-01.07-2014-03-13.pdf
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TCG_TPM2_r1p59_Part1_Architecture_pub.pdf
     title: "Trusted Platform Module Library - Part 1: Architecture"
 
   TPM2.0-Structures:
@@ -126,13 +126,13 @@ normative:
     title: "Trusted Platform Module Library - Part 2: Structures"
 
   TPM2.0-Key:
-    target: https://trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_DevID_v1r2_02dec2020.pdf
-    title: "TPM 2.0 Keys for Device Identity and Attestation, Rev10"
+    target: https://trustedcomputinggroup.org/wp-content/uploads/TPM-2p0-Keys-for-Device-Identity-and-Attestation_v1_r12_pub10082021.pdf
+    title: "TPM 2.0 Keys for Device Identity and Attestation, Rev12"
     author:
       -
         ins: TCG
         name: Trusted Computing Group
-    date: 2021-04-14
+    date: 2021-10-08
 
   TCG-Algos:
     target: https://trustedcomputinggroup.org/wp-content/uploads/TCG-_Algorithm_Registry_r1p32_pub.pdf
@@ -249,7 +249,7 @@ Specific terms imported from {{TPM2.0-Key}} and used in this document include: E
 
 # The YANG Module for Basic Remote Attestation Procedures
 
-One or more TPMs MUST be embedded in a Composite Device that provides attestation evidence via the YANG module defined in this document. The ietf-basic-remote-attestation YANG module enables a composite device to take on the role of an Attester, in accordance with the Remote Attestation Procedures (RATS) architecture {{-rats-architecture}}, and the corresponding challenge-response interaction model defined in the {{-rats-interaction-models}} document. A fresh nonce with an appropriate amount of entropy {{NIST-915121}} MUST be supplied by the YANG client in order to enable a proof-of-freshness with respect to the attestation Evidence provided by the Attester running the YANG datastore. Further, this nonce is used to prevent replay attacks. The method for communicating the relationship of each individual TPM to specific measured component within the Composite Device is out of the scope of this document.
+One or more TPMs MUST be embedded in a Composite Device that provides attestation evidence via the YANG module defined in this document. The ietf-tpm-remote-attestation YANG module enables a composite device to take on the role of an Attester, in accordance with the Remote Attestation Procedures (RATS) architecture {{-rats-architecture}}, and the corresponding challenge-response interaction model defined in the {{-rats-interaction-models}} document. A fresh nonce with an appropriate amount of entropy {{NIST-915121}} MUST be supplied by the YANG client in order to enable a proof-of-freshness with respect to the attestation Evidence provided by the Attester running the YANG datastore. Further, this nonce is used to prevent replay attacks. The method for communicating the relationship of each individual TPM to specific measured component within the Composite Device is out of the scope of this document.
 
 ## YANG Modules
 
@@ -263,7 +263,7 @@ This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {
 
 This module supports the following features:
 
-- 'TPMs': Indicates that multiple TPMs on the device can support remote attestation. For example, this feature could be used in cases where multiple line cards are present, each with its own TPM.
+- 'mtpm': Indicates that multiple TPMs on the device can support remote attestation. For example, this feature could be used in cases where multiple line cards are present, each with its own TPM.
 
 - 'bios': Indicates that the device supports the retrieval of BIOS/UEFI event logs. {{bios-log}}
 
@@ -281,7 +281,7 @@ In the following, RPCs for both TPM 1.2 and TPM 2.0 attestation procedures are d
 
 ##### 'tpm12-challenge-response-attestation'
 
-This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 1.2 compliant cryptoprocessor. Where the feature 'TPMs' is active, and one or more 'certificate-name' is not provided, all TPM 1.2 compliant cryptoprocessors will respond.  A YANG tree diagram of this RPC is as follows:
+This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 1.2 compliant cryptoprocessor. Where the feature 'mtpm' is active, and one or more 'certificate-name' is not provided, all TPM 1.2 compliant cryptoprocessors will respond.  A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
 {::include-dedent tpm12-challenge-response-attestation.tree}
@@ -289,7 +289,7 @@ This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) fr
 
 ##### 'tpm20-challenge-response-attestation'
 
-This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 2.0 compliant cryptoprocessor. Where the feature 'TPMs' is active, and one or more 'certificate-name' is not provided, all TPM 2.0 compliant cryptoprocessors will respond. A YANG tree diagram of this RPC is as follows:
+This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 2.0 compliant cryptoprocessor. Where the feature 'mtpm' is active, and one or more 'certificate-name' is not provided, all TPM 2.0 compliant cryptoprocessors will respond. A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
 {::include-dedent tpm20-challenge-response-attestation.tree}
@@ -391,14 +391,14 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 {: #ref-ietf-tpm-remote-attestation}
 
 ~~~ YANG
-<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-03-09.yang"
+<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-03-15.yang"
 {::include-dedent ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
 
 ### 'ietf-tcg-algs'
 
-This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC8017}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, {{ima-log}}, and {{netequip-boot-log}} exist within the YANG Model.
+This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC2104}}, {{RFC8017}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, {{ima-log}}, and {{netequip-boot-log}} exist within the YANG Model.
 
 #### Features
 
@@ -410,7 +410,7 @@ There are three types of identities in this model:
 
 1. Cryptographic functions supported by a TPM algorithm; these include: 'asymmetric', 'symmetric', 'hash', 'signing', 'anonymous_signing', 'encryption_mode', 'method', and 'object_type'. The definitions of each of these are in Table 2 of {{TCG-Algos}}.
 
-2. API specifications for TPMs: 'tpm12' and 'tpm20'
+2. API specifications for TPM types: 'tpm12' and 'tpm20'
 
 3. Specific algorithm types: Each algorithm type defines what cryptographic functions may be supported, and on which type of API specification. It is not required that an implementation of a specific TPM will support all algorithm types. The contents of each specific algorithm mirrors what is in Table 3 of {{TCG-Algos}}.
 
@@ -512,57 +512,5 @@ Information collected through the RPCs above could reveal that specific versions
 
 For the YANG module ietf-tcg-algs.yang, please use care when selecting specific algorithms.  The introductory section of {{TCG-Algos}} highlights that some algorithms should be considered legacy, and recommends implementers and adopters diligently evaluate available information such as governmental, industrial, and academic research before selecting an algorithm for use.
 
-
-# Change Log
-
-
-Changes from version 08 to version 09:
-
-* AD Review comments
-
-Changes from version 08 to version 09:
-
-* Minor formatting tweaks for shepherd.  IANA registered.
-
-Changes from version 05 to version 06:
-
-* More YANG Dr comments covered
-
-Changes from version 04 to version 05:
-
-* YANG Dr comments covered
-
-Changes from version 03 to version 04:
-
-* TPM1.2 Quote1 eliminated
-* YANG model simplifications so redundant info isn't exposed
-
-Changes from version 02 to version 03:
-
-* moved to tcg-algs
-* cleaned up model to eliminate sources of errors
-* removed key establishment RPC
-* added lots of XPATH which must all be scrubbed still
-* Descriptive text added on model contents.
-
-Changes from version 01 to version 02:
-
-* Extracted Crypto-types into a separate YANG file
-* Mades the algorithms explicit, not strings
-* Hash Algo as key the selected TPM2 PCRs
-* PCR numbers are their own type
-* Eliminated nested keys for node-id plus tpm-name
-* Eliminated TPM-Name of "ALL"
-* Added TPM-Path
-
-Changes from version 00 to version 01:
-
-* Addressed author's comments
-* Extended complementary details about attestation-certificates
-* Relabeled chunk-size to log-entry-quantity
-* Relabeled location with compute-node or tpm-name where appropriate
-* Added a valid entity-mib physical-index to compute-node and tpm-name to map it back to hardware inventory
-* Relabeled name  to tpm_name
-* Removed event-string in last-entry
 
 --- back

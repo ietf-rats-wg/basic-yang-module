@@ -3,7 +3,7 @@
    |  +---w tpm12-attestation-challenge
    |     +---w pcr-index*          pcr
    |     +---w nonce-value         binary
-   |     +---w certificate-name*   certificate-name-ref {tpm:TPMs}?
+   |     +---w certificate-name*   certificate-name-ref {tpm:mtpm}?
    +--ro output
       +--ro tpm12-attestation-response* []
          +--ro certificate-name    certificate-name-ref
