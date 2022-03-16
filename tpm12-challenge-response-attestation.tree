@@ -1,11 +1,12 @@
-+---x tpm12-challenge-response-attestation {taa:TPM12}?
-   +---w input
-   |  +---w tpm12-attestation-challenge
-   |     +---w pcr-index*          pcr
-   |     +---w nonce-value         binary
-   |     +---w certificate-name*   certificate-name-ref {tpm:mtpm}?
-   +--ro output
-      +--ro tpm12-attestation-response* []
-         +--ro certificate-name    certificate-name-ref
-         +--ro up-time?            uint32
-         +--ro TPM_QUOTE2?         binary
++---x tpm12-challenge-response-attestation {taa:tpm12}?
+  +---w input
+  |  +---w tpm12-attestation-challenge
+  |     +---w pcr-index*          pcr
+  |     +---w nonce-value         binary
+  |     +---w certificate-name*   certificate-name-ref
+  |             {tpm:mtpm}?
+  +--ro output
+     +--ro tpm12-attestation-response* []
+        +--ro certificate-name    certificate-name-ref
+        +--ro up-time?            uint32
+        +--ro TPM_QUOTE2?         binary
