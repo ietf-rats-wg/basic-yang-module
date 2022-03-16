@@ -220,7 +220,11 @@ informative:
   NIST-915121:
     target: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=915121
     title: "True Randomness Can’t be Left to Chance: Why entropy is important for information security" 
-    
+
+  IMA-Kernel-Source:
+    target: https://github.com/torvalds/linux/blob/df0cc57e057f18e44dac8e6c18aba47ab53202f9/security/integrity/ima/
+    title: "Linux Integrity Measurement Architecture (IMA): Kernel Sourcecode" 
+
   yang-parameters:
     target: https://www.iana.org/assignments/yang-parameters/yang-parameters.xhtml
     title: YANG Parameters
@@ -514,3 +518,44 @@ For the YANG module ietf-tcg-algs.yang, please use care when selecting specific 
 
 
 --- back
+
+# Linux Integrity Measurement Architecture (IMA)
+
+IMA extends the principles of Measured Boot and Secure Boot to the Linux operating system, applying it to operating system applications and files.
+IMA has been part of the Linux integrity subsystem of the Linux kernel since 2009 (kernel version 2.6.30) {{Linux-Kernel-Source}}.
+It enables the protection of system integrity by collecting and storing measurements that can be used later, at system runtime, in a remote attestation process.
+Further, IMA supports the appraisal of measurements locally by leveraging (signed) reference measurements stored in extended file attributes.
+
+IMA maintains an ordered list of measurements in the kernel, the Stored Measurement Log (SML), for all files that have been measured since the operating system was started.
+Although IMA can be used without a TPM, it is typically used in conjunction with a TPM to anchor the integrity of the SML in a hardware-protected secure storage location, i.e., TPM Platform Configuration Registers (PCRs).
+IMA provides the SML in both binary and ASCII representations in the Linux security file system *securityfs* (`/sys/kernel/security/ima/`).
+
+IMA templates define the format of the SML, i.e., which fields are included in a log record.
+Examples are file path, file hash, user ID, group ID, file signature, and extended file attributes.
+IMA comes with a set of predefined template formats and also allows a custom format, i.e., a format consisting of template fields supported by IMA.
+The template to use is typically passed to the kernel using boot arguments.
+However, the format can also be hard-compiled into a custom kernel.
+IMA templates and fields are extensible in the kernel source code, so more template fields can be added in the future.
+
+IMA policies define which files are measured using the IMA policy language.
+Built-in policies can be passed as boot arguments to the kernel.
+Custom IMA policies can be defined once during runtime or be hard-compiled into a custom kernel.
+If no policy is defined, no measurements are taken and IMA is effectively disabled.
+
+# IMA for Network Equipment Boot Logs
+
+Network equipment can generally implement similar IMA-protected functions to generate measurements (Claims) about the boot process of a device and enable corresponding remote attestation.
+Network Equipment Boot Logs combine the measurement and logging of boot components and operating system components (executables and files) into a single log file in identical IMA format.
+<!-- Changes to the boot components are required to allow them to log in IMA format. -->
+
+During the boot process of the network device, i.e., from BIOS to the end of the operating system and user-space, all files executed during this process can be measured and logged in the order of their execution.
+When the Verifier initiates a remote attestation process (e.g., challenge-response remote attestation as defined in this document), the network equipment takes on the role of an Attester and can convey to the Verifier Claims that comprise the measurement log as well as the corresponding PCR values (Evidence) of a TPM.
+
+The verifier can appraise the integrity (compliance with the Reference Values) of each executed file by comparing its measured value with the Reference Value.
+Based on the execution order, the Verifier can compute a PCR reference value (by replaying the log) and compare it to the Measurement Log Claims obtained in conjunction with the PCR Evidence to assess their trustworthiness with respect to an intended operational state.
+
+Not only during the operating system loading phase, even during the BIOS boot phase, network equipment usually executes multiple components.
+With this measurement log mechanism, network equipment can take on the role of an Attester, proving to the Verifier the trustworthiness of its boot process.
+Using the measurement log, Verifiers can precisely identify mismatching log entries to infer potentially tampered components.
+
+This mechanism also supports scenarios that modify files on the Attester and are executed during the boot phase (e.g., updating/patching) by simply updating the appropriate Reference Values in Reference Integrity Manifests that inform Verifiers about how an Attester is composed.
