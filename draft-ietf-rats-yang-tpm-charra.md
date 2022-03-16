@@ -519,23 +519,23 @@ For the YANG module ietf-tcg-algs.yang, please use care when selecting specific 
 
 --- back
 
-# Linux Integrity Measurement Architecture (IMA)
+# Integrity Measurement Architecture (IMA)
 
 IMA extends the principles of Measured Boot and Secure Boot to the Linux operating system, applying it to operating system applications and files.
-IMA has been part of the Linux integrity subsystem of the Linux kernel since 2009 (kernel version 2.6.30) {{Linux-Kernel-Source}}.
-It enables the protection of system integrity by collecting and storing measurements that can be used later, at system runtime, in a remote attestation process.
-Further, IMA supports the appraisal of measurements locally by leveraging (signed) reference measurements stored in extended file attributes.
+IMA has been part of the Linux integrity subsystem of the Linux kernel since 2009 (kernel version 2.6.30). The IMA mechanism represented by the YANG module in this specification is rooted in the kernel version FIXME {{IMA-Kernel-Source}}.
+IMA enables the protection of system integrity by collecting (commonly referred to as measuring) and storing measurements (called Claims in the context of IETF RATS) of files before execution so that these measurements can be used later, at system runtime, in remote attestation procedures.
+IMA acts in support of the appraisal of Evidence (which includes measurement Claims) by leveraging reference integrity measurements stored in extended file attributes.
 
-IMA maintains an ordered list of measurements in the kernel, the Stored Measurement Log (SML), for all files that have been measured since the operating system was started.
-Although IMA can be used without a TPM, it is typically used in conjunction with a TPM to anchor the integrity of the SML in a hardware-protected secure storage location, i.e., TPM Platform Configuration Registers (PCRs).
+In support of the appraisal of Evidence, IMA maintains an ordered list of measurements in kernel-space, the Stored Measurement Log (SML) for all files that have been measured before execution since the operating system was started.
+Although IMA can be used without a TPM, it is typically used in conjunction with a TPM to anchor the integrity of the SML in a hardware-protected secure storage location, i.e., TPM Platform Configuration Registers (PCRs) provided by TPMs.
 IMA provides the SML in both binary and ASCII representations in the Linux security file system *securityfs* (`/sys/kernel/security/ima/`).
 
 IMA templates define the format of the SML, i.e., which fields are included in a log record.
 Examples are file path, file hash, user ID, group ID, file signature, and extended file attributes.
 IMA comes with a set of predefined template formats and also allows a custom format, i.e., a format consisting of template fields supported by IMA.
-The template to use is typically passed to the kernel using boot arguments.
-However, the format can also be hard-compiled into a custom kernel.
-IMA templates and fields are extensible in the kernel source code, so more template fields can be added in the future.
+Template usage is typically determined by boot arguments passed to the kernel.
+Alternatively, the format can also be hard-compiled into custom kernels.
+IMA templates and fields are extensible in the kernel source code. As a result, more template fields can be added in the future.
 
 IMA policies define which files are measured using the IMA policy language.
 Built-in policies can be passed as boot arguments to the kernel.
