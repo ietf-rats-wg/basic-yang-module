@@ -5,7 +5,7 @@
    |     +---w tpm20-pcr-selection* []
    |     |  +---w TPM20-hash-algo?   identityref
    |     |  +---w pcr-index*         tpm:pcr
-   |     +---w certificate-name*      certificate-name-ref {tpm:TPMs}?
+   |     +---w certificate-name*      certificate-name-ref {tpm:mtpm}?
    +--ro output
       +--ro tpm20-attestation-response* []
          +--ro certificate-name       certificate-name-ref
