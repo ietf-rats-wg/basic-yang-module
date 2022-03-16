@@ -122,9 +122,9 @@ module ietf-tpm-remote-attestation {
          + "/tpm:compute-node/tpm:node-name";
     }
     description
-      "This type is used to reference a hardware node.  It is quite
-       possible this leafref will eventually point to another YANG
-       module's node.";
+      "This type is used to reference a hardware node.  Note that an
+       implementer might include an alternative leafref pointing to a
+       different YANG module node specifying hardware structures.";
   }
 
   typedef certificate-name-ref {
@@ -182,7 +182,7 @@ module ietf-tpm-remote-attestation {
       }
       default "taa:TPM_ALG_SHA256";
       description
-        "The hash scheme that is used to hash a TPM1.2 PCR. This
+        "The hash scheme that is used to hash a TPM2.0 PCR. This
          must be one of those supported by a platform.";
     }
   }
@@ -232,16 +232,14 @@ module ietf-tpm-remote-attestation {
       "A Verifier can request one or more PCR values using its
        individually created Attestation Key Certificate (AC).
        The corresponding selection filter is represented in this
-       grouping.
-       Requesting a PCR value that is not in scope of the AC used,
-       detailed exposure via error msg should be avoided.";
+       grouping.";
     leaf-list pcr-index {
       type pcr;
       description
-        "The numbers/indexes of the PCRs. At the moment this is limited
-         to 32.   In addition, any selection of PCRs MUST verify that
-         the set of PCRs requested are a subset the set of PCRs 
-         exposed by in the leaf-list /tpm:rats-support-structures
+        "The numbers/indexes of the PCRs. In addition, any selection 
+         of PCRs MUST verify that the set of PCRs requested are a 
+         subset the set of PCRs exposed by in the leaf-list 
+         /tpm:rats-support-structures
          /tpm:tpms/tpm:tpm[name=current()]/tpm:tpm12-pcrs";
     }
   }
@@ -377,8 +375,10 @@ module ietf-tpm-remote-attestation {
          'unsigned-pcr-values'.   By comparing this information to
          what has previously been validated, it is possible for a
          Verifier to confirm the Attester's signature while eliminating
-         significant processing.  There should never be a result where
-         an unsigned PCR value is actually that within a quote.
+
+         significant processing.  Note that there should never be a 
+         result where an unsigned PCR value differs from what may be 
+         reconstructed from the within the PCR quote and the event logs.
          If there is a difference, a signed result which has been 
          verified from retrieved logs is considered definitive.";
       uses tpm20-hash-algo;
@@ -430,11 +430,11 @@ module ietf-tpm-remote-attestation {
          supported.";
     }
     leaf event-type {
-        type uint32;
-        description
-          "BIOS Log Event Type:
-           https://trustedcomputinggroup.org/wp-content/uploads/
-           TCG_PCClient_PFP_r1p05_v23_pub.pdf  Section 10.4.1";
+      type uint32;
+      description
+        "BIOS Log Event Type:
+         https://trustedcomputinggroup.org/wp-content/uploads/
+         TCG_PCClient_PFP_r1p05_v23_pub.pdf  Section 10.4.1";
     }
     leaf pcr-index {
       type pcr;
@@ -467,7 +467,8 @@ module ietf-tpm-remote-attestation {
     leaf-list event-data {
       type binary;
       description
-        "The event data size determined by event-size";
+        "The event data size determined by event-size. For more
+        see ";
     }
   }
   grouping bios-event-log {
@@ -511,7 +512,8 @@ module ietf-tpm-remote-attestation {
     leaf filedata-hash {
       type binary;
       description
-        "Hash of filedata";
+        "Hash of filedata as updated based upon the 
+        filedata-hash-algorithm";
     }
     leaf filedata-hash-algorithm {
       type string;
@@ -536,7 +538,8 @@ module ietf-tpm-remote-attestation {
     leaf signature {
       type binary;
       description
-        "The file signature";
+        "Digital file signature which provides a 
+        fingerprint for the file being measured."
     }
   }
   grouping ima-event-log {
@@ -661,8 +664,8 @@ module ietf-tpm-remote-attestation {
     description
       "This RPC accepts the input for TSS TPM 2.0 commands of the
        managed device. ComponentIndex from the hardware manager YANG
-       module to refer to dedicated TPM in composite devices,
-       e.g. smart NICs, is still a TODO.";
+       module is used to refer to dedicated TPM in composite devices,
+       e.g. smart NICs, is not covered.";
     input {
       container tpm20-attestation-challenge {
         description
@@ -691,7 +694,7 @@ module ietf-tpm-remote-attestation {
       list tpm20-attestation-response {
         unique "certificate-name";
         description
-          "The binary output of TPM2b_Quote in one TPM chip of the
+          "The binary output of TPM2b_Quote from one TPM of the
            node which identified by node-id. An TPMS_ATTEST structure
            including a length, encapsulated in a signature";
         uses certificate-name-ref {
@@ -804,10 +807,11 @@ module ietf-tpm-remote-attestation {
     container compute-nodes {
       if-feature "tpm:mtpm";
       description
-        "Holds the set device subsystems/components in this composite
-         device that support TPM operations.";
+        "Holds the set of device subsystems/components in this 
+         composite device that support TPM operations.";
       list compute-node {
         key "node-id";
+        unique "node-name";
         config false;
         min-elements 2;
         description
@@ -874,8 +878,8 @@ module ietf-tpm-remote-attestation {
           type string;
           config false;
           description
-            "Path to a unique TPM on a device.  This can change across
-             reboots.";
+            "Device path to a unique TPM on a device.  This can change
+             across reboots.";
         }
         leaf compute-node {
           if-feature "tpm:mtpm";
@@ -976,7 +980,7 @@ module ietf-tpm-remote-attestation {
         container certificates {
           description
             "The TPM's certificates, including EK certificates
-             and AK certificates.";
+             and Attestation Key certificates.";
           list certificate {
             key "name";
             description
