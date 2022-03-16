@@ -1,16 +1,16 @@
     +---x log-retrieval
        +---w input
-       |  +---w log-selector* []
-       |  |  +---w name*                      string
-       |  |  +---w (index-type)?
-       |  |  |  +--:(last-entry)
-       |  |  |  |  +---w last-entry-value?    binary
-       |  |  |  +--:(index)
-       |  |  |  |  +---w last-index-number?   uint64
-       |  |  |  +--:(timestamp)
-       |  |  |     +---w timestamp?           yang:date-and-time
-       |  |  +---w log-entry-quantity?        uint16
        |  +---w log-type        identityref
+       |  +---w log-selector* []
+       |     +---w name*                      string
+       |     +---w (index-type)?
+       |     |  +--:(last-entry)
+       |     |  |  +---w last-entry-value?    binary
+       |     |  +--:(index)
+       |     |  |  +---w last-index-number?   uint64
+       |     |  +--:(timestamp)
+       |     |     +---w timestamp?           yang:date-and-time
+       |     +---w log-entry-quantity?        uint16
        +--ro output
           +--ro system-event-logs
              +--ro node-data* []
@@ -28,7 +28,7 @@
                       |        |  +--ro hash-algo?   identityref
                       |        |  +--ro digest*      binary
                       |        +--ro event-size?     uint32
-                      |        +--ro event-data*     uint8
+                      |        +--ro event-data*     binary
                       +--:(ima) {ima}?
                       |  +--ro ima-event-logs
                       |     +--ro ima-event-entry* [event-number]
