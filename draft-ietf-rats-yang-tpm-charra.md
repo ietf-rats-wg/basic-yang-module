@@ -263,7 +263,7 @@ This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {
 
 This module supports the following features:
 
-- 'TPMs': Indicates that multiple TPMs on the device can support remote attestation. For example, this feature could be used in cases where multiple line cards are present, each with its own TPM.
+- 'mtpm': Indicates that multiple TPMs on the device can support remote attestation. For example, this feature could be used in cases where multiple line cards are present, each with its own TPM.
 
 - 'bios': Indicates that the device supports the retrieval of BIOS/UEFI event logs. {{bios-log}}
 
@@ -281,7 +281,7 @@ In the following, RPCs for both TPM 1.2 and TPM 2.0 attestation procedures are d
 
 ##### 'tpm12-challenge-response-attestation'
 
-This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 1.2 compliant cryptoprocessor. Where the feature 'TPMs' is active, and one or more 'certificate-name' is not provided, all TPM 1.2 compliant cryptoprocessors will respond.  A YANG tree diagram of this RPC is as follows:
+This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 1.2 compliant cryptoprocessor. Where the feature 'mtpm' is active, and one or more 'certificate-name' is not provided, all TPM 1.2 compliant cryptoprocessors will respond.  A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
 {::include-dedent tpm12-challenge-response-attestation.tree}
@@ -289,7 +289,7 @@ This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) fr
 
 ##### 'tpm20-challenge-response-attestation'
 
-This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 2.0 compliant cryptoprocessor. Where the feature 'TPMs' is active, and one or more 'certificate-name' is not provided, all TPM 2.0 compliant cryptoprocessors will respond. A YANG tree diagram of this RPC is as follows:
+This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 2.0 compliant cryptoprocessor. Where the feature 'mtpm' is active, and one or more 'certificate-name' is not provided, all TPM 2.0 compliant cryptoprocessors will respond. A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
 {::include-dedent tpm20-challenge-response-attestation.tree}
@@ -391,7 +391,7 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 {: #ref-ietf-tpm-remote-attestation}
 
 ~~~ YANG
-<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-03-09.yang"
+<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-03-15.yang"
 {::include-dedent ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
@@ -410,7 +410,7 @@ There are three types of identities in this model:
 
 1. Cryptographic functions supported by a TPM algorithm; these include: 'asymmetric', 'symmetric', 'hash', 'signing', 'anonymous_signing', 'encryption_mode', 'method', and 'object_type'. The definitions of each of these are in Table 2 of {{TCG-Algos}}.
 
-2. API specifications for TPMs: 'tpm12' and 'tpm20'
+2. API specifications for TPM types: 'tpm12' and 'tpm20'
 
 3. Specific algorithm types: Each algorithm type defines what cryptographic functions may be supported, and on which type of API specification. It is not required that an implementation of a specific TPM will support all algorithm types. The contents of each specific algorithm mirrors what is in Table 3 of {{TCG-Algos}}.
 
@@ -512,57 +512,5 @@ Information collected through the RPCs above could reveal that specific versions
 
 For the YANG module ietf-tcg-algs.yang, please use care when selecting specific algorithms.  The introductory section of {{TCG-Algos}} highlights that some algorithms should be considered legacy, and recommends implementers and adopters diligently evaluate available information such as governmental, industrial, and academic research before selecting an algorithm for use.
 
-
-# Change Log
-
-
-Changes from version 08 to version 09:
-
-* AD Review comments
-
-Changes from version 08 to version 09:
-
-* Minor formatting tweaks for shepherd.  IANA registered.
-
-Changes from version 05 to version 06:
-
-* More YANG Dr comments covered
-
-Changes from version 04 to version 05:
-
-* YANG Dr comments covered
-
-Changes from version 03 to version 04:
-
-* TPM1.2 Quote1 eliminated
-* YANG model simplifications so redundant info isn't exposed
-
-Changes from version 02 to version 03:
-
-* moved to tcg-algs
-* cleaned up model to eliminate sources of errors
-* removed key establishment RPC
-* added lots of XPATH which must all be scrubbed still
-* Descriptive text added on model contents.
-
-Changes from version 01 to version 02:
-
-* Extracted Crypto-types into a separate YANG file
-* Mades the algorithms explicit, not strings
-* Hash Algo as key the selected TPM2 PCRs
-* PCR numbers are their own type
-* Eliminated nested keys for node-id plus tpm-name
-* Eliminated TPM-Name of "ALL"
-* Added TPM-Path
-
-Changes from version 00 to version 01:
-
-* Addressed author's comments
-* Extended complementary details about attestation-certificates
-* Relabeled chunk-size to log-entry-quantity
-* Relabeled location with compute-node or tpm-name where appropriate
-* Added a valid entity-mib physical-index to compute-node and tpm-name to map it back to hardware inventory
-* Relabeled name  to tpm_name
-* Removed event-string in last-entry
 
 --- back
