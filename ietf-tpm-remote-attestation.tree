@@ -1,6 +1,6 @@
 module: ietf-tpm-remote-attestation
   +--rw rats-support-structures
-     +--rw compute-nodes {tpm:TPMs}?
+     +--rw compute-nodes {tpm:mtpm}?
      |  +--ro compute-node* [node-id]
      |     +--ro node-id                string
      |     +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
@@ -12,7 +12,7 @@ module: ietf-tpm-remote-attestation
      |     +--ro hardware-based?         boolean
      |     +--ro tpm-physical-index?     int32 {ietfhw:entity-mib}?
      |     +--ro tpm-path?               string
-     |     +--ro compute-node            compute-node-ref {tpm:TPMs}?
+     |     +--ro compute-node            compute-node-ref {tpm:mtpm}?
      |     +--ro tpm-manufacturer?       string
      |     +--rw tpm-firmware-version    identityref
      |     +--rw TPM12-hash-algo?        identityref
@@ -95,7 +95,7 @@ module: ietf-tpm-remote-attestation
                       |        |  +--ro hash-algo?   identityref
                       |        |  +--ro digest*      binary
                       |        +--ro event-size?     uint32
-                      |        +--ro event-data*     uint8
+                      |        +--ro event-data*     binary
                       +--:(ima) {ima}?
                       |  +--ro ima-event-logs
                       |     +--ro ima-event-entry* [event-number]
