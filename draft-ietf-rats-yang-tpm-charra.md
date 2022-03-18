@@ -378,7 +378,7 @@ Container 'tpms':
 {::include-dedent tpms.tree}
 ~~~
 
-container 'attester-supported-algos' - Identifies which TCG hash algorithms are available for use on the Attesting platform. This allows an operator to limit algorithms available for use by RPCs to just a desired set from the universe of all allowed hash algorithms by the TCG.
+container 'attester-supported-algos' - Identifies which TCG hash algorithms are available for use on the Attesting platform. An operator will use this information to limit algorithms available for use by RPCs to just a desired set from the universe of all allowed hash algorithms by the TCG.
 
 ~~~ TREE
 {::include-dedent attester-supported-algos.tree}
