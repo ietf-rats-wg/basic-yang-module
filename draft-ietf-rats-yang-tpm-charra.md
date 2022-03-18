@@ -554,7 +554,7 @@ When the Verifier initiates a remote attestation process (e.g., challenge-respon
 The verifier can appraise the integrity (compliance with the Reference Values) of each executed file by comparing its measured value with the Reference Value.
 Based on the execution order, the Verifier can compute a PCR reference value (by replaying the log) and compare it to the Measurement Log Claims obtained in conjunction with the PCR Evidence to assess their trustworthiness with respect to an intended operational state.
 
-Not only during the operating system loading phase, even during the BIOS boot phase, network equipment usually executes multiple components.
+Network equipment usually executes multiple components in parallel.  This holds not only during the operating system loading phase, but also even during the BIOS boot phase.
 With this measurement log mechanism, network equipment can take on the role of an Attester, proving to the Verifier the trustworthiness of its boot process.
 Using the measurement log, Verifiers can precisely identify mismatching log entries to infer potentially tampered components.
 
