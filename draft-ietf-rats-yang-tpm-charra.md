@@ -204,27 +204,23 @@ normative:
 
   bios-log:
     target: https://trustedcomputinggroup.org/wp-content/uploads/PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
-    title: "TCG PC Client Platform Firmware Profile Specification, Section 9.4.5.2"
+    title: "TCG PC Client Platform Firmware Profile Specification, Section 9.4.5.2" 
 
   ima-log:
     target: https://trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p41_pub.pdf
-    title: "Canonical Event Log Format, Section 4.3"
-
-  UEFI-Secure-Boot:
-    target: https://uefi.org/sites/default/files/resources/UEFI_Spec_2_9_2021_03_18.pdf
-    title: "Unified Extensible Firmware Interface (UEFI) Specification Version 2.9 (March 2021), Section 32.1 (Secure Boot)"
+    title: "Canonical Event Log Format, Section 4.3"   
+    
+  netequip-boot-log:
+    target: https://www.kernel.org/doc/Documentation/ABI/testing/ima_policy
+    title: "IMA Policy Kernel Documentation"   
 
 informative:
   I-D.ietf-rats-reference-interaction-models: rats-interaction-models
 
-  IMA-Kernel-Source:
-    target: https://github.com/torvalds/linux/blob/df0cc57e057f18e44dac8e6c18aba47ab53202f9/security/integrity/ima/
-    title: "Linux Integrity Measurement Architecture (IMA): Kernel Sourcecode"
-
   NIST-915121:
     target: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=915121
     title: "True Randomness Can’t be Left to Chance: Why entropy is important for information security" 
-
+    
   yang-parameters:
     target: https://www.iana.org/assignments/yang-parameters/yang-parameters.xhtml
     title: YANG Parameters
@@ -261,7 +257,7 @@ In this section the several YANG modules are defined.
 
 ### 'ietf-tpm-remote-attestation'
 
-This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally, references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{bios-log}}, {{ima-log}},  {{BIOS-Log-Event-Type}}, as well as {{ima} and {{netequip-boot-log}}.
+This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally, references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{bios-log}}, {{ima-log}},  {{BIOS-Log-Event-Type}} and {{netequip-boot-log}}.
 
 #### Features
 
@@ -271,9 +267,9 @@ This module supports the following features:
 
 - 'bios': Indicates that the device supports the retrieval of BIOS/UEFI event logs. {{bios-log}}
 
-- 'ima': Indicates that the device supports the retrieval of event logs from the Linux Integrity Measurement Architecture (IMA {{ima-log}}). Also see {{ima}}.
+- 'ima': Indicates that the device supports the retrieval of event logs from the Linux Integrity Measurement Architecture (IMA). {{ima-log}}
 
-- 'netequip_boot': Indicates that the device supports the retrieval of netequip boot event logs. See {{ima}} and {{netequip-boot-log}}.
+- 'netequip_boot': Indicates that the device supports the retrieval of netequip boot event logs.  {{netequip-boot-log}}
 
 #### Identities
 
@@ -402,7 +398,7 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 
 ### 'ietf-tcg-algs'
 
-This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC2104}}, {{RFC8017}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, {{ima-log}}, as well as {{ima}} and {{netequip-boot-log}} exist within the YANG Model.
+This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC2104}}, {{RFC8017}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, {{ima-log}}, and {{netequip-boot-log}} exist within the YANG Model.
 
 #### Features
 
@@ -518,44 +514,3 @@ For the YANG module ietf-tcg-algs.yang, please use care when selecting specific 
 
 
 --- back
-
-# Integrity Measurement Architecture (IMA) {#ima}
-
-IMA extends the principles of Measured Boot {{TPM2.0-Arch}} and Secure Boot {{UEFI-Secure-Boot}} to the Linux operating system, applying it to operating system applications and files.
-IMA has been part of the Linux integrity subsystem of the Linux kernel since 2009 (kernel version 2.6.30). The IMA mechanism represented by the YANG module in this specification is rooted in the kernel version 5.16 {{IMA-Kernel-Source}}.
-IMA enables the protection of system integrity by collecting (commonly referred to as measuring) and storing measurements (called Claims in the context of IETF RATS) of files before execution so that these measurements can be used later, at system runtime, in remote attestation procedures.
-IMA acts in support of the appraisal of Evidence (which includes measurement Claims) by leveraging reference integrity measurements stored in extended file attributes.
-
-In support of the appraisal of Evidence, IMA maintains an ordered list of measurements in kernel-space, the Stored Measurement Log (SML), for all files that have been measured before execution since the operating system was started.
-Although IMA can be used without a TPM, it is typically used in conjunction with a TPM to anchor the integrity of the SML in a hardware-protected secure storage location, i.e., Platform Configuration Registers (PCRs) provided by TPMs.
-IMA provides the SML in both binary and ASCII representations in the Linux security file system *securityfs* (`/sys/kernel/security/ima/`).
-
-IMA templates define the format of the SML, i.e., which fields are included in a log record.
-Examples are file path, file hash, user ID, group ID, file signature, and extended file attributes.
-IMA comes with a set of predefined template formats and also allows a custom format, i.e., a format consisting of template fields supported by IMA.
-Template usage is typically determined by boot arguments passed to the kernel.
-Alternatively, the format can also be hard-compiled into custom kernels.
-IMA templates and fields are extensible in the kernel source code. As a result, more template fields can be added in the future.
-
-IMA policies define which files are measured using the IMA policy language.
-Built-in policies can be passed as boot arguments to the kernel.
-Custom IMA policies can be defined once during runtime or be hard-compiled into a custom kernel.
-If no policy is defined, no measurements are taken and IMA is effectively disabled.
-
-# IMA for Network Equipment Boot Logs {#netequip-boot-log}
-
-Network equipment can generally implement similar IMA-protected functions to generate measurements (Claims) about the boot process of a device and enable corresponding remote attestation.
-Network Equipment Boot Logs combine the measurement and logging of boot components and operating system components (executables and files) into a single log file in identical IMA format.
-Note that the format used for logging measurement of boot components in this scheme differs from the boot logging strategy described elsewhere in this document.
-
-During the boot process of the network device, i.e., from BIOS to the end of the operating system and user-space, all files executed during this process can be measured and logged in the order of their execution.
-When the Verifier initiates a remote attestation process (e.g., challenge-response remote attestation as defined in this document), the network equipment takes on the role of an Attester and can convey to the Verifier Claims that comprise the measurement log as well as the corresponding PCR values (Evidence) of a TPM.
-
-The verifier can appraise the integrity (compliance with the Reference Values) of each executed file by comparing its measured value with the Reference Value.
-Based on the execution order, the Verifier can compute a PCR reference value (by replaying the log) and compare it to the Measurement Log Claims obtained in conjunction with the PCR Evidence to assess their trustworthiness with respect to an intended operational state.
-
-Network equipment usually executes multiple components in parallel.  This holds not only during the operating system loading phase, but also even during the BIOS boot phase.
-With this measurement log mechanism, network equipment can take on the role of an Attester, proving to the Verifier the trustworthiness of its boot process.
-Using the measurement log, Verifiers can precisely identify mismatching log entries to infer potentially tampered components.
-
-This mechanism also supports scenarios that modify files on the Attester that are subsequently executed during the boot phase (e.g., updating/patching) by simply updating the appropriate Reference Values in Reference Integrity Manifests that inform Verifiers about how an Attester is composed.
