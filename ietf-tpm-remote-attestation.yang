@@ -177,8 +177,8 @@ module ietf-tpm-remote-attestation {
       type identityref {
         base taa:hash;
       }
-      must '/tpm:rats-support-structures/tpm:attester-supported-algos'
-         + '/tpm:tpm20-hash' {
+      must '. = /tpm:rats-support-structures'
+         + '/tpm:attester-supported-algos/tpm:tpm20-hash' {
         error-message "This platform does not support tpm20-hash-algo";
       }
       default "taa:TPM_ALG_SHA256";
@@ -195,8 +195,8 @@ module ietf-tpm-remote-attestation {
       type identityref {
         base taa:hash;
       }
-      must '/tpm:rats-support-structures/tpm:attester-supported-algos'
-         + '/tpm:tpm12-hash' {
+      must '. = /tpm:rats-support-structures'
+         + '/tpm:attester-supported-algos/tpm:tpm12-hash' {
         error-message "This platform does not support tpm12-hash-algo";
       }
       default "taa:TPM_ALG_SHA1";
@@ -729,7 +729,9 @@ module ietf-tpm-remote-attestation {
              object exists, a selection should pull only the objects 
              related to these TPM(s).  If it does not exist, all 
              qualifying TPMs that are 'hardware-based' equals true 
-             on the device are selected.";
+             on the device are selected. When this selection 
+             criteria is provided, it will be considered as a logical 
+             AND with any other selection criteria provided.";
         }
         choice index-type {
           description
