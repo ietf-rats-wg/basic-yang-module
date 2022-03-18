@@ -546,7 +546,7 @@ If no policy is defined, no measurements are taken and IMA is effectively disabl
 
 Network equipment can generally implement similar IMA-protected functions to generate measurements (Claims) about the boot process of a device and enable corresponding remote attestation.
 Network Equipment Boot Logs combine the measurement and logging of boot components and operating system components (executables and files) into a single log file in identical IMA format.
-<!-- Changes to the boot components are required to allow them to log in IMA format. -->
+Note that the format used for logging measurement of boot components in this scheme differs from the boot logging strategy described elsewhere in this document.
 
 During the boot process of the network device, i.e., from BIOS to the end of the operating system and user-space, all files executed during this process can be measured and logged in the order of their execution.
 When the Verifier initiates a remote attestation process (e.g., challenge-response remote attestation as defined in this document), the network equipment takes on the role of an Attester and can convey to the Verifier Claims that comprise the measurement log as well as the corresponding PCR values (Evidence) of a TPM.
