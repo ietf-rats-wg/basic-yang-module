@@ -1,4 +1,5 @@
 module ietf-tpm-remote-attestation {
+  yang-version 1.1;
   namespace "urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation";
   prefix tpm;
 
@@ -53,7 +54,7 @@ module ietf-tpm-remote-attestation {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2022-03-15 {
+  revision 2022-03-18 {
     description
       "Initial version";
     reference
@@ -119,7 +120,7 @@ module ietf-tpm-remote-attestation {
   typedef compute-node-ref {
     type leafref {
       path "/tpm:rats-support-structures/tpm:compute-nodes"
-         + "/tpm:compute-node/tpm:node-name";
+         + "/tpm:compute-node/tpm:node-id";
     }
     description
       "This type is used to reference a hardware node.  Note that an
@@ -263,8 +264,7 @@ module ietf-tpm-remote-attestation {
       leaf-list pcr-index {
         type pcr;
         must '/tpm:rats-support-structures/tpm:tpms'
-           + '/tpm:tpm[name = current()] and '
-           + '/tpm:rats-support-structures/tpm:tpms/tpm:tpm'
+           + '/tpm:tpm[name = current()]'
            + '/tpm:tpm20-pcr-bank[pcr-index = current()]' {
           error-message "Acquiring this PCR index is not supported";
         }
@@ -720,15 +720,16 @@ module ietf-tpm-remote-attestation {
       uses log-identifier;
       list log-selector {
         description
-          "Only log entries which meet all the selection criteria provided
-           are to be returned by the RPC output.";
+          "Only log entries which meet all the selection criteria 
+           provided are to be returned by the RPC output.";
         leaf-list name {
           type string;
           description
-            "Name of one or more unique TPMs on a device.  If this object
-             exists, a selection should pull only the objects related to
-             these TPM(s).  If it does not exist, all qualifying TPMs that
-             are 'hardware-based' equals true on the device are selected.";
+            "Name of one or more unique TPMs on a device.  If this 
+             object exists, a selection should pull only the objects 
+             related to these TPM(s).  If it does not exist, all 
+             qualifying TPMs that are 'hardware-based' equals true 
+             on the device are selected.";
         }
         choice index-type {
           description
@@ -911,7 +912,7 @@ module ietf-tpm-remote-attestation {
              be changed.";
         }
         uses tpm12-hash-algo {
-          when "firmware-version = 'taa:tpm12'";
+          when "derived-from-or-self(firmware-version, 'taa:tpm12')";
           refine "tpm12-hash-algo" {
             description
               "The hash algorithm overwrites the default used for PCRs
@@ -919,14 +920,16 @@ module ietf-tpm-remote-attestation {
           }
         }
         leaf-list tpm12-pcrs {
-          when "../firmware-version = 'taa:tpm12'";
+          when 
+            "derived-from-or-self(../firmware-version, 'taa:tpm12')";
           type pcr;
           description
             "The PCRs which may be extracted from this TPM1.2
              compliant cryptoprocessor.";
         }
         list tpm20-pcr-bank {
-          when "../firmware-version = 'taa:tpm20'";
+          when 
+            "derived-from-or-self(../firmware-version, 'taa:tpm20')";
           key "tpm20-hash-algo";
           description
             "Specifies the list of PCRs that may be extracted for
