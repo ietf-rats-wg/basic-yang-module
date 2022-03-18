@@ -204,7 +204,7 @@ normative:
 
   bios-log:
     target: https://trustedcomputinggroup.org/wp-content/uploads/PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
-    title: "TCG PC Client Platform Firmware Profile Specification, Section 9.4.5.2" 
+    title: "TCG PC Client Platform Firmware Profile Specification, Section 9.4.5.2"
 
   ima-log:
     target: https://trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p41_pub.pdf
