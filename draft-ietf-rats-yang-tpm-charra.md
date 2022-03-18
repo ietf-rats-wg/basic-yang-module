@@ -534,12 +534,12 @@ IMA templates define the format of the SML, i.e., which fields are included in a
 Examples are file path, file hash, user ID, group ID, file signature, and extended file attributes.
 IMA comes with a set of predefined template formats and also allows a custom format, i.e., a format consisting of template fields supported by IMA.
 Template usage is typically determined by boot arguments passed to the kernel.
-Alternatively, the format can also be hard-compiled into custom kernels.
+Alternatively, the format can also be hard-coded into custom kernels.
 IMA templates and fields are extensible in the kernel source code. As a result, more template fields can be added in the future.
 
 IMA policies define which files are measured using the IMA policy language.
 Built-in policies can be passed as boot arguments to the kernel.
-Custom IMA policies can be defined once during runtime or be hard-compiled into a custom kernel.
+Custom IMA policies can be defined once during runtime or be hard-coded into a custom kernel.
 If no policy is defined, no measurements are taken and IMA is effectively disabled.
 
 # IMA for Network Equipment Boot Logs {#netequip-boot-log}
@@ -548,7 +548,7 @@ Network equipment can generally implement similar IMA-protected functions to gen
 Network Equipment Boot Logs combine the measurement and logging of boot components and operating system components (executables and files) into a single log file in identical IMA format.
 Note that the format used for logging measurement of boot components in this scheme differs from the boot logging strategy described elsewhere in this document.
 
-During the boot process of the network device, i.e., from BIOS to the end of the operating system and user-space, all files executed during this process can be measured and logged in the order of their execution.
+During the boot process of the network device, i.e., from BIOS to the end of the operating system and user-space, all files executed can be measured and logged in the order of their execution.
 When the Verifier initiates a remote attestation process (e.g., challenge-response remote attestation as defined in this document), the network equipment takes on the role of an Attester and can convey to the Verifier Claims that comprise the measurement log as well as the corresponding PCR values (Evidence) of a TPM.
 
 The verifier can appraise the integrity (compliance with the Reference Values) of each executed file by comparing its measured value with the Reference Value.
