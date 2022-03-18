@@ -558,4 +558,4 @@ Network equipment usually executes multiple components in parallel.  This holds 
 With this measurement log mechanism, network equipment can take on the role of an Attester, proving to the Verifier the trustworthiness of its boot process.
 Using the measurement log, Verifiers can precisely identify mismatching log entries to infer potentially tampered components.
 
-This mechanism also supports scenarios that modify files on the Attester and are executed during the boot phase (e.g., updating/patching) by simply updating the appropriate Reference Values in Reference Integrity Manifests that inform Verifiers about how an Attester is composed.
+This mechanism also supports scenarios that modify files on the Attester that are subsequently executed during the boot phase (e.g., updating/patching) by simply updating the appropriate Reference Values in Reference Integrity Manifests that inform Verifiers about how an Attester is composed.
