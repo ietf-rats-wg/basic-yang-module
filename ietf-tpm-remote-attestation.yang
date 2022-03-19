@@ -92,7 +92,7 @@ module ietf-tpm-remote-attestation {
     reference
       "ima-log:
        https://www.trustedcomputinggroup.org/wp-content/uploads/
-       TCG_IWG_CEL_v1_r0p41_pub.pdf  Section 4.3";
+       TCG_IWG_CEL_v1_r0p41_pub.pdf  Section 5.1.6";
   }
 
   feature netequip_boot {
@@ -100,7 +100,7 @@ module ietf-tpm-remote-attestation {
       "The device supports the netequip_boot logs.";
     reference
       "netequip-boot-log:
-       https://www.kernel.org/doc/Documentation/ABI/testing/ima_policy";
+       RFC AAAA  Appendix B";
   }
 
   /*****************/
@@ -426,9 +426,9 @@ module ietf-tpm-remote-attestation {
       type uint32;
       description
         "Unique event number of this event which monotonically
-         increases.  The maximum event number should not be
-         reached, nor is wrapping back to an earlier number
-         supported.";
+         increases within a given event log.  The maximum event
+         number should not be reached, nor is wrapping back to
+         an earlier number supported.";
     }
     leaf event-type {
       type uint32;
