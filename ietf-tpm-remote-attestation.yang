@@ -513,7 +513,7 @@ module ietf-tpm-remote-attestation {
     leaf filename-hint {
       type string;
       description
-        "File name (including path) that was measured.";
+        "File name (including the path) that was measured.";
     }
     leaf filedata-hash {
       type binary;
