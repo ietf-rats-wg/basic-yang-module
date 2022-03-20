@@ -30,7 +30,7 @@ module ietf-tcg-algs {
      (RFC 8174) when, and only when, they appear in all
      capitals, as shown here.";
 
-  revision 2022-03-09 {
+  revision 2022-03-19 {
     description
       "Initial version";
     reference
@@ -499,6 +499,7 @@ module ietf-tcg-algs {
     if-feature "tpm20";
     base tpm20;
     base symmetric;
+    base object_type;
     description
       "Object type for a symmetric block cipher";
     reference
