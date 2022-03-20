@@ -206,7 +206,7 @@ normative:
     target: https://trustedcomputinggroup.org/wp-content/uploads/PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
     title: "TCG PC Client Platform Firmware Profile Specification, Section 9.4.5.2"
 
-  ima-log:
+  cel:
     target: https://trustedcomputinggroup.org/wp-content/uploads/TCG_IWG_CEL_v1_r0p41_pub.pdf
     title: "Canonical Event Log Format, Section 4.3"
 
@@ -241,7 +241,7 @@ This document defines YANG RPCs and a few configuration nodes required to retrie
 
 # Introduction
 
-This document is based on the general terminology defined in the {{-rats-architecture}} and uses the operational context defined in {{-RIV}} as well as the interaction model and information elements defined in {{-rats-interaction-models}}. The currently supported hardware security modules (HSMs) are the Trusted Platform Modules (TPMs) {{TPM1.2}} and {{TPM2.0}} as specified by the Trusted Computing Group (TCG). One TPM, or multiple TPMs in the case of a Composite Device, are required in order to use the YANG module defined in this document. Each TPM is used as a root of trust for storage (RTS) in order to store system security measurement Evidence.  And each TPM is used as a root of trust for reporting (RTR) in order to retrieve attestation Evidence.  This is done by using a YANG RPC to request a quote which exposes a rolling hash the security measurements held internally within the TPM.
+This document is based on the general terminology defined in the {{-rats-architecture}} and uses the operational context defined in {{-RIV}} as well as the interaction model and information elements defined in {{-rats-interaction-models}}. The currently supported hardware security modules (HSMs) are the Trusted Platform Modules (TPMs) {{TPM1.2}} and {{TPM2.0}} as specified by the Trusted Computing Group (TCG). One TPM, or multiple TPMs in the case of a Composite Device, are required in order to use the YANG module defined in this document. Each TPM is used as a root of trust for storage (RTS) in order to store system security measurement Evidence.  And each TPM is used as a root of trust for reporting (RTR) in order to retrieve attestation Evidence.  This is done by using a YANG RPC to request a quote which exposes a rolling hash of the security measurements held internally within the TPM.
 
 Specific terms imported from {{-rats-architecture}} and used in this document include: Attester, Composite Device, Evidence.
 
@@ -261,7 +261,7 @@ In this section the several YANG modules are defined.
 
 ### 'ietf-tpm-remote-attestation'
 
-This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally, references are made to {{RFC8032}},  {{RFC8017}},  {{RFC6933}},  {{TPM1.2-Commands}},  {{TPM2.0-Arch}},  {{TPM2.0-Structures}},  {{TPM2.0-Key}}, {{TPM1.2-Structures}},  {{bios-log}}, {{ima-log}},  {{BIOS-Log-Event-Type}}, as well as {{ima} and {{netequip-boot-log}}.
+This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally, references are made to {{RFC8032}}, {{RFC8017}}, {{RFC6933}}, {{TPM1.2-Commands}}, {{TPM2.0-Arch}}, {{TPM2.0-Structures}}, {{TPM2.0-Key}}, {{TPM1.2-Structures}}, {{bios-log}}, {{BIOS-Log-Event-Type}}, as well as {{ima} and {{netequip-boot-log}}.
 
 #### Features
 
@@ -271,7 +271,7 @@ This module supports the following features:
 
 - 'bios': Indicates that the device supports the retrieval of BIOS/UEFI event logs. {{bios-log}}
 
-- 'ima': Indicates that the device supports the retrieval of event logs from the Linux Integrity Measurement Architecture (IMA {{ima-log}}). Also see {{ima}}.
+- 'ima': Indicates that the device supports the retrieval of event logs from the Linux Integrity Measurement Architecture (IMA, see {{ima}}).
 
 - 'netequip_boot': Indicates that the device supports the retrieval of netequip boot event logs. See {{ima}} and {{netequip-boot-log}}.
 
@@ -402,7 +402,7 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 
 ### 'ietf-tcg-algs'
 
-This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC2104}}, {{RFC8017}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, {{ima-log}}, as well as {{ima}} and {{netequip-boot-log}} exist within the YANG Model.
+This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC2104}}, {{RFC8017}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, as well as {{ima}} and {{netequip-boot-log}} exist within the YANG Model.
 
 #### Features
 
@@ -542,10 +542,12 @@ Built-in policies can be passed as boot arguments to the kernel.
 Custom IMA policies can be defined once during runtime or be hard-coded into a custom kernel.
 If no policy is defined, no measurements are taken and IMA is effectively disabled.
 
+A comprehensive description of the content fields ins in native Linux IMA TLV format can be found in Table 16 of the Canonical Event Log (CEL) specification {{cel}}. The CEL specification also illustrates the use of templates to enable extended or customized IMA TLV formats in Section 5.1.6.
+
 # IMA for Network Equipment Boot Logs {#netequip-boot-log}
 
 Network equipment can generally implement similar IMA-protected functions to generate measurements (Claims) about the boot process of a device and enable corresponding remote attestation.
-Network Equipment Boot Logs combine the measurement and logging of boot components and operating system components (executables and files) into a single log file in identical IMA format.
+Network Equipment Boot Logs combine the measurement and logging of boot components and operating system components (executables and files) into a single log file in a format identical to the IMA format.
 Note that the format used for logging measurement of boot components in this scheme differs from the boot logging strategy described elsewhere in this document.
 
 During the boot process of the network device, i.e., from BIOS to the end of the operating system and user-space, all files executed can be measured and logged in the order of their execution.
