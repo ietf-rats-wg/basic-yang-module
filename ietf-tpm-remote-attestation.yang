@@ -54,7 +54,7 @@ module ietf-tpm-remote-attestation {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2022-03-18 {
+  revision 2022-03-19 {
     description
       "Initial version";
     reference
@@ -100,7 +100,7 @@ module ietf-tpm-remote-attestation {
       "The device supports the netequip_boot logs.";
     reference
       "netequip-boot-log:
-       RFC AAAA  Appendix B";
+       RFC XXXX  Appendix B";
   }
 
   /*****************/
@@ -468,8 +468,11 @@ module ietf-tpm-remote-attestation {
     leaf-list event-data {
       type binary;
       description
-        "The event data size determined by event-size. For more
-         see ";
+        "The event data.  This is a binary structure
+         of size 'event-size'. For more on what 
+         might be recorded within this object
+         see [bios-log] Section 9 which details 
+         viable events which might be recorded.";
     }
   }
 
@@ -510,7 +513,7 @@ module ietf-tpm-remote-attestation {
     leaf filename-hint {
       type string;
       description
-        "File that was measured";
+        "File name (including path) that was measured.";
     }
     leaf filedata-hash {
       type binary;
