@@ -181,10 +181,11 @@ module ietf-tpm-remote-attestation {
          + '/tpm:attester-supported-algos/tpm:tpm20-hash' {
         error-message "This platform does not support tpm20-hash-algo";
       }
-      default "taa:TPM_ALG_SHA256";
       description
         "The hash scheme that is used to hash a TPM2.0 PCR. This
-         must be one of those supported by a platform.";
+         must be one of those supported by a platform.
+         Where this object does not appear, the default value of
+         'taa:TPM_ALG_SHA256' will apply.";
     }
   }
 
@@ -199,10 +200,11 @@ module ietf-tpm-remote-attestation {
          + '/tpm:attester-supported-algos/tpm:tpm12-hash' {
         error-message "This platform does not support tpm12-hash-algo";
       }
-      default "taa:TPM_ALG_SHA1";
       description
         "The hash scheme that is used to hash a TPM1.2 PCR. This
-         MUST be one of those supported by a platform.";
+         MUST be one of those supported by a platform.
+         Where this object does not appear, the default value of
+         'taa:TPM_ALG_SHA1' will apply.";
     }
   }
 
