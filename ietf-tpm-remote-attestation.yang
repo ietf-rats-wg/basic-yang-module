@@ -1004,7 +1004,8 @@ module ietf-tpm-remote-attestation {
               type string;
               description
                 "An arbitrary name uniquely identifying a certificate
-                 associated within key within a TPM.";
+                 associated with a key within a TPM.  This name will
+                 be unique across all TPMs in a system.";
             }
             leaf keystore-ref {
               if-feature "ks:asymmetric-keys";
