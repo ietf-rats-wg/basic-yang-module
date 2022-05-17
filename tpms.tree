@@ -7,9 +7,9 @@
       +--ro compute-node        compute-node-ref {tpm:mtpm}?
       +--ro manufacturer?       string
       +--rw firmware-version    identityref
-      +--rw tpm12-hash-algo?    identityref
+      +--rw tpm12-hash-algo?    identityref {taa:tpm12}?
       +--rw tpm12-pcrs*         pcr
-      +--rw tpm20-pcr-bank* [tpm20-hash-algo]
+      +--rw tpm20-pcr-bank* [tpm20-hash-algo]  {taa:tpm20}?
       |  +--rw tpm20-hash-algo    identityref
       |  +--rw pcr-index*         tpm:pcr
       +--ro status              enumeration
