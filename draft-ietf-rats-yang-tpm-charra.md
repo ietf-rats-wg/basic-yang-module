@@ -86,7 +86,7 @@ normative:
   RFC8341:
   RFC8032:
   RFC8017:
-  
+
   I-D.ietf-netconf-keystore: ietf-keystore
   I-D.ietf-rats-architecture: rats-architecture
   I-D.ietf-rats-tpm-based-network-device-attest: RIV
@@ -99,7 +99,7 @@ normative:
         ins: TCG
         name: Trusted Computing Group
     date: 2003-10-02
-    
+
   TPM1.2-Structures:
     target: https://trustedcomputinggroup.org/wp-content/uploads/TPM-Main-Part-2-TPM-Structures_v1.2_rev116_01032011.pdf
     title: "TPM Main Part 2 TPM Structures"
@@ -145,27 +145,27 @@ normative:
   ISO-IEC-9797-1:
     target: https://www.iso.org/standard/50375.html
     title: "Message Authentication Codes (MACs) - ISO/IEC 9797-1:2011"
-  
+
   ISO-IEC-9797-2:
     target: https://www.iso.org/standard/51618.html
     title: "Message Authentication Codes (MACs) - ISO/IEC 9797-2:2011"
-    
+
   ISO-IEC-10116:
     target: https://www.iso.org/standard/64575.html
     title: "ISO/IEC 10116:2017 - Information technology"
-    
+
   ISO-IEC-10118-3:
     target: https://www.iso.org/standard/67116.html
     title: "Dedicated hash-functions - ISO/IEC 10118-3:2018"
-    
+
   ISO-IEC-14888-3:
-    target: https://www.iso.org/standard/76382.html 
+    target: https://www.iso.org/standard/76382.html
     title: "ISO/IEC 14888-3:2018 - Digital signatures with appendix"
-    
+
   ISO-IEC-15946-1:
     target: https://www.iso.org/standard/65480.html
     title: "ISO/IEC 15946-1:2016 - Information technology"
-    
+
   ISO-IEC-18033-3:
     target: https://www.iso.org/standard/54531.html
     title: "ISO/IEC 18033-3:2010 - Encryption algorithms"
@@ -173,31 +173,31 @@ normative:
   IEEE-Std-1363-2000:
     target: https://standards.ieee.org/standard/1363-2000.html
     title: "IEEE 1363-2000 - IEEE Standard Specifications for Public-Key Cryptography"
-    
+
   IEEE-Std-1363a-2004:
     target: https://ieeexplore.ieee.org/document/1335427
     title: "1363a-2004 - IEEE Standard Specifications for Public-Key Cryptography - Amendment 1: Additional Techniques"
- 
+
   NIST-PUB-FIPS-202:
     target: https://csrc.nist.gov/publications/detail/fips/202/final
     title: "SHA-3 Standard: Permutation-Based Hash and Extendable-Output Functions"
- 
+
   NIST-SP800-38C:
     target: https://csrc.nist.gov/publications/detail/sp/800-38c/final
     title: "Recommendation for Block Cipher Modes of Operation: the CCM Mode for Authentication and Confidentiality"
-    
+
   NIST-SP800-38D:
     target: https://csrc.nist.gov/publications/detail/sp/800-38d/final
     title: "Recommendation for Block Cipher Modes of Operation: Galois/Counter Mode (GCM) and GMAC"
-    
+
   NIST-SP800-38F:
     target: https://csrc.nist.gov/publications/detail/sp/800-38f/final
     title: "Recommendation for Block Cipher Modes of Operation: Methods for Key Wrapping"
-    
+
   NIST-SP800-56A:
     target: https://csrc.nist.gov/publications/detail/sp/800-56a/rev-3/final
     title: "Recommendation for Pair-Wise Key-Establishment Schemes Using Discrete Logarithm Cryptography"
-    
+
   NIST-SP800-108:
     target: https://nvlpubs.nist.gov/nistpubs/Legacy/SP/nistspecialpublication800-108.pdf
     title: "Recommendation for Key Derivation Using Pseudorandom Functions"
@@ -223,7 +223,7 @@ informative:
 
   NIST-915121:
     target: https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=915121
-    title: "True Randomness Can’t be Left to Chance: Why entropy is important for information security" 
+    title: "True Randomness Can’t be Left to Chance: Why entropy is important for information security"
 
   yang-parameters:
     target: https://www.iana.org/assignments/yang-parameters/yang-parameters.xhtml
@@ -257,11 +257,11 @@ One or more TPMs MUST be embedded in a Composite Device that provides attestatio
 
 ## YANG Modules
 
-In this section the several YANG modules are defined. 
+In this section the several YANG modules are defined.
 
 ### 'ietf-tpm-remote-attestation'
 
-This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally, references are made to {{RFC8032}}, {{RFC8017}}, {{RFC6933}}, {{TPM1.2-Commands}}, {{TPM2.0-Arch}}, {{TPM2.0-Structures}}, {{TPM2.0-Key}}, {{TPM1.2-Structures}}, {{bios-log}}, {{BIOS-Log-Event-Type}}, as well as {{ima} and {{netequip-boot-log}}.
+This YANG module imports modules from {{-ietf-yang-types}} with prefix 'yang', {{-ietf-hardware}} with prefix 'hw', {{-ietf-keystore}} with prefix 'ks', and 'ietf-tcg-algs.yang' {{ref-ietf-tcg-algs}} with prefix 'taa'.  Additionally, references are made to {{RFC8032}}, {{RFC8017}}, {{RFC6933}}, {{TPM1.2-Commands}}, {{TPM2.0-Arch}}, {{TPM2.0-Structures}}, {{TPM2.0-Key}}, {{TPM1.2-Structures}}, {{bios-log}}, {{BIOS-Log-Event-Type}}, as well as {{ima}} and {{netequip-boot-log}}.
 
 #### Features
 
