@@ -1,0 +1,3391 @@
+<!DOCTYPE html>
+<html lang="en" class="Internet-Draft">
+<head>
+<meta charset="utf-8">
+<meta content="Common,Latin" name="scripts">
+<meta content="initial-scale=1.0" name="viewport">
+<title>A YANG Data Model for Challenge-Response-based Remote Attestation Procedures using TPMs</title>
+<meta content="Henk Birkholz" name="author">
+<meta content="Michael Eckel" name="author">
+<meta content="Shwetha Bhandari" name="author">
+<meta content="Eric Voit" name="author">
+<meta content="Bill Sulzen" name="author">
+<meta content="Liang Xia (Frank)" name="author">
+<meta content="Tom Laffey" name="author">
+<meta content="Guy C. Fedorkow" name="author">
+<meta content="
+       This document defines a YANG RPC and a small number of configuration node required to retrieve attestation evidence about integrity measurements from a device following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPC originating from one or more roots of trust of measurement. The module defined requires at least one TPM 1.2 or TPM 2.0 and corresponding Trusted Software Stack included in the device components of the composite device the YANG server is running on. 
+    " name="description">
+<meta content="xml2rfc 3.7.0" name="generator">
+<meta content="Internet-Draft" name="keyword">
+<meta content="draft-ietf-rats-yang-tpm-charra-latest" name="ietf.draft">
+<!-- Generator version information:
+  xml2rfc 3.7.0
+    Python 3.8.8
+    appdirs 1.4.4
+    ConfigArgParse 1.2.3
+    google-i18n-address 2.4.0
+    html5lib 1.1
+    intervaltree 3.1.0
+    Jinja2 2.11.2
+    kitchen 1.2.6
+    lxml 4.6.3
+    pycountry 20.7.3
+    pyflakes 2.2.0
+    PyYAML 5.4.1
+    requests 2.25.1
+    setuptools 51.3.3
+    six 1.15.0
+-->
+<link href="draft-ietf-rats-yang-tpm-charra.xml" rel="alternate" type="application/rfc+xml">
+<link href="#copyright" rel="license">
+<style type="text/css">@import url('https://martinthomson.github.io/i-d-template/fonts.css');
+
+html {
+  --background-color: #fff;
+  --text-color: #222;
+  --title-color: #191919;
+  --link-color: #2a6496;
+  --highlight-color: #f9f9f9;
+  --line-color: #eee;
+  --small-font-size: 14.5px;
+}
+body {
+  max-width: 600px;
+  margin: 75px auto;
+  padding: 0 5px;
+  color: var(--text-color);
+  background-color: var(--background-color);
+  font: 16px/22px "Lora", serif;
+  scroll-behavior: smooth;
+}
+
+.ears {
+  display: none;
+}
+
+/* headings */
+#title, h1, h2, h3, h4, h5, h6 {
+  font-family: "Cabin Condensed", sans-serif;
+  font-weight: 600;
+  margin: 0.8em 0 0.3em;
+  font-size-adjust: 0.5;
+  color: var(--title-color);
+}
+#title {
+  padding: 1em 0 0.2em;
+  font-size: 32px;
+  line-height: 40px;
+  clear: both;
+}
+h1, h2, h3 {
+  font-size: 22px;
+  line-height: 26px;
+}
+h4, h5, h6 {
+  font-size: 18px;
+  line-height: 22px;
+}
+
+/* general structure */
+.author {
+  padding-bottom: 0.3em;
+}
+#abstract+p, #abstract+p code, #abstract+p samp, #abstract+p tt {
+  font-size: 18px;
+  line-height: 24px;
+}
+p {
+  padding: 0;
+  margin: 0.5em 0;
+  text-align: left;
+}
+div {
+  margin: 0;
+}
+.alignRight.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignRight.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignRight {
+  margin: 1em 0;
+}
+.alignRight > *:first-child {
+  border: none;
+  margin: 0;
+  float: right;
+  clear: both;
+}
+.alignRight > *:nth-child(2) {
+  clear: both;
+  display: block;
+  border: none;
+}
+svg {
+  display: block;
+}
+.alignCenter.art-text {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  padding: 0.5em 1em 0;
+  margin-bottom: 0.5em;
+}
+.alignCenter.art-text pre {
+  padding: 0;
+  width: auto;
+}
+.alignCenter {
+  margin: 1em 0;
+}
+.alignCenter > *:first-child {
+  border: none;
+  /* this isn't optimal, but it's an existence proof.  PrinceXML doesn't
+     support flexbox yet.
+  */
+  display: table;
+  margin: 0 auto;
+}
+
+/* lists */
+ol, ul {
+  padding: 0;
+  margin: 0 0 1em 2em;
+}
+ol ol, ul ul, ol ul, ul ol {
+  margin-left: 1em;
+}
+li {
+  margin: 0 0 0.25em 0;
+}
+.ulCompact li {
+  margin: 0;
+}
+ul.empty, .ulEmpty {
+  list-style-type: none;
+}
+ul.empty li, .ulEmpty li {
+  margin-top: 0.5em;
+}
+ul.compact, .ulCompact,
+ol.compact, .olCompact {
+  line-height: 100%;
+  margin: 0 0 0 2em;
+}
+
+/* definition lists */
+dl {
+}
+dl > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl > dd {
+  margin-bottom: .8em;
+  min-height: 1.3em;
+}
+dl.compact > dd, .dlCompact > dd {
+  margin-bottom: 0em;
+}
+dl > dd > dl {
+  margin-top: 0.5em;
+  margin-bottom: 0em;
+}
+dd.break {
+  display: none;
+}
+
+/* links */
+a, a[href].selfRef:hover {
+  text-decoration: none;
+}
+a[href].selfRef {
+  color: var(--text-color);
+}
+a[href] {
+  color: var(--link-color);
+}
+a[href]:hover {
+  text-decoration: underline;
+}
+a[href].selfRef:hover {
+  background-color: var(--highlight-color);
+}
+a.xref {
+  white-space: nowrap;
+}
+
+/* Figures */
+tt, code, pre {
+  background-color: var(--highlight-color);
+  font: 14px/22px 'Oxygen Mono', monospace;
+}
+pre {
+  border: 1px solid var(--line-color);
+  font-size: 13.5px;
+  line-height: 16px;
+  letter-spacing: -0.2px;
+  margin: 5px;
+  padding: 5px;
+}
+img {
+  max-width: 100%;
+}
+figure {
+  margin: 0.5em 0;
+}
+figure blockquote {
+  margin: 0.8em 0.4em 0.4em;
+}
+figcaption, caption {
+  font-style: italic;
+  margin: 0.5em 1.5em;
+  text-align: left;
+}
+@media screen {
+  pre {
+    display: inline-block;
+    overflow-x: auto;
+    max-width: 100%;
+    width: calc(100% - 22px - 1em);
+  }
+  figure pre {
+    display: block;
+    width: calc(100% - 25px);
+  }
+  pre + .pilcrow {
+    display: inline-block;
+    vertical-align: text-bottom;
+    padding-bottom: 8px;
+  }
+  table {
+    display: inline-block;
+    overflow-x: auto;
+  }
+}
+
+/* aside, blockquote */
+aside, blockquote {
+  margin-left: 0;
+  padding: 0 2em;
+  font-style: italic;
+}
+blockquote {
+  background-color: var(--highlight-color);
+  border: 1px solid var(--line-color);
+  border-radius: 3px;
+  margin: 1em 0;
+}
+cite {
+  display: block;
+  text-align: right;
+  font-style: italic;
+}
+
+/* tables */
+table {
+  max-width: 100%;
+  margin: 0 0 1em;
+  border-collapse: collapse;
+}
+table.right {
+  margin-left: auto;
+}
+table.center {
+  margin-left: auto;
+  margin-right: auto;
+}
+table.left {
+  margin-right: auto;
+}
+thead, tbody {
+  border: 1px solid var(--line-color);
+}
+th, td {
+  text-align: left;
+  vertical-align: top;
+  padding: 5px 10px;
+}
+th {
+  background-color: var(--line-color);
+}
+tr:nth-child(2n) > td {
+  background-color: var(--background-color);
+}
+tr:nth-child(2n+1) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody > tr:nth-child(2n) > td {
+  background-color: var(--highlight-color);
+}
+thead+tbody > tr:nth-child(2n+1) > td {
+  background-color: var(--background-color);
+}
+table caption {
+  margin: 0;
+  padding: 3px 1em;
+}
+table p {
+  margin: 0;
+}
+
+/* pilcrow */
+a.pilcrow {
+  margin-left: 3px;
+  visibility: hidden;
+  user-select: none;
+}
+a.pilcrow[href] { color: #ddd; }
+a.pilcrow[href]:hover { text-decoration: none; }
+@media screen {
+  :hover > a.pilcrow {
+    visibility: visible;
+  }
+  a.pilcrow:hover {
+    background-color: transparent;
+  }
+}
+
+/* misc */
+hr {
+  border: 0;
+  border-top: 1px solid var(--line-color);
+}
+.bcp14 {
+  font-variant: small-caps;
+}
+
+.role {
+  font-variant: all-small-caps;
+}
+
+/* info block */
+#identifiers {
+  margin: 0;
+  font-size: var(--small-font-size);
+  line-height: 18px;
+  --identifier-width: 8em;
+}
+#identifiers dt {
+  width: var(--identifier-width);
+  margin: 0;
+  clear: left;
+  float: left;
+  text-align: right;
+}
+#identifiers dd {
+  margin: 0 0 0 calc(1em + var(--identifier-width));
+  min-width: 5em;
+}
+#identifiers .authors .author {
+  display: inline-block;
+  margin-right: 1.5em;
+}
+#identifiers .authors .org {
+  font-style: italic;
+}
+
+/* The prepared/rendered info at the very bottom of the page */
+.docInfo {
+  color: #999;
+  font-size: 0.9em;
+  font-style: italic;
+  margin-top: 2em;
+}
+.docInfo .prepared {
+  float: left;
+}
+.docInfo .prepared {
+  float: right;
+}
+
+/* table of contents */
+#toc {
+  padding: 0.75em 0 2em 0;
+  margin-bottom: 1em;
+}
+#toc nav ul {
+  margin: 0 0.5em 0 0;
+  padding: 0;
+  list-style: none;
+}
+#toc nav li {
+  line-height: 1.3em;
+  margin: 0.75em 0;
+  padding-left: 1.2em;
+  text-indent: -1.2em;
+}
+#toc a.xref {
+  white-space: normal;
+}
+/* references */
+.references dt {
+  text-align: right;
+  font-weight: bold;
+  min-width: 7em;
+}
+.references dd {
+  margin-left: 8em;
+  overflow: auto;
+}
+
+.refInstance {
+  margin-bottom: 1.25em;
+}
+
+.references .ascii {
+  margin-bottom: 0.25em;
+}
+
+/* index */
+.index ul {
+  margin: 0 0 0 1em;
+  padding: 0;
+  list-style: none;
+}
+.index ul ul {
+  margin: 0;
+}
+.index li {
+  margin: 0;
+  text-indent: -2em;
+  padding-left: 2em;
+  padding-bottom: 5px;
+}
+.indexIndex {
+  margin: 0.5em 0 1em;
+}
+.index a {
+  font-weight: 700;
+}
+/* make the index two-column on all but the smallest screens */
+@media (min-width: 500px) {
+  .index ul {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  .index ul ul {
+    column-count: 1;
+    column-gap: 0;
+  }
+}
+
+/* authors */
+address.vcard {
+  font-style: normal;
+  margin: 1em 0;
+}
+address.vcard .nameRole {
+  font-weight: 700;
+  margin-left: 0;
+}
+address.vcard .label {
+  margin: 0.5em 0;
+}
+address.vcard .type {
+  display: none;
+}
+.alternative-contact {
+  margin: 1.5em 0 1em;
+}
+hr.addr {
+  border-top: 1px dashed;
+  margin: 0;
+  color: #ddd;
+  max-width: calc(100% - 16px);
+}
+@media (min-width: 500px) {
+  #authors-addresses > section {
+    column-count: 2;
+    column-gap: 20px;
+  }
+  #authors-addresses > section > h2 {
+    column-span: all;
+  }
+  /* hack for break-inside: avoid-column */
+  #authors-addresses address {
+    display: inline-block;
+    break-inside: avoid-column;
+  }
+}
+
+.rfcEditorRemove p:first-of-type {
+  font-style: italic;
+}
+.cref {
+  background-color: rgba(249, 232, 105, 0.3);
+  padding: 2px 4px;
+}
+.crefSource {
+  font-style: italic;
+}
+/* alternative layout for smaller screens */
+@media screen and (max-width: 929px) {
+  #toc {
+    position: fixed;
+    z-index: 2;
+    top: 0;
+    right: 0;
+    padding: 0;
+    margin: 0;
+    border-bottom: 1px solid #ccc;
+    opacity: 0.6;
+  }
+  #toc.active {
+      opacity: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 2px 0 2px 6px;
+    padding-right: 1em;
+    font-size: 18px;
+    line-height: 24px;
+    min-width: 190px;
+    text-align: right;
+    background-color: #444;
+    color: white;
+    cursor: pointer;
+  }
+  #toc h2::before { /* css hamburger */
+    float: right;
+    position: relative;
+    width: 1em;
+    height: 1px;
+    left: -164px;
+    margin: 8px 0 0 0;
+    background: white none repeat scroll 0 0;
+    box-shadow: 0 4px 0 0 white, 0 8px 0 0 white;
+    content: "";
+  }
+  #toc nav {
+    display: none;
+    background-color: var(--background-color);
+    padding: 0.5em 1em 1em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    height: calc(100vh - 48px);
+    border-left: 1px solid #ddd;
+  }
+  #toc.active nav {
+    display: block;
+  }
+  /* Make the collapsed ToC header render white on gray also when it's a link */
+  #toc h2 a,
+  #toc h2 a:link,
+  #toc h2 a:focus,
+  #toc h2 a:hover,
+  #toc a.toplink,
+  #toc a.toplink:hover {
+    color: white;
+    background-color: #444;
+    text-decoration: none;
+  }
+  #toc a.toplink {
+    margin-top: 2px;
+  }
+}
+
+/* alternative layout for wide screens */
+@media screen and (min-width: 930px) {
+  body {
+    padding-right: 360px;
+    padding-right: calc(min(180px + 20%, 500px));
+  }
+  #toc {
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    right: calc(50vw - 480px);
+    width: 312px;
+    margin: 0;
+    padding: 0;
+    z-index: 1;
+  }
+  #toc h2 {
+    margin: 0;
+    padding: 0.25em 1em 1em 0;
+  }
+  #toc nav {
+    display: block;
+    height: calc(90vh - 84px);
+    bottom: 0;
+    padding: 0.5em 0 2em;
+    overflow: auto;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+  }
+  #toc nav > ul  {
+    margin-bottom: 2em;
+  }
+  #toc ul {
+    margin: 0 0 0 4px;
+    font-size: var(--small-font-size);
+  }
+  #toc ul p, #toc ul li {
+    margin: 2px 0;
+    line-height: 22px;
+  }
+  img { /* future proofing */
+    max-width: 100%;
+    height: auto;
+  }
+}
+
+/* pagination */
+@media print {
+  body {
+    width: 100%;
+  }
+  p {
+    orphans: 3;
+    widows: 3;
+  }
+  #n-copyright-notice {
+    border-bottom: none;
+  }
+  #toc, #n-introduction {
+    page-break-before: always;
+  }
+  #toc {
+    border-top: none;
+    padding-top: 0;
+  }
+  figure, pre {
+    page-break-inside: avoid;
+  }
+  figure {
+    overflow: scroll;
+  }
+  h1, h2, h3, h4, h5, h6 {
+    page-break-after: avoid;
+  }
+  h2+*, h3+*, h4+*, h5+*, h6+* {
+    page-break-before: avoid;
+  }
+  pre {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-size: 10pt;
+  }
+  table {
+    border: 1px solid #ddd;
+  }
+  td {
+    border-top: 1px solid #ddd;
+  }
+}
+
+@page :first {
+  padding-top: 0;
+  @top-left {
+    content: normal;
+    border: none;
+  }
+  @top-center {
+    content: normal;
+    border: none;
+  }
+  @top-right {
+    content: normal;
+    border: none;
+  }
+}
+
+@page {
+  size: A4;
+  margin-bottom: 45mm;
+  padding-top: 20px;
+}
+
+/* Changes introduced to fix issues found during implementation */
+
+/* Separate body from document info even without intervening H1 */
+section {
+  clear: both;
+}
+
+/* Top align author divs, to avoid names without organization dropping level with org names */
+.author {
+  vertical-align: top;
+}
+
+/* Style section numbers with more space between number and title */
+.section-number {
+  padding-right: 0.5em;
+}
+
+/* Add styling for a link in the ToC that points to the top of the document */
+a.toplink {
+  float: right;
+  margin: 8px 0.5em 0;
+}
+
+/* Fix the dl styling to match the RFC 7992 attributes */
+dl > dt,
+dl.dlParallel > dt {
+  float: left;
+  margin-right: 1em;
+}
+dl.dlNewline > dt {
+  float: none;
+}
+
+/* Provide styling for table cell text alignment */
+table .text-left, table .text-left {
+  text-align: left;
+}
+table .text-center, table .text-center {
+  text-align: center;
+}
+table .text-right, table .text-right {
+  text-align: right;
+}
+
+/* Make the alternative author contact information look less like just another
+   author, and group it closer with the primary author contact information */
+.alternative-contact {
+  margin: 0.5em 0 0.25em 0;
+}
+address .non-ascii {
+  margin: 0 0 0 2em;
+}
+
+/* With it being possible to set tables with alignment
+  left, center, and right, { width: 100%; } does not make sense */
+table {
+  width: auto;
+}
+
+/* Avoid reference text that sits in a block with very wide left margin,
+   because of a long floating dt label.*/
+.references dd {
+  overflow: visible;
+}
+
+/* Control caption placement */
+caption {
+  caption-side: bottom;
+}
+
+/* Limit the width of the author address vcard, so names in right-to-left
+   script don't end up on the other side of the page. */
+
+address.vcard {
+  max-width: 20em;
+  margin-right: auto;
+}
+
+/* For address alignment dependent on LTR or RTL scripts */
+address div.left {
+  text-align: left;
+}
+address div.right {
+  text-align: right;
+}
+
+/* Give the table caption label the same styling as the figcaption */
+
+@media print {
+  .toplink {
+    display: none;
+  }
+
+  /* avoid overwriting the top border line with the ToC header */
+  #toc {
+    padding-top: 1px;
+  }
+
+  /* Avoid page breaks inside dl and author address entries */
+  dd {
+    page-break-before: avoid;
+  }
+  .vcard {
+    page-break-inside: avoid;
+  }
+
+}
+/* Tweak the bcp14 keyword presentation */
+.bcp14 {
+  font-variant: small-caps;
+  font-weight: bold;
+  font-size: 0.9em;
+}
+</style>
+<link href="rfc-local.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+<table class="ears">
+<thead><tr>
+<td class="left">Internet-Draft</td>
+<td class="center">YANG-CHARRA for TPMs</td>
+<td class="right">April 2021</td>
+</tr></thead>
+<tfoot><tr>
+<td class="left">Birkholz, et al.</td>
+<td class="center">Expires 22 October 2021</td>
+<td class="right">[Page]</td>
+</tr></tfoot>
+</table>
+<div id="external-metadata" class="document-information"></div>
+<div id="internal-metadata" class="document-information">
+<dl id="identifiers">
+<dt class="label-workgroup">Workgroup:</dt>
+<dd class="workgroup">RATS Working Group</dd>
+<dt class="label-internet-draft">Internet-Draft:</dt>
+<dd class="internet-draft">draft-ietf-rats-yang-tpm-charra-latest</dd>
+<dt class="label-published">Published:</dt>
+<dd class="published">
+<time datetime="2021-04-20" class="published">20 April 2021</time>
+    </dd>
+<dt class="label-intended-status">Intended Status:</dt>
+<dd class="intended-status">Standards Track</dd>
+<dt class="label-expires">Expires:</dt>
+<dd class="expires"><time datetime="2021-10-22">22 October 2021</time></dd>
+<dt class="label-authors">Authors:</dt>
+<dd class="authors">
+<div class="author">
+      <div class="author-name">H. Birkholz</div>
+<div class="org">Fraunhofer SIT</div>
+</div>
+<div class="author">
+      <div class="author-name">M. Eckel</div>
+<div class="org">Fraunhofer SIT</div>
+</div>
+<div class="author">
+      <div class="author-name">S. Bhandari</div>
+<div class="org">ThoughtSpot</div>
+</div>
+<div class="author">
+      <div class="author-name">E. Voit</div>
+<div class="org">Cisco</div>
+</div>
+<div class="author">
+      <div class="author-name">B. Sulzen</div>
+<div class="org">Cisco</div>
+</div>
+<div class="author">
+      <div class="author-name">L. Xia</div>
+<div class="org">Huawei</div>
+</div>
+<div class="author">
+      <div class="author-name">T. Laffey</div>
+<div class="org">HPE</div>
+</div>
+<div class="author">
+      <div class="author-name">G. Fedorkow</div>
+<div class="org">Juniper</div>
+</div>
+</dd>
+</dl>
+</div>
+<h1 id="title">A YANG Data Model for Challenge-Response-based Remote Attestation Procedures using TPMs</h1>
+<section id="section-abstract">
+      <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
+<p id="section-abstract-1">This document defines a YANG RPC and a small number of configuration node required to retrieve attestation evidence about integrity measurements from a device following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPC originating from one or more roots of trust of measurement. The module defined requires at least one TPM 1.2 or TPM 2.0 and corresponding Trusted Software Stack included in the device components of the composite device the YANG server is running on.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+</section>
+<section class="note" id="section-note.1">
+      <h2 id="name-note-to-readers">
+<a href="#name-note-to-readers" class="section-name selfRef">Note to Readers</a>
+      </h2>
+<p id="section-note.1-1">Discussion of this document takes place on the
+  RATS Working Group mailing list (rats@ietf.org),
+  which is archived at <a href="https://mailarchive.ietf.org/arch/browse/rats/">https://mailarchive.ietf.org/arch/browse/rats/</a>.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
+<p id="section-note.1-2">Source for this draft and an issue tracker can be found at
+  <a href="https://github.com/ietf-rats-wg/basic-yang-module">https://github.com/ietf-rats-wg/basic-yang-module</a>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+</section>
+<div id="status-of-memo">
+<section id="section-boilerplate.1">
+        <h2 id="name-status-of-this-memo">
+<a href="#name-status-of-this-memo" class="section-name selfRef">Status of This Memo</a>
+        </h2>
+<p id="section-boilerplate.1-1">
+        This Internet-Draft is submitted in full conformance with the
+        provisions of BCP 78 and BCP 79.<a href="#section-boilerplate.1-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-2">
+        Internet-Drafts are working documents of the Internet Engineering Task
+        Force (IETF). Note that other groups may also distribute working
+        documents as Internet-Drafts. The list of current Internet-Drafts is
+        at <span><a href="https://datatracker.ietf.org/drafts/current/">https://datatracker.ietf.org/drafts/current/</a></span>.<a href="#section-boilerplate.1-2" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-3">
+        Internet-Drafts are draft documents valid for a maximum of six months
+        and may be updated, replaced, or obsoleted by other documents at any
+        time. It is inappropriate to use Internet-Drafts as reference
+        material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.1-4">
+        This Internet-Draft will expire on 22 October 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="copyright">
+<section id="section-boilerplate.2">
+        <h2 id="name-copyright-notice">
+<a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
+        </h2>
+<p id="section-boilerplate.2-1">
+            Copyright (c) 2021 IETF Trust and the persons identified as the
+            document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
+<p id="section-boilerplate.2-2">
+            This document is subject to BCP 78 and the IETF Trust's Legal
+            Provisions Relating to IETF Documents
+            (<span><a href="https://trustee.ietf.org/license-info">https://trustee.ietf.org/license-info</a></span>) in effect on the date of
+            publication of this document. Please review these documents
+            carefully, as they describe your rights and restrictions with
+            respect to this document. Code Components extracted from this
+            document must include Simplified BSD License text as described in
+            Section 4.e of the Trust Legal Provisions and are provided without
+            warranty as described in the Simplified BSD License.<a href="#section-boilerplate.2-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="toc">
+<section id="section-toc.1">
+        <a href="#" onclick="scroll(0,0)" class="toplink">▲</a><h2 id="name-table-of-contents">
+<a href="#name-table-of-contents" class="section-name selfRef">Table of Contents</a>
+        </h2>
+<nav class="toc"><ul class="toc compact ulEmpty">
+<li class="toc compact ulEmpty" id="section-toc.1-1.1">
+            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a></p>
+<ul class="toc compact ulEmpty">
+<li class="toc compact ulEmpty" id="section-toc.1-1.1.2.1">
+                <p id="section-toc.1-1.1.2.1.1" class="keepWithNext"><a href="#section-1.1" class="xref">1.1</a>.  <a href="#name-requirements-notation" class="xref">Requirements notation</a></p>
+</li>
+            </ul>
+</li>
+          <li class="toc compact ulEmpty" id="section-toc.1-1.2">
+            <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-the-yang-module-for-basic-r" class="xref">The YANG Module for Basic Remote Attestation Procedures</a></p>
+<ul class="toc compact ulEmpty">
+<li class="toc compact ulEmpty" id="section-toc.1-1.2.2.1">
+                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-yang-modules" class="xref">YANG Modules</a></p>
+<ul class="toc compact ulEmpty">
+<li class="toc compact ulEmpty" id="section-toc.1-1.2.2.1.2.1">
+                    <p id="section-toc.1-1.2.2.1.2.1.1" class="keepWithNext"><a href="#section-2.1.1" class="xref">2.1.1</a>.  <a href="#name-ietf-tpm-remote-attestation" class="xref">ietf-tpm-remote-attestation</a></p>
+</li>
+                  <li class="toc compact ulEmpty" id="section-toc.1-1.2.2.1.2.2">
+                    <p id="section-toc.1-1.2.2.1.2.2.1"><a href="#section-2.1.2" class="xref">2.1.2</a>.  <a href="#name-ietf-tcg-algs" class="xref">ietf-tcg-algs</a></p>
+</li>
+                </ul>
+</li>
+            </ul>
+</li>
+          <li class="toc compact ulEmpty" id="section-toc.1-1.3">
+            <p id="section-toc.1-1.3.1"><a href="#section-3" class="xref">3</a>.  <a href="#name-iana-considerations" class="xref">IANA considerations</a></p>
+</li>
+          <li class="toc compact ulEmpty" id="section-toc.1-1.4">
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="xref">4</a>.  <a href="#name-security-considerations" class="xref">Security Considerations</a></p>
+</li>
+          <li class="toc compact ulEmpty" id="section-toc.1-1.5">
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="xref">5</a>.  <a href="#name-acknowledgements" class="xref">Acknowledgements</a></p>
+</li>
+          <li class="toc compact ulEmpty" id="section-toc.1-1.6">
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="xref">6</a>.  <a href="#name-change-log" class="xref">Change Log</a></p>
+</li>
+          <li class="toc compact ulEmpty" id="section-toc.1-1.7">
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="xref">7</a>.  <a href="#name-references" class="xref">References</a></p>
+<ul class="toc compact ulEmpty">
+<li class="toc compact ulEmpty" id="section-toc.1-1.7.2.1">
+                <p id="section-toc.1-1.7.2.1.1"><a href="#section-7.1" class="xref">7.1</a>.  <a href="#name-normative-references" class="xref">Normative References</a></p>
+</li>
+              <li class="toc compact ulEmpty" id="section-toc.1-1.7.2.2">
+                <p id="section-toc.1-1.7.2.2.1"><a href="#section-7.2" class="xref">7.2</a>.  <a href="#name-informative-references" class="xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="toc compact ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-appendix.a" class="xref"></a><a href="#name-authors-addresses" class="xref">Authors' Addresses</a></p>
+</li>
+        </ul>
+</nav>
+</section>
+</div>
+<div id="introduction">
+<section id="section-1">
+      <h2 id="name-introduction">
+<a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
+      </h2>
+<p id="section-1-1">This document is based on the terminology defined in the <span>[<a href="#I-D.ietf-rats-architecture" class="xref">I-D.ietf-rats-architecture</a>]</span> and uses the operational context defined in <span>[<a href="#I-D.ietf-rats-tpm-based-network-device-attest" class="xref">I-D.ietf-rats-tpm-based-network-device-attest</a>]</span> as well as the interaction model and information elements defined in  <span>[<a href="#I-D.ietf-rats-reference-interaction-models" class="xref">I-D.ietf-rats-reference-interaction-models</a>]</span>. The currently supported hardware security modules (HWM) are the Trusted Platform Module (TPM) <span>[<a href="#TPM1.2" class="xref">TPM1.2</a>]</span> and <span>[<a href="#TPM2.0" class="xref">TPM2.0</a>]</span> specified by the Trusted Computing Group (TCG). One ore more TPMs embedded in the components of a composite device - sometimes also referred to as an aggregate device - are required in order to use the YANG module defined in this document. A TPM is used as a root of trust for reporting (RTR) in order to retrieve attestation evidence from a composite device (quote primitive operation). Additionally, it is used as a root of trust for storage (RTS) in order to retain shielded secrets and store system measurements using a folding hash function (extend primitive operation).<a href="#section-1-1" class="pilcrow">¶</a></p>
+<div id="requirements-notation">
+<section id="section-1.1">
+        <h3 id="name-requirements-notation">
+<a href="#section-1.1" class="section-number selfRef">1.1. </a><a href="#name-requirements-notation" class="section-name selfRef">Requirements notation</a>
+        </h3>
+<p id="section-1.1-1">The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL
+NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED",
+"MAY", and "OPTIONAL" in this document are to be interpreted as
+described in BCP 14 <span>[<a href="#RFC2119" class="xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="xref">RFC8174</a>]</span> when, and only when, they
+appear in all capitals, as shown here.<a href="#section-1.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+<div id="the-yang-module-for-basic-remote-attestation-procedures">
+<section id="section-2">
+      <h2 id="name-the-yang-module-for-basic-r">
+<a href="#section-2" class="section-number selfRef">2. </a><a href="#name-the-yang-module-for-basic-r" class="section-name selfRef">The YANG Module for Basic Remote Attestation Procedures</a>
+      </h2>
+<p id="section-2-1">One or more TPMs MUST be embedded in the composite device that is providing attestation evidence via the YANG module defined in this document. The ietf-basic-remote-attestation YANG module enables a composite device to take on the role of Claimant and Attester in accordance with the Remote Attestation Procedures (RATS) architecture <span>[<a href="#I-D.ietf-rats-architecture" class="xref">I-D.ietf-rats-architecture</a>]</span> and the corresponding challenge-response interaction model defined in the <span>[<a href="#I-D.ietf-rats-reference-interaction-models" class="xref">I-D.ietf-rats-reference-interaction-models</a>]</span> document. A fresh nonce with an appropriate amount of entropy MUST be supplied by the YANG client in order to enable a proof-of-freshness with respect to the attestation evidence provided by the attester running the YANG datastore. The functions of this YANG module are restricted to 0-1 TPMs per hardware component.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<div id="yang-modules">
+<section id="section-2.1">
+        <h3 id="name-yang-modules">
+<a href="#section-2.1" class="section-number selfRef">2.1. </a><a href="#name-yang-modules" class="section-name selfRef">YANG Modules</a>
+        </h3>
+<div id="ietf-tpm-remote-attestation">
+<section id="section-2.1.1">
+          <h4 id="name-ietf-tpm-remote-attestation">
+<a href="#section-2.1.1" class="section-number selfRef">2.1.1. </a><a href="#name-ietf-tpm-remote-attestation" class="section-name selfRef">ietf-tpm-remote-attestation</a>
+          </h4>
+<p id="section-2.1.1-1">This YANG module imports modules from <span>[<a href="#RFC6991" class="xref">RFC6991</a>]</span>, <span>[<a href="#RFC8348" class="xref">RFC8348</a>]</span>, <span>[<a href="#I-D.ietf-netconf-keystore" class="xref">I-D.ietf-netconf-keystore</a>]</span>, ietf-tcg-algs.yang <a href="#ref-ietf-tcg-algs" class="xref">Section 2.1.2.3</a>.<a href="#section-2.1.1-1" class="pilcrow">¶</a></p>
+<div id="features">
+<section id="section-2.1.1.1">
+            <h5 id="name-features">
+<a href="#section-2.1.1.1" class="section-number selfRef">2.1.1.1. </a><a href="#name-features" class="section-name selfRef">Features</a>
+            </h5>
+<p id="section-2.1.1.1-1">This module supports the following features:<a href="#section-2.1.1.1-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-2">&lt;TPMs&gt; - Indicates that multiple TPMs on the device can support remote attestation,  This feature is applicable in cases where multiple line cards, each with its own TPM.<a href="#section-2.1.1.1-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-3">&lt;bios&gt;  - Indicates the device supports the retrieval of bios event logs.<a href="#section-2.1.1.1-3" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-4">&lt;ima&gt; - Indicates the device supports the retrieval of Integrity Measurement Architecture event logs.<a href="#section-2.1.1.1-4" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.1-5">&lt;netequip_boot&gt; - Indicates the device supports the retrieval of netequip boot event logs.<a href="#section-2.1.1.1-5" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="identities">
+<section id="section-2.1.1.2">
+            <h5 id="name-identities">
+<a href="#section-2.1.1.2" class="section-number selfRef">2.1.1.2. </a><a href="#name-identities" class="section-name selfRef">Identities</a>
+            </h5>
+<p id="section-2.1.1.2-1">This module supports the following types of attestation event logs: &lt;ima&gt;, &lt;bios&gt;, and &lt;netequip_boot&gt;.<a href="#section-2.1.1.2-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="rpcs">
+<section id="section-2.1.1.3">
+            <h5 id="name-rpcs">
+<a href="#section-2.1.1.3" class="section-number selfRef">2.1.1.3. </a><a href="#name-rpcs" class="section-name selfRef">RPCs</a>
+            </h5>
+<div id="tpm20-challenge-response-attestation">
+<section id="section-2.1.1.3.1">
+              <h6 id="name-tpm20-challenge-response-at">
+<a href="#section-2.1.1.3.1" class="section-number selfRef">2.1.1.3.1. </a><a href="#name-tpm20-challenge-response-at" class="section-name selfRef">&lt;tpm20-challenge-response-attestation&gt;</a>
+              </h6>
+<p id="section-2.1.1.3.1-1">This RPC allows a Verifier to request a quote of PCRs from a TPM2.0 compliant cryptoprocessor.  Where the feature &lt;TPMs&gt; is active, and one or more &lt;certificate-name&gt; is not provided, all TPM2.0 compliant cryptoprocessors will respond.   A YANG tree diagram of this RPC is as follows:<a href="#section-2.1.1.3.1-1" class="pilcrow">¶</a></p>
+<div id="section-2.1.1.3.1-2">
+<pre class="sourcecode lang-TREE">
++---x tpm20-challenge-response-attestation {taa:TPM20}?
+   +---w input
+   |  +---w tpm20-attestation-challenge
+   |     +---w nonce-value            binary
+   |     +---w tpm20-pcr-selection* []
+   |     |  +---w TPM20-hash-algo?   identityref
+   |     |  +---w pcr-index*         tpm:pcr
+   |     +---w certificate-name*      certificate-name-ref {tpm:TPMs}?
+   +--ro output
+      +--ro tpm20-attestation-response* []
+         +--ro certificate-name       certificate-name-ref
+         +--ro TPMS_QUOTE_INFO        binary
+         +--ro quote-signature?       binary
+         +--ro up-time?               uint32
+         +--ro unsigned-pcr-values* []
+            +--ro TPM20-hash-algo?   identityref
+            +--ro pcr-values* [pcr-index]
+               +--ro pcr-index    pcr
+               +--ro pcr-value?   binary
+</pre><a href="#section-2.1.1.3.1-2" class="pilcrow">¶</a>
+</div>
+<p id="section-2.1.1.3.1-3">An example of an RPC challenge requesting PCRs 0-7 from a SHA256 bank could look like the following:<a href="#section-2.1.1.3.1-3" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.1.1.3.1-4">
+<pre>
+&lt;rpc message-id="101" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"&gt;
+  &lt;tpm20-challenge-response-attestation&gt;
+      xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation"&gt;
+    &lt;nonce&gt;110101010110011011111001010010100&lt;/nonce&gt;
+    &lt;tpm20-pcr-selection&gt;
+      &lt;TPM20-hash-algo
+          xmlns:taa="urn:ietf:params:xml:ns:yang:ietf-tcg-algs"&gt;
+        taa:TPM_ALG_SHA256
+      &lt;/TPM20-hash-algo&gt;
+      &lt;pcr-index&gt;0&lt;/pcr-index&gt;
+      &lt;pcr-index&gt;1&lt;/pcr-index&gt;
+      &lt;pcr-index&gt;2&lt;/pcr-index&gt;
+      &lt;pcr-index&gt;3&lt;/pcr-index&gt;
+      &lt;pcr-index&gt;4&lt;/pcr-index&gt;
+      &lt;pcr-index&gt;5&lt;/pcr-index&gt;
+      &lt;pcr-index&gt;6&lt;/pcr-index&gt;
+      &lt;pcr-index&gt;7&lt;/pcr-index&gt;
+    &lt;/tpm20-pcr-selection&gt;
+  &lt;/tpm20-challenge-response-attestation&gt;
+&lt;/rpc&gt;
+</pre><a href="#section-2.1.1.3.1-4" class="pilcrow">¶</a>
+</div>
+<p id="section-2.1.1.3.1-5">and a successful response might be formated as follows:<a href="#section-2.1.1.3.1-5" class="pilcrow">¶</a></p>
+<div class="artwork art-text alignLeft" id="section-2.1.1.3.1-6">
+<pre>
+&lt;rpc-reply message-id="101"
+  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0"&gt;
+  &lt;tpm12-attestation-response
+    xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation"&gt;
+    &lt;certificate-name
+        xmlns:ks=urn:ietf:params:xml:ns:yang:ietf-keystore&gt;
+       ks:(instance of Certificate name in the Keystore)
+    &lt;/certificate-name&gt;
+    &lt;TPMS_QUOTE_INFO&gt;
+       (raw information from the TPM Quote, this includes a digest
+       across the requested PCRs, the nonce, TPM2 time counters.)
+    &lt;/TPMS_QUOTE_INFO&gt;
+    &lt;quote-signature&gt;
+        (signature across TPMS_QUOTE_INFO)
+    &lt;/quote-signature&gt;
+  &lt;/tpm12-attestation-response&gt;
+&lt;/rpc-reply&gt;
+</pre><a href="#section-2.1.1.3.1-6" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="tpm12-challenge-response-attestation">
+<section id="section-2.1.1.4">
+            <h5 id="name-tpm12-challenge-response-at">
+<a href="#section-2.1.1.4" class="section-number selfRef">2.1.1.4. </a><a href="#name-tpm12-challenge-response-at" class="section-name selfRef">&lt;tpm12-challenge-response-attestation&gt;</a>
+            </h5>
+<p id="section-2.1.1.4-1">This RPC allows a Verifier to request a quote of PCRs from a TPM1.2 compliant cryptoprocessor.  Where the feature &lt;TPMs&gt; is active, and one or more &lt;certificate-name&gt; is not provided, all TPM1.2 compliant cryptoprocessors will respond.  A YANG tree diagram of this RPC is as follows:<a href="#section-2.1.1.4-1" class="pilcrow">¶</a></p>
+<div id="section-2.1.1.4-2">
+<pre class="sourcecode lang-TREE">
++---x tpm12-challenge-response-attestation {taa:TPM12}?
+   +---w input
+   |  +---w tpm12-attestation-challenge
+   |     +---w pcr-index*          pcr
+   |     +---w nonce-value         binary
+   |     +---w certificate-name*   certificate-name-ref {tpm:TPMs}?
+   +--ro output
+      +--ro tpm12-attestation-response* []
+         +--ro certificate-name    certificate-name-ref
+         +--ro up-time?            uint32
+         +--ro TPM_QUOTE2?         binary
+</pre><a href="#section-2.1.1.4-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="log-retrieval">
+<section id="section-2.1.1.5">
+            <h5 id="name-log-retrieval">
+<a href="#section-2.1.1.5" class="section-number selfRef">2.1.1.5. </a><a href="#name-log-retrieval" class="section-name selfRef">&lt;log-retrieval&gt;</a>
+            </h5>
+<p id="section-2.1.1.5-1">This RPC allows a Verifier to acquire the evidence which was extended into specific PCRs.   A YANG tree diagram of this RPC is as follows:<a href="#section-2.1.1.5-1" class="pilcrow">¶</a></p>
+<div id="section-2.1.1.5-2">
+<pre class="sourcecode lang-TREE">
++---x log-retrieval
+   +---w input
+   |  +---w log-selector* []
+   |  |  +---w tpm-name*                  string
+   |  |  +---w (index-type)?
+   |  |  |  +--:(last-entry)
+   |  |  |  |  +---w last-entry-value?    binary
+   |  |  |  +--:(index)
+   |  |  |  |  +---w last-index-number?   uint64
+   |  |  |  +--:(timestamp)
+   |  |  |     +---w timestamp?           yang:date-and-time
+   |  |  +---w log-entry-quantity?        uint16
+   |  +---w log-type        identityref
+   +--ro output
+      +--ro system-event-logs
+         +--ro node-data* []
+            +--ro tpm-name?     string
+            +--ro up-time?      uint32
+            +--ro log-result
+               +--ro (attested_event_log_type)
+                  +--:(bios)
+                  |  +--ro bios-event-logs
+                  |     +--ro bios-event-entry* [event-number]
+                  |        +--ro event-number    uint32
+                  |        +--ro event-type?     uint32
+                  |        +--ro pcr-index?      pcr
+                  |        +--ro digest-list* []
+                  |        |  +--ro hash-algo?   identityref
+                  |        |  +--ro digest*      binary
+                  |        +--ro event-size?     uint32
+                  |        +--ro event-data*     uint8
+                  +--:(ima)
+                  |  +--ro ima-event-logs
+                  |     +--ro ima-event-entry* [event-number]
+                  |        +--ro event-number               uint64
+                  |        +--ro ima-template?              string
+                  |        +--ro filename-hint?             string
+                  |        +--ro filedata-hash?             binary
+                  |        +--ro filedata-hash-algorithm?   string
+                  |        +--ro template-hash-algorithm?   string
+                  |        +--ro template-hash?             binary
+                  |        +--ro pcr-index?                 pcr
+                  |        +--ro signature?                 binary
+                  +--:(netequip_boot)
+                     +--ro boot-event-logs
+                        +--ro boot-event-entry* [event-number]
+                           +--ro event-number               uint64
+                           +--ro filename-hint?             string
+                           +--ro filedata-hash?             binary
+                           +--ro filedata-hash-algorithm?   string
+                           +--ro file-version?              string
+                           +--ro file-type?                 string
+                           +--ro pcr-index?                 pcr
+</pre><a href="#section-2.1.1.5-2" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="data-nodes">
+<section id="section-2.1.1.6">
+            <h5 id="name-data-nodes">
+<a href="#section-2.1.1.6" class="section-number selfRef">2.1.1.6. </a><a href="#name-data-nodes" class="section-name selfRef">Data Nodes</a>
+            </h5>
+<p id="section-2.1.1.6-1">This section provides a high level description of the data nodes containing the configuration and operational objects with the YANG model. For more details, please see the YANG model itself in <a href="#ref-ietf-tpm-remote-attestation" class="xref">Section 2.1.1.7</a>.<a href="#section-2.1.1.6-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.6-2">container &lt;rats-support-structures&gt; - This houses the set of information relating to a device's TPM(s).<a href="#section-2.1.1.6-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.1.6-3">container &lt;tpms&gt; - Provides configuration and operational details for each supported TPM, including the tpm-firmware-version, PCRs which may be quoted, certificates which are associated with that TPM, and the current operational status.  Of note is the certificates which are associated with that TPM.  As a certificate is associated with a single Attestation key, knowledge of the certificate allows a specific TPM to be identified.<a href="#section-2.1.1.6-3" class="pilcrow">¶</a></p>
+<div id="section-2.1.1.6-4">
+<pre class="sourcecode lang-TREE">
++--rw tpms
+   +--rw tpm* [tpm-name]
+      +--rw tpm-name                string
+      +--ro hardware-based?         boolean
+      +--ro tpm-physical-index?     int32 {ietfhw:entity-mib}?
+      +--ro tpm-path?               string
+      +--ro compute-node            compute-node-ref {tpm:TPMs}?
+      +--ro tpm-manufacturer?       string
+      +--rw tpm-firmware-version    identityref
+      +--rw TPM12-hash-algo?        identityref
+      +--rw TPM12-pcrs*             pcr
+      +--rw tpm20-pcr-bank* [TPM20-hash-algo]
+      |  +--rw TPM20-hash-algo    identityref
+      |  +--rw pcr-index*         tpm:pcr
+      +--ro tpm-status              enumeration
+      +--rw certificates
+         +--rw certificate* [certificate-name]
+            +--rw certificate-name            string
+            +--rw certificate-keystore-ref?   -&gt; /ks:keystore/asymmetric-keys/asymmetric-key/certificates/certificate/name
+            +--rw certificate-type?           enumeration
+</pre><a href="#section-2.1.1.6-4" class="pilcrow">¶</a>
+</div>
+<p id="section-2.1.1.6-5">container &lt;attester-supported-algos&gt; - Identifies which TCG algorithms are available for use the Attesting platform.  This allows an operator to limit algorithms available for use by RPCs to just a desired set from the universe of all allowed by TCG.<a href="#section-2.1.1.6-5" class="pilcrow">¶</a></p>
+<div id="section-2.1.1.6-6">
+<pre class="sourcecode lang-TREE">
++--rw attester-supported-algos
+   +--rw tpm12-asymmetric-signing*   identityref {taa:TPM12}?
+   +--rw tpm12-hash*                 identityref {taa:TPM12}?
+   +--rw tpm20-asymmetric-signing*   identityref {taa:TPM20}?
+   +--rw tpm20-hash*                 identityref {taa:TPM20}?
+</pre><a href="#section-2.1.1.6-6" class="pilcrow">¶</a>
+</div>
+<p id="section-2.1.1.6-7">container &lt;compute-nodes&gt; - When there is more than one TPM supported, this container maintains the set of information related to the compute associated with a specific TPM.  This allows each specific TPM to identify on which &lt;compute-node&gt; it belongs.<a href="#section-2.1.1.6-7" class="pilcrow">¶</a></p>
+<div id="section-2.1.1.6-8">
+<pre class="sourcecode lang-TREE">
++--rw compute-nodes {tpm:TPMs}?
+   +--ro compute-node* [node-id]
+      +--ro node-id                string
+      +--ro node-physical-index?   int32 {ietfhw:entity-mib}?
+      +--ro node-name?             string
+      +--ro node-location?         string
+</pre><a href="#section-2.1.1.6-8" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+<div id="ref-ietf-tpm-remote-attestation">
+<section id="section-2.1.1.7">
+            <h5 id="name-yang-module">
+<a href="#section-2.1.1.7" class="section-number selfRef">2.1.1.7. </a><a href="#name-yang-module" class="section-name selfRef">YANG Module</a>
+            </h5>
+<div id="section-2.1.1.7-1">
+<pre class="sourcecode lang-YANG">
+&lt;CODE BEGINS&gt; file "ietf-tpm-remote-attestation@2021-03-16.yang"
+module ietf-tpm-remote-attestation {
+  namespace "urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation";
+  prefix "tpm";
+
+  import ietf-yang-types {
+    prefix yang;
+  }
+  import ietf-hardware {
+    prefix ietfhw;
+  }
+  import ietf-keystore {
+    prefix ks;
+  }
+  import ietf-tcg-algs {
+    prefix taa;
+  }
+
+  organization
+   "IETF RATS (Remote ATtestation procedureS) Working Group";
+
+  contact
+   "WG Web  : &lt;http://datatracker.ietf.org/wg/rats/&gt;
+    WG List : &lt;mailto:rats@ietf.org&gt;
+    Author  : Eric Voit &lt;evoit@cisco.com&gt;
+    Author  : Henk Birkholz &lt;henk.birkholz@sit.fraunhofer.de&gt;
+    Author  : Michael Eckel &lt;michael.eckel@sit.fraunhofer.de&gt;
+    Author  : Shwetha Bhandari &lt;shwetha.bhandari@thoughtspot.com&gt;
+    Author  : Bill Sulzen &lt;bsulzen@cisco.com&gt;
+    Author  : Liang Xia (Frank) &lt;frank.xialiang@huawei.com&gt;
+    Author  : Tom Laffey &lt;tom.laffey@hpe.com&gt;
+    Author  : Guy Fedorkow &lt;gfedorkow@juniper.net&gt;";
+
+  description
+    "A YANG module to enable a TPM 1.2 and TPM 2.0 based
+     remote attestation procedure using a challenge-response
+     interaction model and the TPM 1.2 and TPM 2.0 Quote
+     primitive operations.
+
+     Copyright (c) 2020 IETF Trust and the persons identified
+     as authors of the code. All rights reserved.
+
+     Redistribution and use in source and binary forms, with
+     or without modification, is permitted pursuant to, and
+     subject to the license terms contained in, the Simplified
+     BSD License set forth in Section 4.c of the IETF Trust's
+     Legal Provisions Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+
+     This version of this YANG module is part of RFC XXXX
+     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC
+     itself for full legal notices.
+
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
+     'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
+     'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
+     are to be interpreted as described in BCP 14 (RFC 2119)
+     (RFC 8174) when, and only when, they appear in all
+     capitals, as shown here.";
+
+  revision "2021-03-16" {
+    description
+      "Initial version";
+    reference
+      "draft-ietf-rats-yang-tpm-charra";
+  }
+
+  /*****************/
+  /*   Features    */
+  /*****************/
+
+  feature TPMs {
+    description
+      "The device supports the remote attestation of multiple
+       TPM based cryptoprocessors.";
+  }
+
+  feature bios {
+    description
+      "The device supports the bios logs.";
+    reference
+      "https://trustedcomputinggroup.org/wp-content/uploads/
+       PC-ClientSpecific_Platform_Profile_for_TPM_2p0_Systems_v51.pdf
+       Section 9.4.5.2";
+  }
+
+  feature ima {
+    description
+      "The device supports Integrity Measurement Architecture logs.";
+    reference
+      "https://www.trustedcomputinggroup.org/wp-content/uploads/
+       TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3";
+  }
+
+  feature netequip_boot {
+    description
+      "The device supports the netequip_boot logs using the Integrity
+       Measurement Architecture log format.";
+    reference
+      "https://www.trustedcomputinggroup.org/wp-content/uploads/
+       TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3";
+  }
+
+  /*****************/
+  /*   Typedefs    */
+  /*****************/
+
+  typedef pcr {
+    type uint8 {
+      range "0..31";
+    }
+    description
+      "Valid index number for a PCR.  At this point 0-31 is viable.";
+  }
+
+  typedef compute-node-ref {
+    type leafref {
+      path "/tpm:rats-support-structures/tpm:compute-nodes" +
+           "/tpm:compute-node/tpm:node-name";
+    }
+    description
+      "This type is used to reference a hardware node.  It is quite
+       possible this leafref will eventually point to another YANG
+       module's node.";
+  }
+
+  typedef certificate-name-ref {
+    type leafref {
+      path "/tpm:rats-support-structures/tpm:tpms/tpm:tpm" +
+           "/tpm:certificates/tpm:certificate/tpm:certificate-name";
+    }
+    description
+      "A type which allows identification of a TPM based certificate.";
+  }
+
+
+  /******************/
+  /*   Identities   */
+  /******************/
+
+  identity attested_event_log_type {
+    description
+      "Base identity allowing categorization of the reasons why and
+       attested measurement has been taken on an Attester.";
+  }
+
+  identity ima {
+    base attested_event_log_type;
+    description
+      "An event type recorded in IMA.";
+  }
+
+  identity bios {
+    base attested_event_log_type;
+    description
+      "An event type associated with BIOS/UEFI.";
+  }
+
+  identity netequip_boot {
+    base attested_event_log_type;
+    description
+      "An event type associated with Network Equipment Boot.";
+  }
+
+  /*****************/
+  /*   Groupings   */
+  /*****************/
+
+  grouping TPM20-hash-algo {
+    description
+      "The cryptographic algorithm used to hash the TPM2 PCRs.  This
+       must be from the list of platform supported options.";
+    leaf TPM20-hash-algo {
+      type identityref {
+        base taa:hash;
+      }
+      must "/tpm:rats-support-structures/tpm:attester-supported-algos"
+         + "/tpm:tpm20-hash" {
+         error-message "Not a platform supported TPM20-hash-algo";
+      }
+      default taa:TPM_ALG_SHA256;
+      description
+        "The hash scheme that is used to hash a TPM1.2 PCR. This
+         must be one of those supported by a platform.";
+    }
+  }
+
+  grouping TPM12-hash-algo {
+    description
+      "The cryptographic algorithm used to hash the TPM1.2 PCRs.";
+    leaf TPM12-hash-algo {
+      type identityref {
+        base taa:hash;
+      }
+      must "/tpm:rats-support-structures/tpm:attester-supported-algos"
+         + "/tpm:tpm12-hash" {
+         error-message "Not a platform supported TPM12-hash-algo";
+      }
+      default taa:TPM_ALG_SHA1;
+      description
+        "The hash scheme that is used to hash a TPM1.2 PCR. This
+         MUST be one of those supported by a platform.  This assumes
+         that an algorithm other than SHA1 can be supported on some
+         TPM1.2 cryptoprocessor variant.";
+    }
+  }
+
+  grouping nonce {
+    description
+      "A random number intended to be used once to show freshness
+       and to allow the detection of replay attacks.";
+    leaf nonce-value {
+      type binary;
+      mandatory true;
+      description
+        "This nonce SHOULD be generated via a registered
+         cryptographic-strength algorithm. In consequence,
+         the length of the nonce depends on the hash algorithm
+         used. The algorithm used in this case is independent
+         from the hash algorithm used to create the hash-value
+         in the response of the attestor.";
+    }
+  }
+
+  grouping tpm12-pcr-selection {
+    description
+      "A Verifier can request one or more PCR values using its
+       individually created Attestation Key Certificate (AC).
+       The corresponding selection filter is represented in this
+       grouping.
+       Requesting a PCR value that is not in scope of the AC used,
+       detailed exposure via error msg should be avoided.";
+    leaf-list pcr-index {
+      /*  the following XPATH must be updated to ensure that only
+            selectable PCRs are allowed in the RPC
+      must "/tpm:rats-support-structures/tpm:tpms" +
+           "/tpm:tpm[tpm-name = current()]" +
+           "/tpm:tpm[TPM12-pcrs = current()]" {
+        error-message "Acquiring this PCR index is not supported";
+      }
+      */
+      type pcr;
+      description
+        "The numbers/indexes of the PCRs. At the moment this is limited
+         to 32.";
+    }
+  }
+
+  grouping tpm20-pcr-selection {
+    description
+      "A Verifier can acquire one or more PCR values, which are hashed
+       together in a TPM2B_DIGEST coming from the TPM2.  The selection
+       list of desired PCRs and the Hash Algorithm is represented in
+       this grouping.";
+    list tpm20-pcr-selection {
+      unique "TPM20-hash-algo";
+      description
+        "Specifies the list of PCRs and Hash Algorithms that can be
+         returned within a TPM2B_DIGEST.";
+      reference
+        "https://www.trustedcomputinggroup.org/wp-content/uploads/
+         TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
+      uses TPM20-hash-algo;
+      leaf-list pcr-index {
+        /*  the following XPATH must be updated to ensure that only
+            selectable PCRs are allowed in the RPC
+        must "/tpm:rats-support-structures/tpm:tpms" +
+             "/tpm:tpm[tpm-name = current()]" +
+             "/tpm:tpm20-pcr-bank[pcr-index = current()]" {
+          error-message "Acquiring this PCR index is not supported";
+        }
+        */
+        type tpm:pcr;
+        description
+          "The numbers of the PCRs that which are being tracked
+           with a hash based on the TPM20-hash-algo.";
+      }
+    }
+  }
+
+  grouping certificate-name-ref {
+    description
+      "Identifies a certificate in a keystore.";
+    leaf certificate-name {
+      type certificate-name-ref;
+      mandatory true;
+      description
+        "Identifies a certificate in a keystore.";
+    }
+  }
+
+  grouping tpm-name {
+    description
+      "A unique TPM on a device.";
+    leaf tpm-name {
+      type string;
+      description
+        "Unique system generated name for a TPM on a device.";
+    }
+  }
+
+  grouping tpm-name-selector {
+    description
+      "One or more TPM on a device.";
+    leaf-list tpm-name {
+      type string;
+      config false;
+      description
+        "Name of one or more unique TPMs on a device.  If this object
+         exists, a selection should pull only the objects related to
+         these TPM(s).  If it does not exist, all qualifying TPMs that
+         are 'hardware-based' equals true on the device are selected.";
+    }
+  }
+
+  grouping node-uptime {
+    description
+      "Uptime in seconds of the node.";
+    leaf up-time {
+      type uint32;
+      description
+        "Uptime in seconds of this node reporting its data";
+    }
+  }
+
+  grouping tpm12-attestation {
+    description
+      "Contains an instance of TPM1.2 style signed cryptoprocessor
+       measurements.  It is supplemented by unsigned Attester
+       information.";
+    uses node-uptime;
+    leaf TPM_QUOTE2 {
+      type binary;
+      description
+        "Result of a TPM1.2 Quote2 operation. This includes PCRs,
+         signatures, locality, the provided nonce and other data which
+         can be further parsed to appraise the Attester.";
+      reference
+        "TPM1.2 commands rev116 July 2007, Section 16.5";
+    }
+  }
+
+  grouping tpm20-attestation {
+    description
+      "Contains an instance of TPM2 style signed cryptoprocessor
+       measurements.  It is supplemented by unsigned Attester
+       information.";
+    leaf TPMS_QUOTE_INFO {
+      type binary;
+      mandatory true;
+      description
+        "A hash of the latest PCR values (and the hash algorithm used)
+         which have been returned from a Verifier for the selected PCRs
+         and Hash Algorithms.";
+      reference
+        "https://www.trustedcomputinggroup.org/wp-content/uploads/
+         TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.12.1";
+    }
+    leaf quote-signature {
+      type binary;
+      description
+        "Quote signature returned by TPM Quote.  The signature was
+         generated using the key associated with the
+         certificate-name.";
+      reference
+        "https://www.trustedcomputinggroup.org/wp-content/uploads/
+         TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 11.2.1";
+    }
+    uses node-uptime;
+    list unsigned-pcr-values {
+      description
+        "PCR values in each PCR bank. This might appear redundant with
+         the TPM2B_DIGEST, but that digest is calculated across multiple
+         PCRs.  Having to verify across multiple PCRs does not
+         necessarily make it easy for a Verifier to appraise just the
+         minimum set of PCR information which has changed since the last
+         received TPM2B_DIGEST.  Put another way, why should a Verifier
+         reconstruct the proper value of all PCR Quotes when only a
+         single PCR has changed?
+
+         To help this happen, if the Attester does know specific PCR
+         values, the Attester can provide these individual values via
+         'unsigned-pcr-values'.   By comparing this information to the
+         what has previously been validated, it is possible for a
+         Verifier to confirm the Attester's signature while eliminating
+         significant processing.";
+      uses TPM20-hash-algo;
+      list pcr-values {
+        key pcr-index;
+        description
+          "List of one PCR bank.";
+        leaf pcr-index {
+          type pcr;
+          description
+            "PCR index number.";
+        }
+        leaf pcr-value {
+          type binary;
+          description
+            "PCR value.";
+          reference
+           "https://www.trustedcomputinggroup.org/wp-content/uploads/
+            TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
+        }
+      }
+    }
+  }
+
+
+  grouping log-identifier {
+    description
+      "Identifier for type of log to be retrieved.";
+    leaf log-type {
+      type identityref {
+        base attested_event_log_type;
+      }
+      mandatory true;
+      description
+        "The corresponding measurement log type identity.";
+    }
+  }
+
+  grouping boot-event-log {
+    description
+      "Defines an event log corresponding to the event that extended
+       the PCR";
+    leaf event-number {
+      type uint32;
+      description
+        "Unique event number of this event";
+    }
+    leaf event-type {
+        type uint32;
+        description
+          "log event type";
+    }
+    leaf pcr-index {
+      type pcr;
+      description
+        "Defines the PCR index that this event extended";
+    }
+    list digest-list {
+      description
+        "Hash of event data";
+      leaf hash-algo {
+        type identityref {
+          base taa:hash;
+        }
+        description
+          "The hash scheme that is used to compress the event data in
+           each of the leaf-list digest items.";
+      }
+      leaf-list digest {
+        type binary;
+        description
+          "The hash of the event data using the algorithm of the
+           'hash-algo' against 'event data'.";
+      }
+    }
+    leaf event-size {
+      type uint32;
+      description
+        "Size of the event data";
+    }
+    leaf-list event-data {
+      type uint8;
+      description
+        "The event data size determined by event-size";
+    }
+  }
+
+  grouping bios-event-log {
+    description
+      "Measurement log created by the BIOS/UEFI.";
+    list bios-event-entry {
+      key event-number;
+        description
+          "Ordered list of TCG described event log
+           that extended the PCRs in the order they
+           were logged";
+      uses boot-event-log;
+    }
+  }
+
+  grouping ima-event {
+    description
+      "Defines an hash log extend event for IMA measurements";
+    reference
+      "https://www.trustedcomputinggroup.org/wp-content/uploads/
+       TCG_IWG_CEL_v1_r0p30_13feb2021.pdf  Section 4.3";
+    leaf event-number {
+      type uint64;
+      description
+        "Unique number for this event for sequencing";
+    }
+    leaf ima-template {
+      type string;
+      description
+        "Name of the template used for event logs
+         for e.g. ima, ima-ng, ima-sig";
+    }
+    leaf filename-hint {
+      type string;
+      description
+        "File that was measured";
+    }
+    leaf filedata-hash {
+      type binary;
+      description
+        "Hash of filedata";
+    }
+    leaf filedata-hash-algorithm {
+      type string;
+      description
+        "Algorithm used for filedata-hash";
+    }
+    leaf template-hash-algorithm {
+      type string;
+      description
+        "Algorithm used for template-hash";
+    }
+    leaf template-hash {
+      type binary;
+      description
+        "hash(filedata-hash, filename-hint)";
+    }
+    leaf pcr-index {
+      type pcr;
+      description
+        "Defines the PCR index that this event extended";
+    }
+    leaf signature {
+      type binary;
+      description
+        "The file signature";
+    }
+  }
+
+  grouping ima-event-log {
+    description
+      "Measurement log created by IMA.";
+    list ima-event-entry {
+      key event-number;
+      description
+      "Ordered list of ima event logs by event-number";
+       uses ima-event;
+    }
+  }
+
+  grouping network-equipment-boot-event-log {
+    description
+      "Measurement log created by Network Equipment Boot. The Network
+       Equipment Boot format is identical to the IMA format. In
+       contrast to the IMA log, the Network Equipment Boot log
+       includes every measurable event from an Attester, including
+       the boot stages of BIOS, Bootloader, etc. In essence, the scope
+       of events represented in this format combines the scope of BIOS
+       events and IMA events.";
+    list boot-event-entry {
+      key event-number;
+      description
+        "Ordered list of Network Equipment Boot event logs
+         by event-number, using the IMA event format.";
+      uses ima-event;
+    }
+  }
+
+  grouping event-logs {
+    description
+      "A selector for the log and its type.";
+    choice attested_event_log_type {
+      mandatory true;
+      description
+        "Event log type determines the event logs content.";
+      case bios {
+        if-feature "bios";
+        description
+          "BIOS/UEFI event logs";
+        container bios-event-logs {
+          description
+            "BIOS/UEFI event logs";
+          uses bios-event-log;
+        }
+      }
+      case ima {
+        if-feature "ima";
+        description
+          "IMA event logs.";
+        container ima-event-logs {
+          description
+            "IMA event logs.";
+          uses ima-event-log;
+        }
+      }
+      case netequip_boot {
+        if-feature "netequip_boot";
+        description
+          "Network Equipment Boot event logs";
+        container boot-event-logs {
+          description
+            "Network equipment boot event logs.";
+          uses network-equipment-boot-event-log;
+        }
+      }
+    }
+  }
+
+  /**********************/
+  /*   RPC operations   */
+  /**********************/
+
+  rpc tpm12-challenge-response-attestation {
+    if-feature "taa:TPM12";
+    description
+      "This RPC accepts the input for TSS TPM 1.2 commands made to the
+       attesting device.";
+    input {
+      container tpm12-attestation-challenge {
+        description
+          "This container includes every information element defined
+           in the reference challenge-response interaction model for
+           remote attestation. Corresponding values are based on
+           TPM 1.2 structure definitions";
+        uses tpm12-pcr-selection;
+        uses nonce;
+        leaf-list certificate-name {
+          if-feature "tpm:TPMs";
+          type certificate-name-ref;
+          must "/tpm:rats-support-structures/tpm:tpms" +
+               "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']" +
+               "/tpm:certificates/" +
+               "/tpm:certificate[certificate-name-ref=current()]" {
+            error-message "Not an available TPM1.2 AIK certificate.";
+          }
+          description
+            "When populated, the RPC will only get a Quote for the
+            TPMs associated with these certificate(s).";
+        }
+      }
+    }
+    output {
+      list tpm12-attestation-response {
+        unique "certificate-name";
+        description
+          "The binary output of TPM 1.2 TPM_Quote/TPM_Quote2, including
+           the PCR selection and other associated attestation evidence
+           metadata";
+        uses certificate-name-ref {
+          description
+            "Certificate associated with this tpm12-attestation.";
+        }
+        uses tpm12-attestation;
+      }
+    }
+  }
+
+  rpc tpm20-challenge-response-attestation {
+    if-feature "taa:TPM20";
+    description
+      "This RPC accepts the input for TSS TPM 2.0 commands of the
+       managed device. ComponentIndex from the hardware manager YANG
+       module to refer to dedicated TPM in composite devices,
+       e.g. smart NICs, is still a TODO.";
+    input {
+      container tpm20-attestation-challenge {
+        description
+          "This container includes every information element defined
+           in the reference challenge-response interaction model for
+           remote attestation. Corresponding values are based on
+           TPM 2.0 structure definitions";
+        uses nonce;
+        uses tpm20-pcr-selection;
+        leaf-list certificate-name {
+          if-feature "tpm:TPMs";
+          type certificate-name-ref;
+          must "/tpm:rats-support-structures/tpm:tpms" +
+               "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']" +
+               "/tpm:certificates/" +
+               "/tpm:certificate[certificate-name-ref=current()]" {
+            error-message "Not an available TPM2.0 AIK certificate.";
+          }
+          description
+            "When populated, the RPC will only get a Quote for the
+            TPMs associated with the certificates.";
+        }
+      }
+    }
+    output {
+      list tpm20-attestation-response {
+        unique "certificate-name";
+        description
+          "The binary output of TPM2b_Quote in one TPM chip of the
+           node which identified by node-id. An TPMS_ATTEST structure
+           including a length, encapsulated in a signature";
+        uses certificate-name-ref {
+          description
+            "Certificate associated with this tpm20-attestation.";
+        }
+        uses tpm20-attestation;
+      }
+    }
+  }
+
+  rpc log-retrieval {
+    description
+      "Logs Entries are either identified via indices or via providing
+       the last line received. The number of lines returned can be
+       limited. The type of log is a choice that can be augmented.";
+    input {
+      list log-selector {
+        description
+          "Selection of log entries to be reported.";
+        uses tpm-name-selector;
+        choice index-type {
+          description
+            "Last log entry received, log index number, or timestamp.";
+          case last-entry {
+            description
+              "The last entry of the log already retrieved.";
+            leaf last-entry-value {
+              type binary;
+              description
+                "Content of an log event which matches 1:1 with a
+                 unique event record contained within the log.  Log
+                 entries subsequent to this will be passed to the
+                 requester.  Note: if log entry values are not unique,
+                 this MUST return an error.";
+            }
+          }
+          case index {
+            description
+              "Numeric index of the last log entry retrieved, or
+               zero.";
+            leaf last-index-number {
+              type uint64;
+              description
+                "The last numeric index number of a log entry.
+                 Zero means to start at the beginning of the log.
+                 Entries subsequent to this will be passed to the
+                 requester.";
+            }
+          }
+          case timestamp {
+            leaf timestamp {
+              type yang:date-and-time;
+              description
+                "Timestamp from which to start the extraction.  The
+                 next log entry subsequent to this timestamp is to
+                 be sent.";
+            }
+            description
+              "Timestamp from which to start the extraction.";
+          }
+        }
+        leaf log-entry-quantity {
+          type uint16;
+          description
+            "The number of log entries to be returned. If omitted, it
+             means all of them.";
+        }
+      }
+      uses log-identifier;
+    }
+
+    output {
+      container system-event-logs {
+        description
+          "The requested data of the measurement event logs";
+        list node-data {
+          unique "tpm-name";
+          description
+            "Event logs of a node in a distributed system
+             identified by the node name";
+          uses tpm-name;
+          uses node-uptime;
+          container log-result {
+            description
+              "The requested entries of the corresponding log.";
+            uses event-logs;
+          }
+        }
+      }
+    }
+  }
+
+  /**************************************/
+  /*   Config &amp; Oper accessible nodes   */
+  /**************************************/
+
+  container rats-support-structures {
+    description
+      "The datastore definition enabling verifiers or relying
+       parties to discover the information necessary to use the
+       remote attestation RPCs appropriately.";
+    container compute-nodes {
+      if-feature "tpm:TPMs";
+      description
+        "Holds the set device subsystems/components in this composite
+         device that support TPM operations.";
+      list compute-node {
+        key node-id;
+        config false;
+        min-elements 2;
+        description
+          "A component within this composite device which
+           supports TPM operations.";
+        leaf node-id {
+          type string;
+          description
+            "ID of the compute node, such as Board Serial Number.";
+        }
+        leaf node-physical-index {
+          if-feature ietfhw:entity-mib;
+          type int32 {
+            range "1..2147483647";
+          }
+          config false;
+          description
+            "The entPhysicalIndex for the compute node.";
+          reference
+            "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
+        }
+        leaf node-name {
+          type string;
+          description
+            "Name of the compute node.";
+        }
+        leaf node-location {
+          type string;
+          description
+            "Location of the compute node, such as slot number.";
+        }
+      }
+    }
+    container tpms {
+      description
+        "Holds the set of TPMs within an Attester.";
+      list tpm {
+        key tpm-name;
+        unique "tpm-path";
+          description
+           "A list of TPMs in this composite device that RATS
+            can be conducted with.";
+        uses tpm-name;
+        leaf hardware-based {
+          type boolean;
+          config false;
+          description
+            "Answers the question: is this TPM is a hardware based
+             TPM?";
+        }
+        leaf tpm-physical-index {
+          if-feature ietfhw:entity-mib;
+          type int32 {
+            range "1..2147483647";
+          }
+          config false;
+          description
+            "The entPhysicalIndex for the TPM.";
+          reference
+            "RFC 6933: Entity MIB (Version 4) - entPhysicalIndex";
+        }
+        leaf tpm-path {
+          type string;
+          config false;
+          description
+            "Path to a unique TPM on a device.  This can change across
+             reboots.";
+        }
+        leaf compute-node {
+          if-feature "tpm:TPMs";
+          type compute-node-ref;
+          config false;
+          mandatory true;
+          description
+            "Indicates the compute node measured by this TPM.";
+        }
+        leaf tpm-manufacturer {
+          type string;
+          config false;
+          description
+            "TPM manufacturer name.";
+        }
+        leaf tpm-firmware-version {
+          type identityref {
+            base taa:cryptoprocessor;
+          }
+          mandatory true;
+          description
+            "Identifies the cryptoprocessor API set supported.  This
+             is automatically configured by the device and should not
+             be changed.";
+        }
+        uses TPM12-hash-algo {
+          when "tpm-firmware-version = 'taa:tpm12'";
+          refine TPM12-hash-algo {
+            description
+              "The hash algorithm overwrites the default used for PCRs
+               on this TPM1.2 compliant cryptoprocessor.";
+          }
+        }
+        leaf-list TPM12-pcrs {
+          when "../tpm-firmware-version = 'taa:tpm12'";
+          type pcr;
+          description
+            "The PCRs which may be extracted from this TPM1.2
+             compliant cryptoprocessor.";
+        }
+        list tpm20-pcr-bank {
+          when "../tpm-firmware-version = 'taa:tpm20'";
+          key "TPM20-hash-algo";
+          description
+            "Specifies the list of PCRs that may be extracted for
+             a specific Hash Algorithm on this TPM2 compliant
+             cryptoprocessor.  A bank is a set of PCRs which are
+             extended using a particular hash algorithm.";
+          reference
+            "https://www.trustedcomputinggroup.org/wp-content/uploads/
+             TPM-Rev-2.0-Part-2-Structures-01.38.pdf  Section 10.9.7";
+          leaf TPM20-hash-algo {
+            type identityref {
+              base taa:hash;
+            }
+            must "/tpm:rats-support-structures"
+               + "/tpm:attester-supported-algos"
+               + "/tpm:tpm20-hash" {
+              error-message "Not a platform supported TPM20-hash-algo";
+            }
+            description
+              "The hash scheme actively being used to hash a
+               one or more TPM2.0 PCRs.";
+          }
+          leaf-list pcr-index {
+            type tpm:pcr;
+            description
+              "Defines what TPM2 PCRs are available to be extracted.";
+          }
+        }
+        leaf tpm-status {
+          type enumeration {
+            enum operational {
+              value 0;
+              description
+                "The TPM currently is currently running normally and
+                 is ready to accept and process TPM quotes.";
+              reference
+                "TPM-Rev-2.0-Part-1-Architecture-01.07-2014-03-13.pdf
+                 Section 12";
+            }
+            enum non-operational {
+              value 1;
+              description
+                "TPM is in a state such as startup or shutdown which
+                 precludes the processing of TPM quotes.";
+            }
+          }
+          config false;
+          mandatory true;
+          description
+            "TPM chip self-test status.";
+        }
+        container certificates {
+          description
+            "The TPM's certificates, including EK certificates
+             and AK certificates.";
+          list certificate {
+            key "certificate-name";
+            description
+              "Three types of certificates can be accessed via
+               this statement, including Initial Attestation
+               Key Cert, Local Attestation Key Cert or
+               Endorsement Key Cert.";
+            leaf certificate-name {
+              type string;
+              description
+                "An arbitrary name uniquely identifying a certificate
+                 associated within key within a TPM.";
+            }
+            leaf certificate-keystore-ref {
+              type leafref {
+                path "/ks:keystore/ks:asymmetric-keys/ks:asymmetric-key"
+                   + "/ks:certificates/ks:certificate/ks:name";
+              }
+              description
+                "A reference to a specific certificate of an
+                 asymmetric key in the Keystore.";
+                 /* Note: It is also possible to import a grouping which
+                    allows local definition via an imported keystore
+                    schema. */
+            }
+            leaf certificate-type {
+              type enumeration {
+                enum endorsement-cert {
+                  value 0;
+                  description
+                    "Endorsement Key (EK) Certificate type.";
+                }
+                enum initial-attestation-cert {
+                  value 1;
+                  description
+                    "Initial Attestation key (IAK) Certificate type.";
+                }
+                enum local-attestation-cert {
+                  value 2;
+                  description
+                    "Local Attestation Key (LAK) Certificate type.";
+                }
+              }
+              description
+                "Type of this certificate";
+            }
+          }
+        }
+      }
+    }
+    container attester-supported-algos {
+      description
+        "Identifies which TPM algorithms are available for use on an
+         attesting platform.";
+      leaf-list tpm12-asymmetric-signing {
+        when "../../tpm:tpms" +
+             "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']";
+        if-feature "taa:TPM12";
+        type identityref {
+          base taa:asymmetric;
+        }
+        description
+          "Platform Supported TPM12 asymmetric algorithms.";
+      }
+      leaf-list tpm12-hash {
+        when "../../tpm:tpms" +
+             "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm12']";
+        if-feature "taa:TPM12";
+        type identityref {
+          base taa:hash;
+        }
+        description
+          "Platform supported TPM12 hash algorithms.";
+      }
+      leaf-list tpm20-asymmetric-signing {
+        when "../../tpm:tpms" +
+             "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']";
+        if-feature "taa:TPM20";
+        type identityref {
+          base taa:asymmetric;
+        }
+        description
+          "Platform Supported TPM20 asymmetric algorithms.";
+      }
+      leaf-list tpm20-hash {
+        when "../../tpm:tpms" +
+             "/tpm:tpm[tpm:tpm-firmware-version='taa:tpm20']";
+        if-feature "taa:TPM20";
+        type identityref {
+          base taa:hash;
+        }
+        description
+          "Platform supported TPM20 hash algorithms.";
+      }
+    }
+  }
+}
+&lt;CODE ENDS&gt;
+</pre><a href="#section-2.1.1.7-1" class="pilcrow">¶</a>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="ietf-tcg-algs">
+<section id="section-2.1.2">
+          <h4 id="name-ietf-tcg-algs">
+<a href="#section-2.1.2" class="section-number selfRef">2.1.2. </a><a href="#name-ietf-tcg-algs" class="section-name selfRef">ietf-tcg-algs</a>
+          </h4>
+<p id="section-2.1.2-1">Cryptographic algorithm types were initially included within -v14 NETCONF's iana-crypto-types.yang.  Unfortunately all this content including the algorithms needed here failed to make the -v15 used WGLC.   As a result this document has encoded the TCG Algorithm definitions of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span>, revision 1.32.  By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.<a href="#section-2.1.2-1" class="pilcrow">¶</a></p>
+<div id="features-1">
+<section id="section-2.1.2.1">
+            <h5 id="name-features-2">
+<a href="#section-2.1.2.1" class="section-number selfRef">2.1.2.1. </a><a href="#name-features-2" class="section-name selfRef">Features</a>
+            </h5>
+<p id="section-2.1.2.1-1">There are two types of features supported &lt;TPM12&gt; and &lt;TPM20&gt;. Support for either of these features indicates that a cryptoprocessor supporting the corresponding type of TCG API is present on an Attester.  Most commonly, only one type of cryptoprocessor will be available on an Attester.<a href="#section-2.1.2.1-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="identities-1">
+<section id="section-2.1.2.2">
+            <h5 id="name-identities-2">
+<a href="#section-2.1.2.2" class="section-number selfRef">2.1.2.2. </a><a href="#name-identities-2" class="section-name selfRef">Identities</a>
+            </h5>
+<p id="section-2.1.2.2-1">There are three types of identities in this model.<a href="#section-2.1.2.2-1" class="pilcrow">¶</a></p>
+<p id="section-2.1.2.2-2">The first are the cryptographic functions supportable by a TPM algorithm, these include: &lt;asymmetric&gt;, &lt;symmetric&gt;, &lt;hash&gt;, &lt;signing&gt;, &lt;anonymous_signing&gt;, &lt;encryption_mode&gt;, &lt;method&gt;, and &lt;object_type&gt;.  The definitions of each of these are in Table 2 of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span>.<a href="#section-2.1.2.2-2" class="pilcrow">¶</a></p>
+<p id="section-2.1.2.2-3">The second are API specifications for tpms: &lt;tpm12&gt; and &lt;tpm2&gt;.<a href="#section-2.1.2.2-3" class="pilcrow">¶</a></p>
+<p id="section-2.1.2.2-4">The third are specific algorithm types.   Each algorithm type defines what cryptographic functions may be supported, and on which type of API specification.  It is not required that an implementation of a specific TPM will support all algorithm types.  The contents of each specific algorithm mirrors what is in Table 3 of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span>.<a href="#section-2.1.2.2-4" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="ref-ietf-tcg-algs">
+<section id="section-2.1.2.3">
+            <h5 id="name-yang-module-2">
+<a href="#section-2.1.2.3" class="section-number selfRef">2.1.2.3. </a><a href="#name-yang-module-2" class="section-name selfRef">YANG Module</a>
+            </h5>
+<div id="section-2.1.2.3-1">
+<pre class="sourcecode lang-YANG">
+&lt;CODE BEGINS&gt; file "ietf-tcg-algs@2020-09-18.yang"
+module ietf-tcg-algs {
+  yang-version 1.1;
+  namespace "urn:ietf:params:xml:ns:yang:ietf-tcg-algs";
+  prefix taa;
+
+  organization
+    "IETF RATS Working Group";
+
+  contact
+    "WG Web:   &lt;http://datatracker.ietf.org/wg/rats/&gt;
+     WG List:  &lt;mailto:rats@ietf.org&gt;
+     Author:   Eric Voit &lt;mailto:evoit@cisco.com&gt;";
+
+  description
+    "This module defines a identities for asymmetric algorithms.
+
+     Copyright (c) 2020 IETF Trust and the persons identified
+     as authors of the code. All rights reserved.
+     Redistribution and use in source and binary forms, with
+     or without modification, is permitted pursuant to, and
+     subject to the license terms contained in, the Simplified
+     BSD License set forth in Section 4.c of the IETF Trust's
+     Legal Provisions Relating to IETF Documents
+     (https://trustee.ietf.org/license-info).
+     This version of this YANG module is part of RFC XXXX
+     (https://www.rfc-editor.org/info/rfcXXXX); see the RFC
+     itself for full legal notices.
+     The key words 'MUST', 'MUST NOT', 'REQUIRED', 'SHALL',
+     'SHALL NOT', 'SHOULD', 'SHOULD NOT', 'RECOMMENDED',
+     'NOT RECOMMENDED', 'MAY', and 'OPTIONAL' in this document
+     are to be interpreted as described in BCP 14 (RFC 2119)
+     (RFC 8174) when, and only when, they appear in all
+     capitals, as shown here.";
+
+  revision 2020-09-18 {
+    description
+      "Initial version";
+    reference
+      "RFC XXXX: tbd";
+  }
+
+  /*****************/
+  /*   Features    */
+  /*****************/
+
+  feature TPM12 {
+    description
+      "This feature indicates algorithm support for the TPM 1.2 API
+       as per TPM-main-1.2-Rev94-part-2, Section 4.8.";
+  }
+
+  feature TPM20 {
+    description
+      "This feature indicates algorithm support for the TPM 2.0 API
+       as per TPM-Rev-2.0-Part-1-Architecture-01.38 Section 11.4.";
+  }
+
+
+  /*****************/
+  /*  Identities   */
+  /*****************/
+
+  /*  There needs to be collasping/verification of some of the identity
+      types between the various algorithm types listed below */
+
+  identity asymmetric {
+    description
+      "A TCG recognized asymmetric algorithm with a public and
+       private key.";
+    reference
+      "http://trustedcomputinggroup.org/resource/tcg-algorithm-registry/
+       TCG_Algorithm_Registry_r1p32_pub Table 2";
+  }
+
+  identity symmetric {
+    description
+      "A TCG recognized symmetric algorithm with only a private key.";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 2";
+  }
+
+  identity hash {
+    description
+      "A TCG recognized hash algorithm that compresses input data to
+       a digest value or indicates a method that uses a hash.";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 2";
+  }
+
+  identity signing {
+    description
+      "A TCG recognized signing algorithm";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 2";
+  }
+
+  identity anonymous_signing {
+    description
+      "A TCG recognized anonymous signing algorithm.";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 2";
+  }
+
+  identity encryption_mode {
+    description
+      "A TCG recognized encryption mode.";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 2";
+  }
+
+  identity method {
+    description
+      "A TCG recognized method such as a mask generation function.";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 2";
+  }
+
+  identity object_type {
+    description
+      "A TCG recognized object type.";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 2";
+  }
+
+  identity cryptoprocessor {
+    description
+      "Base identity identifying a crytoprocessor.";
+  }
+
+  identity tpm12 {
+    if-feature "TPM12";
+    base cryptoprocessor;
+    description
+      "Supportable by a TPM1.2.";
+    reference
+      "TPM-Main-Part-2-TPM-Structures_v1.2_rev116_01032011.pdf
+       TPM_ALGORITHM_ID values, page 18";
+  }
+
+  identity tpm20 {
+    if-feature "TPM12";
+    base cryptoprocessor;
+    description
+      "Supportable by a TPM2.";
+    reference
+      "TPM-Rev-2.0-Part-2-Structures-01.38.pdf
+       The TCG Algorithm Registry. Table 9";
+  }
+
+  identity TPM_ALG_RSA {
+    if-feature "TPM12 or TPM20";
+    base tpm12;
+    base tpm20;
+    base asymmetric;
+    base object_type;
+    description
+      "RSA algorithm";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       RFC 8017. ALG_ID: 0x0001";
+  }
+
+  identity TPM_ALG_TDES {
+    if-feature "TPM12";
+    base tpm12;
+    base symmetric;
+    description
+      "Block cipher with various key sizes (Triple Data Encryption
+       Algorithm, commonly called Triple Data Encryption Standard)
+       Note: was banned in TPM1.2 v94";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 18033-3. ALG_ID: 0x0003";
+  }
+
+  identity TPM_ALG_SHA1 {
+    if-feature "TPM12 or TPM20";
+    base hash;
+    base tpm12;
+    base tpm20;
+    description
+      "SHA1 algorithm - Deprecated due to insufficient cryptographic
+       protection.  However it is still useful for hash algorithms
+       where protection is not required.";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 10118-3. ALG_ID: 0x0004";
+  }
+
+  identity TPM_ALG_HMAC  {
+    if-feature "TPM12 or TPM20";
+    base tpm12;
+    base tpm20;
+    base hash;
+    base signing;
+    description
+      "Hash Message Authentication Code (HMAC) algorithm";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3,
+       ISO/IEC 9797-2 and RFC2014. ALG_ID: 0x0005";
+  }
+
+  identity TPM_ALG_AES  {
+    if-feature "TPM12";
+    base tpm12;
+    base symmetric;
+    description
+      "The AES algorithm with various key sizes";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 18033-3. ALG_ID: 0x0006";
+  }
+
+  identity TPM_ALG_MGF1 {
+    if-feature "TPM20";
+    base tpm20;
+    base hash;
+    base method;
+    description
+      "hash-based mask-generation function";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3,
+       IEEE Std 1363-2000 and IEEE Std 1363a -2004.
+       ALG_ID: 0x0007";
+  }
+
+  identity TPM_ALG_KEYEDHASH {
+    if-feature "TPM20";
+    base tpm20;
+    base hash;
+    base object_type;
+    description
+      "An encryption or signing algorithm using a keyed hash.  These
+       may use XOR for encryption or an HMAC for signing and may
+       also refer to a data object that is neither signing nor
+       encrypting.";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       TCG TPM 2.0 library specification. . ALG_ID: 0x0008";
+    }
+
+  identity TPM_ALG_XOR {
+    if-feature "TPM12 or TPM20";
+    base tpm12;
+    base tpm20;
+    base hash;
+    base symmetric;
+    description
+      "The XOR encryption algorithm.";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       TCG TPM 2.0 library specification. ALG_ID: 0x000A";
+  }
+
+  identity TPM_ALG_SHA256 {
+    if-feature "TPM20";
+    base tpm20;
+    base hash;
+    description
+      "The SHA 256 algorithm";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 10118-3. ALG_ID: 0x000B";
+  }
+
+  identity TPM_ALG_SHA384  {
+    if-feature "TPM20";
+    base tpm20;
+    base hash;
+    description
+      "The SHA 384 algorithm";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 10118-3. ALG_ID: 0x000C";
+  }
+
+  identity TPM_ALG_SHA512  {
+    if-feature "TPM20";
+    base tpm20;
+    base hash;
+    description
+      "The SHA 512 algorithm";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 10118-3. ALG_ID: 0x000D";
+  }
+
+  identity TPM_ALG_NULL {
+    if-feature "TPM20";
+    base tpm20;
+    description
+      "NULL algorithm";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       TCG TPM 2.0 library specification. ALG_ID: 0x0010";
+  }
+
+  identity TPM_ALG_SM3_256 {
+    if-feature "TPM20";
+    base tpm20;
+    base hash;
+    description
+      "The SM3 hash algorithm.";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       GM/T 0004-2012 - SM3_256. ALG_ID: 0x0012";
+  }
+
+  identity TPM_ALG_SM4 {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    description
+      "SM4 symmetric block cipher";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       GB/T 32907-2016. ALG_ID: 0x0013";
+  }
+
+  identity TPM_ALG_RSASSA {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base signing;
+    description
+      "Signature algorithm defined in section 8.2 (RSASSAPKCS1-v1_5)";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017.
+       ALG_ID: 0x0014";
+  }
+
+  identity TPM_ALG_RSAES {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base encryption_mode;
+    description
+      "Signature algorithm defined in section 7.2 (RSAES-PKCS1-v1_5)";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017
+       ALG_ID: 0x0015";
+  }
+
+  identity TPM_ALG_RSAPSS {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base signing;
+    description
+      "Padding algorithm defined in section 8.1 (RSASSA PSS)";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017.
+       ALG_ID: 0x0016";
+  }
+
+  identity TPM_ALG_OAEP {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base encryption_mode;
+    description
+      "Padding algorithm defined in section 7.1 (RSASSA OAEP)";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and RFC 8017.
+       ALG_ID: 0x0017";
+  }
+
+  identity TPM_ALG_ECDSA {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base signing;
+    description
+      "Signature algorithm using elliptic curve cryptography (ECC)";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 14888-3. ALG_ID: 0x0018";
+  }
+
+  identity TPM_ALG_ECDH {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base method;
+    description
+      "Secret sharing using ECC";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST SP800-56A and RFC 7748. ALG_ID: 0x0019";
+  }
+
+  identity TPM_ALG_ECDAA {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base signing;
+    base anonymous_signing;
+    description
+      "Elliptic-curve based anonymous signing scheme";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       TCG TPM 2.0 library specification. ALG_ID: 0x001A";
+  }
+
+  identity TPM_ALG_SM2 {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base signing;
+    base encryption_mode;
+    base method;
+    description
+      "SM2 - depending on context, either an elliptic-curve based,
+       signature algorithm, an encryption scheme, or a key exchange
+       protocol";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       A GM/T 0003.1-2012, GM/T 0003.2-2012, GM/T 0003.3-2012,
+       GM/T 0003.5-2012 SM2. ALG_ID: 0x001B";
+  }
+
+  identity TPM_ALG_ECSCHNORR {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base signing;
+    description
+      "Elliptic-curve based Schnorr signature";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       TCG TPM 2.0 library specification. ALG_ID: 0x001C";
+  }
+
+  identity TPM_ALG_ECMQV {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base method;
+    description
+      "Two-phase elliptic-curve key";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST SP800-56A. ALG_ID: 0x001D";
+  }
+
+  identity TPM_ALG_KDF1_SP800_56A {
+    if-feature "TPM20";
+    base tpm20;
+    base hash;
+    base method;
+    description
+      "Concatenation key derivation function";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST SP800-56A  (approved alternative1) section 5.8.1.
+       ALG_ID: 0x0020";
+  }
+
+  identity TPM_ALG_KDF2  {
+    if-feature "TPM20";
+    base tpm20;
+    base hash;
+    base method;
+    description
+      "Key derivation function";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       IEEE 1363a-2004 KDF2 section 13.2. ALG_ID: 0x0021";
+  }
+
+  identity TPM_ALG_KDF1_SP800_108 {
+    base TPM_ALG_KDF2;
+    description
+      "A key derivation method";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST SP800-108 - Section 5.1 KDF. ALG_ID: 0x0022";
+  }
+
+  identity TPM_ALG_ECC {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base object_type;
+    description
+      "Prime field ECC";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 15946-1. ALG_ID: 0x0023";
+  }
+
+  identity TPM_ALG_SYMCIPHER {
+    if-feature "TPM20";
+    base tpm20;
+    description
+      "Object type for a symmetric block cipher";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       TCG TPM 2.0 library specification. ALG_ID: 0x0025";
+  }
+
+  identity TPM_ALG_CAMELLIA {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    description
+      "The Camellia algorithm";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 18033-3. ALG_ID: 0x0026";
+  }
+
+  identity TPM_ALG_SHA3_256  {
+    if-feature "TPM20";
+    base tpm20;
+    base hash;
+    description
+      "ISO/IEC 10118-3 - the SHA 256 algorithm";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST PUB FIPS 202. ALG_ID: 0x0027";
+  }
+
+  identity TPM_ALG_SHA3_384 {
+    if-feature "TPM20";
+    base tpm20;
+    base hash;
+    description
+      "The SHA 384 algorithm";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST PUB FIPS 202. ALG_ID: 0x0028";
+  }
+
+  identity TPM_ALG_SHA3_512 {
+    if-feature "TPM20";
+    base tpm20;
+    base hash;
+    description
+      "The SHA 512 algorithm";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST PUB FIPS 202. ALG_ID: 0x0029";
+  }
+
+  identity TPM_ALG_CMAC {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    base signing;
+    description
+      "block Cipher-based Message Authentication Code (CMAC)";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 9797-1:2011 Algorithm 5. ALG_ID: 0x003F";
+  }
+
+  identity TPM_ALG_CTR {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    base encryption_mode;
+    description
+      "Counter mode";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 10116. ALG_ID: 0x0040";
+  }
+
+  identity TPM_ALG_OFB {
+    base tpm20;
+    base symmetric;
+    base encryption_mode;
+    description
+      "Output Feedback mode";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 10116. ALG_ID: 0x0041";
+  }
+
+  identity TPM_ALG_CBC {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    base encryption_mode;
+    description
+      "Cipher Block Chaining mode";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 10116. ALG_ID: 0x0042";
+  }
+
+  identity TPM_ALG_CFB {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    base encryption_mode;
+    description
+      "Cipher Feedback mode";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 10116. ALG_ID: 0x0043";
+  }
+
+  identity TPM_ALG_ECB  {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    base encryption_mode;
+    description
+      "Electronic Codebook mode";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       ISO/IEC 10116. ALG_ID: 0x0044";
+  }
+
+  identity TPM_ALG_CCM  {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    base signing;
+    base encryption_mode;
+    description
+      "Counter with Cipher Block Chaining-Message Authentication
+      Code (CCM)";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST SP800-38C. ALG_ID: 0x0050";
+  }
+
+  identity TPM_ALG_GCM {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    base signing;
+    base encryption_mode;
+    description
+      "Galois/Counter Mode (GCM)";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST SP800-38D. ALG_ID: 0x0051";
+  }
+
+  identity TPM_ALG_KW {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    base signing;
+    base encryption_mode;
+    description
+      "AES Key Wrap (KW)";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST SP800-38F. ALG_ID: 0x0052";
+  }
+
+  identity TPM_ALG_KWP {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    base signing;
+    base encryption_mode;
+    description
+      "AES Key Wrap with Padding (KWP)";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST SP800-38F. ALG_ID: 0x0053";
+  }
+
+  identity TPM_ALG_EAX  {
+    if-feature "TPM20";
+    base tpm20;
+    base symmetric;
+    base signing;
+    base encryption_mode;
+    description
+      "Authenticated-Encryption Mode";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       NIST SP800-38F. ALG_ID: 0x0054";
+  }
+
+  identity TPM_ALG_EDDSA {
+    if-feature "TPM20";
+    base tpm20;
+    base asymmetric;
+    base signing;
+    description
+      "Edwards-curve Digital Signature Algorithm (PureEdDSA)";
+    reference
+      "TCG_Algorithm_Registry_r1p32_pub Table 3 and
+       RFC 8032. ALG_ID: 0x0060";
+  }
+}
+&lt;CODE ENDS&gt;
+</pre><a href="#section-2.1.2.3-1" class="pilcrow">¶</a>
+</div>
+<p id="section-2.1.2.3-2">Note that not all cryptographic functions are required for use by ietf-tpm-remote-attestation.yang.  However the full definition of Table 3 of <span>[<a href="#TCG-Algos" class="xref">TCG-Algos</a>]</span> will allow use by additional YANG specifications.<a href="#section-2.1.2.3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+</section>
+</div>
+<div id="iana-considerations">
+<section id="section-3">
+      <h2 id="name-iana-considerations">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA considerations</a>
+      </h2>
+<p id="section-3-1">This document will include requests to IANA:<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-3-2">To be defined yet.  But keeping up with changes to ietf-tcg-algs.yang will be necessary.<a href="#section-3-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="security-considerations">
+<section id="section-4">
+      <h2 id="name-security-considerations">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+      </h2>
+<p id="section-4-1">The YANG module specified in this document defines a schema for data that is designed to be accessed via network management protocols such as NETCONF <span>[<a href="#RFC6241" class="xref">RFC6241</a>]</span> or RESTCONF <span>[<a href="#RFC8040" class="xref">RFC8040</a>]</span>.  The lowest NETCONF layer is the secure transport layer, and the mandatory-to-implement secure transport is Secure Shell (SSH) <span>[<a href="#RFC6242" class="xref">RFC6242</a>]</span>.  The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement secure transport is TLS <span>[<a href="#RFC8446" class="xref">RFC8446</a>]</span>.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">There are a number of data nodes defined in this YANG module that are writable/creatable/deletable (i.e., config true, which is the default).  These data nodes may be considered sensitive or vulnerable in some network environments.  Write operations (e.g., edit-config) to these data nodes without proper protection can have a negative effect on network operations.  These are the subtrees and data nodes and their sensitivity/vulnerability:<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">Container: &lt;/rats-support-structures/attester-supported-algos&gt;<a href="#section-4-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4-4.1">&lt;tpm12-asymmetric-signing&gt;, &lt;tpm12-hash&gt;, &lt;tpm20-asymmetric-signing&gt;, and &lt;tpm20-hash&gt; all could be populated with algorithms which are not supported by the underlying physical TPM installed by the equipment vendor.<a href="#section-4-4.1" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-4-5">Container: &lt;/rats-support-structures/tpms&gt;<a href="#section-4-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-4-6.1">&lt;tpm-name&gt; - Although shown as 'rw', it is system generated<a href="#section-4-6.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-4-6.2">&lt;tpm20-pcr-bank&gt; - It is possible to configure PCRs for extraction which are not being extended by system software.  This could unnecessarily use TPM resources.<a href="#section-4-6.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-4-6.3">&lt;certificates&gt; - It is possible to provision a certificate which does not correspond to a Attestation Identity Key (AIK) within the TPM.<a href="#section-4-6.3" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-4-7">RPC: &lt;tpm12-challenge-response-attestation&gt; - Need to verify that the certificate is for an active AIK.<a href="#section-4-7" class="pilcrow">¶</a></p>
+<p id="section-4-8">RPC: &lt;tpm20-challenge-response-attestation&gt; - Need to verify that the certificate is for an active AIK.<a href="#section-4-8" class="pilcrow">¶</a></p>
+<p id="section-4-9">RPC: &lt;log-retrieval&gt; - Pulling lots of logs can chew up system resources.<a href="#section-4-9" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="acknowledgements">
+<section id="section-5">
+      <h2 id="name-acknowledgements">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
+      </h2>
+<p id="section-5-1">Not yet.<a href="#section-5-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="change-log">
+<section id="section-6">
+      <h2 id="name-change-log">
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-change-log" class="section-name selfRef">Change Log</a>
+      </h2>
+<p id="section-6-1">Changes from version 04 to version 05:<a href="#section-6-1" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6-2.1">YANG Dr comments covered<a href="#section-6-2.1" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-6-3">Changes from version 03 to version 04:<a href="#section-6-3" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6-4.1">TPM1.2 Quote1 eliminated<a href="#section-6-4.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-4.2">YANG model simplifications so redundant info isn't exposed<a href="#section-6-4.2" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-6-5">Changes from version 02 to version 03:<a href="#section-6-5" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6-6.1">moved to tcg-algs<a href="#section-6-6.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-6.2">cleaned up model to eliminate sources of errors<a href="#section-6-6.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-6.3">removed key establishment RPC<a href="#section-6-6.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-6.4">added lots of XPATH which must all be scrubbed still<a href="#section-6-6.4" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-6.5">Descriptive text added on model contents.<a href="#section-6-6.5" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-6-7">Changes from version 01 to version 02:<a href="#section-6-7" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6-8.1">Extracted Crypto-types into a separate YANG file<a href="#section-6-8.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-8.2">Mades the algorithms explicit, not strings<a href="#section-6-8.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-8.3">Hash Algo as key the selected TPM2 PCRs<a href="#section-6-8.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-8.4">PCR numbers are their own type<a href="#section-6-8.4" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-8.5">Eliminated nested keys for node-id plus tpm-name<a href="#section-6-8.5" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-8.6">Eliminated TPM-Name of "ALL"<a href="#section-6-8.6" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-8.7">Added TPM-Path<a href="#section-6-8.7" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-6-9">Changes from version 00 to version 01:<a href="#section-6-9" class="pilcrow">¶</a></p>
+<ul class="normal">
+<li class="normal" id="section-6-10.1">Addressed author's comments<a href="#section-6-10.1" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-10.2">Extended complementary details about attestation-certificates<a href="#section-6-10.2" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-10.3">Relabeled chunk-size to log-entry-quantity<a href="#section-6-10.3" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-10.4">Relabeled location with compute-node or tpm-name where appropriate<a href="#section-6-10.4" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-10.5">Added a valid entity-mib physical-index to compute-node and tpm-name to map it back to hardware inventory<a href="#section-6-10.5" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-10.6">Relabeled name  to tpm_name<a href="#section-6-10.6" class="pilcrow">¶</a>
+</li>
+        <li class="normal" id="section-6-10.7">Removed event-string in last-entry<a href="#section-6-10.7" class="pilcrow">¶</a>
+</li>
+      </ul>
+</section>
+</div>
+<section id="section-7">
+      <h2 id="name-references">
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-references" class="section-name selfRef">References</a>
+      </h2>
+<section id="section-7.1">
+        <h3 id="name-normative-references">
+<a href="#section-7.1" class="section-number selfRef">7.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
+<dl class="references">
+<dt id="I-D.ietf-netconf-keystore">[I-D.ietf-netconf-keystore]</dt>
+        <dd>
+<span class="refAuthor">Watsen, K.</span>, <span class="refTitle">"A YANG Data Model for a Keystore"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-netconf-keystore-21</span>, <time datetime="2021-02-10" class="refDate">10 February 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-netconf-keystore-21.txt">https://www.ietf.org/archive/id/draft-ietf-netconf-keystore-21.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-rats-architecture">[I-D.ietf-rats-architecture]</dt>
+        <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Thaler, D.</span>, <span class="refAuthor">Richardson, M.</span>, <span class="refAuthor">Smith, N.</span>, and <span class="refAuthor">W. Pan</span>, <span class="refTitle">"Remote Attestation Procedures Architecture"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-architecture-11</span>, <time datetime="2021-03-30" class="refDate">30 March 2021</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-rats-architecture-11.txt">https://www.ietf.org/archive/id/draft-ietf-rats-architecture-11.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-rats-reference-interaction-models">[I-D.ietf-rats-reference-interaction-models]</dt>
+        <dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Eckel, M.</span>, <span class="refAuthor">Newton, C.</span>, and <span class="refAuthor">L. Chen</span>, <span class="refTitle">"Reference Interaction Models for Remote Attestation Procedures"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-reference-interaction-models-01</span>, <time datetime="2020-10-23" class="refDate">23 October 2020</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-rats-reference-interaction-models-01.txt">https://www.ietf.org/archive/id/draft-ietf-rats-reference-interaction-models-01.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.ietf-rats-tpm-based-network-device-attest">[I-D.ietf-rats-tpm-based-network-device-attest]</dt>
+        <dd>
+<span class="refAuthor">Fedorkow, G.</span>, <span class="refAuthor">Voit, E.</span>, and <span class="refAuthor">J. Fitzgerald-McKay</span>, <span class="refTitle">"TPM-based Network Device Remote Integrity Verification"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-tpm-based-network-device-attest-06</span>, <time datetime="2020-12-07" class="refDate">7 December 2020</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-rats-tpm-based-network-device-attest-06.txt">https://www.ietf.org/archive/id/draft-ietf-rats-tpm-based-network-device-attest-06.txt</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC2119">[RFC2119]</dt>
+        <dd>
+<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6991">[RFC6991]</dt>
+        <dd>
+<span class="refAuthor">Schoenwaelder, J., Ed.</span>, <span class="refTitle">"Common YANG Data Types"</span>, <span class="seriesInfo">RFC 6991</span>, <span class="seriesInfo">DOI 10.17487/RFC6991</span>, <time datetime="2013-07" class="refDate">July 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6991">https://www.rfc-editor.org/info/rfc6991</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8174">[RFC8174]</dt>
+        <dd>
+<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8348">[RFC8348]</dt>
+        <dd>
+<span class="refAuthor">Bierman, A.</span>, <span class="refAuthor">Bjorklund, M.</span>, <span class="refAuthor">Dong, J.</span>, and <span class="refAuthor">D. Romascanu</span>, <span class="refTitle">"A YANG Data Model for Hardware Management"</span>, <span class="seriesInfo">RFC 8348</span>, <span class="seriesInfo">DOI 10.17487/RFC8348</span>, <time datetime="2018-03" class="refDate">March 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8348">https://www.rfc-editor.org/info/rfc8348</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="TCG-Algos">[TCG-Algos]</dt>
+        <dd>
+<span class="refTitle">"TCG_Algorithm_Registry_r1p32_pub"</span>, <span>n.d.</span>, <span>&lt;<a href="hhttp://trustedcomputinggroup.org/resource/tcg-algorithm-registry/">hhttp://trustedcomputinggroup.org/resource/tcg-algorithm-registry/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="TPM1.2">[TPM1.2]</dt>
+        <dd>
+<span class="refAuthor">TCG, .</span>, <span class="refTitle">"TPM 1.2 Main Specification"</span>, <time datetime="2003-10-02" class="refDate">2 October 2003</time>, <span>&lt;<a href="https://trustedcomputinggroup.org/resource/tpm-main-specification/">https://trustedcomputinggroup.org/resource/tpm-main-specification/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="TPM2.0">[TPM2.0]</dt>
+      <dd>
+<span class="refAuthor">TCG, .</span>, <span class="refTitle">"TPM 2.0 Library Specification"</span>, <time datetime="2013-03-15" class="refDate">15 March 2013</time>, <span>&lt;<a href="https://trustedcomputinggroup.org/resource/tpm-library-specification/">https://trustedcomputinggroup.org/resource/tpm-library-specification/</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+<section id="section-7.2">
+        <h3 id="name-informative-references">
+<a href="#section-7.2" class="section-number selfRef">7.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="RFC6241">[RFC6241]</dt>
+        <dd>
+<span class="refAuthor">Enns, R., Ed.</span>, <span class="refAuthor">Bjorklund, M., Ed.</span>, <span class="refAuthor">Schoenwaelder, J., Ed.</span>, and <span class="refAuthor">A. Bierman, Ed.</span>, <span class="refTitle">"Network Configuration Protocol (NETCONF)"</span>, <span class="seriesInfo">RFC 6241</span>, <span class="seriesInfo">DOI 10.17487/RFC6241</span>, <time datetime="2011-06" class="refDate">June 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6241">https://www.rfc-editor.org/info/rfc6241</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6242">[RFC6242]</dt>
+        <dd>
+<span class="refAuthor">Wasserman, M.</span>, <span class="refTitle">"Using the NETCONF Protocol over Secure Shell (SSH)"</span>, <span class="seriesInfo">RFC 6242</span>, <span class="seriesInfo">DOI 10.17487/RFC6242</span>, <time datetime="2011-06" class="refDate">June 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6242">https://www.rfc-editor.org/info/rfc6242</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8040">[RFC8040]</dt>
+        <dd>
+<span class="refAuthor">Bierman, A.</span>, <span class="refAuthor">Bjorklund, M.</span>, and <span class="refAuthor">K. Watsen</span>, <span class="refTitle">"RESTCONF Protocol"</span>, <span class="seriesInfo">RFC 8040</span>, <span class="seriesInfo">DOI 10.17487/RFC8040</span>, <time datetime="2017-01" class="refDate">January 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8040">https://www.rfc-editor.org/info/rfc8040</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8446">[RFC8446]</dt>
+      <dd>
+<span class="refAuthor">Rescorla, E.</span>, <span class="refTitle">"The Transport Layer Security (TLS) Protocol Version 1.3"</span>, <span class="seriesInfo">RFC 8446</span>, <span class="seriesInfo">DOI 10.17487/RFC8446</span>, <time datetime="2018-08" class="refDate">August 2018</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8446">https://www.rfc-editor.org/info/rfc8446</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</section>
+<div id="authors-addresses">
+<section id="section-appendix.a">
+      <h2 id="name-authors-addresses">
+<a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
+      </h2>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Henk Birkholz</span></div>
+<div dir="auto" class="left"><span class="org">Fraunhofer SIT</span></div>
+<div dir="auto" class="left"><span class="street-address">Rheinstrasse 75</span></div>
+<div dir="auto" class="left">
+<span class="postal-code">64295</span> <span class="locality">Darmstadt</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">Germany</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:henk.birkholz@sit.fraunhofer.de" class="email">henk.birkholz@sit.fraunhofer.de</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Michael Eckel</span></div>
+<div dir="auto" class="left"><span class="org">Fraunhofer SIT</span></div>
+<div dir="auto" class="left"><span class="street-address">Rheinstrasse 75</span></div>
+<div dir="auto" class="left">
+<span class="postal-code">64295</span> <span class="locality">Darmstadt</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">Germany</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:michael.eckel@sit.fraunhofer.de" class="email">michael.eckel@sit.fraunhofer.de</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Shwetha Bhandari</span></div>
+<div dir="auto" class="left"><span class="org">ThoughtSpot</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:shwetha.bhandari@thoughtspot.com" class="email">shwetha.bhandari@thoughtspot.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Eric Voit</span></div>
+<div dir="auto" class="left"><span class="org">Cisco Systems</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:evoit@cisco.com" class="email">evoit@cisco.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Bill Sulzen</span></div>
+<div dir="auto" class="left"><span class="org">Cisco Systems</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:bsulzen@cisco.com" class="email">bsulzen@cisco.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Liang Xia (Frank)</span></div>
+<div dir="auto" class="left"><span class="org">Huawei Technologies</span></div>
+<div dir="auto" class="left"><span class="street-address">101 Software Avenue, Yuhuatai District</span></div>
+<div dir="auto" class="left"><span class="locality">Nanjing</span></div>
+<div dir="auto" class="left">
+<span class="region">Jiangsu</span>, <span class="postal-code">210012</span>
+</div>
+<div dir="auto" class="left"><span class="country-name">China</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:Frank.Xialiang@huawei.com" class="email">Frank.Xialiang@huawei.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Tom Laffey</span></div>
+<div dir="auto" class="left"><span class="org">Hewlett Packard Enterprise</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:tom.laffey@hpe.com" class="email">tom.laffey@hpe.com</a>
+</div>
+</address>
+<address class="vcard">
+        <div dir="auto" class="left"><span class="fn nameRole">Guy C. Fedorkow</span></div>
+<div dir="auto" class="left"><span class="org">Juniper Networks</span></div>
+<div dir="auto" class="left"><span class="street-address">10 Technology Park Drive</span></div>
+<div dir="auto" class="left"><span class="locality">Westford</span></div>
+<div class="email">
+<span>Email:</span>
+<a href="mailto:gfedorkow@juniper.net" class="email">gfedorkow@juniper.net</a>
+</div>
+</address>
+</section>
+</div>
+<script>const toc = document.getElementById("toc");
+toc.querySelector("h2").addEventListener("click", e => {
+  toc.classList.toggle("active");
+});
+toc.querySelector("nav").addEventListener("click", e => {
+  toc.classList.remove("active");
+});
+</script>
+</body>
+</html>
