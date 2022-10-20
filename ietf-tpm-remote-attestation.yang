@@ -54,7 +54,7 @@ module ietf-tpm-remote-attestation {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2022-05-17 {
+  revision 2022-10-22 {
     description
       "Initial version";
     reference
@@ -1005,6 +1005,7 @@ module ietf-tpm-remote-attestation {
                  associated within key within a TPM.";
             }
             leaf keystore-ref {
+              if-feature "ks:central-keystore-supported";
               if-feature "ks:asymmetric-keys";
               type leafref {
                 path "/ks:keystore/ks:asymmetric-keys/ks:asymmetric-key"
