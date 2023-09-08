@@ -1,6 +1,6 @@
 {
   "magic": "E!vIA5L86J2I",
-  "timestamp": "2023-08-28T17:41:01.898644+00:00",
+  "timestamp": "2023-09-08T11:35:18.055858+00:00",
   "repo": "ietf-rats-wg/basic-yang-module",
   "labels": [
     {
@@ -5601,26 +5601,42 @@
       "id": "PR_kwDODX-izs5BMmui",
       "title": "Update ietf-tpm-remote-attestation.yang",
       "url": "https://github.com/ietf-rats-wg/basic-yang-module/pull/130",
-      "state": "OPEN",
+      "state": "MERGED",
       "author": "ericvoit",
       "authorAssociation": "COLLABORATOR",
       "assignees": [],
       "labels": [],
       "body": "Match feature dependency to keystore",
       "createdAt": "2022-10-20T13:40:52Z",
-      "updatedAt": "2022-10-20T13:40:52Z",
+      "updatedAt": "2023-09-08T11:34:46Z",
       "baseRepository": "ietf-rats-wg/basic-yang-module",
       "baseRefName": "master",
       "baseRefOid": "0e513acb44e955c5c0abf1ae2b63847ac749cd63",
       "headRepository": "ietf-rats-wg/basic-yang-module",
       "headRefName": "ericvoit-patch-27",
       "headRefOid": "89ca3a5848711165d5c801387874d7b2dc618462",
-      "closedAt": null,
-      "mergedAt": null,
-      "mergedBy": null,
-      "mergeCommit": null,
+      "closedAt": "2023-09-08T11:34:46Z",
+      "mergedAt": "2023-09-08T11:34:46Z",
+      "mergedBy": "henkbirkholz",
+      "mergeCommit": {
+        "oid": "00bfab438e402263096bfa27209791eb31569421"
+      },
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDODX-izs5gZc5U",
+          "commit": {
+            "abbreviatedOid": "89ca3a5"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-09-08T11:34:38Z",
+          "updatedAt": "2023-09-08T11:34:38Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 131,
@@ -5634,7 +5650,7 @@
       "labels": [],
       "body": "Match feature changes to ietf-keystore",
       "createdAt": "2022-10-20T13:42:43Z",
-      "updatedAt": "2022-10-20T13:42:43Z",
+      "updatedAt": "2023-09-08T11:35:04Z",
       "baseRepository": "ietf-rats-wg/basic-yang-module",
       "baseRefName": "master",
       "baseRefOid": "0e513acb44e955c5c0abf1ae2b63847ac749cd63",
@@ -5646,7 +5662,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDODX-izs5gZdBs",
+          "commit": {
+            "abbreviatedOid": "11fb32c"
+          },
+          "author": "henkbirkholz",
+          "authorAssociation": "MEMBER",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-09-08T11:35:04Z",
+          "updatedAt": "2023-09-08T11:35:04Z",
+          "comments": []
+        }
+      ]
     },
     {
       "number": 132,
@@ -5660,7 +5690,7 @@
       "labels": [],
       "body": "",
       "createdAt": "2023-08-28T17:40:35Z",
-      "updatedAt": "2023-08-28T17:40:35Z",
+      "updatedAt": "2023-08-29T01:20:24Z",
       "baseRepository": "ietf-rats-wg/basic-yang-module",
       "baseRefName": "master",
       "baseRefOid": "0e513acb44e955c5c0abf1ae2b63847ac749cd63",
@@ -5672,7 +5702,21 @@
       "mergedBy": null,
       "mergeCommit": null,
       "comments": [],
-      "reviews": []
+      "reviews": [
+        {
+          "id": "PRR_kwDODX-izs5fU9Vs",
+          "commit": {
+            "abbreviatedOid": "604f03a"
+          },
+          "author": "William-PanWei",
+          "authorAssociation": "CONTRIBUTOR",
+          "state": "APPROVED",
+          "body": "",
+          "createdAt": "2023-08-29T01:20:24Z",
+          "updatedAt": "2023-08-29T01:20:24Z",
+          "comments": []
+        }
+      ]
     }
   ]
 }
