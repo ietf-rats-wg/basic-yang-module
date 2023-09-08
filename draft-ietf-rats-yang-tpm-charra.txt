@@ -562,7 +562,7 @@ Birkholz, et al.          Expires 11 March 2024                [Page 10]
 Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
-   <CODE BEGINS> file "ietf-tpm-remote-attestation@2022-05-17.yang"
+   <CODE BEGINS> file "ietf-tpm-remote-attestation@2022-10-22.yang"
    module ietf-tpm-remote-attestation {
      yang-version 1.1;
      namespace "urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation";
