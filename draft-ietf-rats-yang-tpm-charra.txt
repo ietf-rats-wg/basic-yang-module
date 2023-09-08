@@ -5,7 +5,7 @@
 RATS Working Group                                           H. Birkholz
 Internet-Draft                                                  M. Eckel
 Intended status: Standards Track                          Fraunhofer SIT
-Expires: 19 November 2022                                    S. Bhandari
+Expires: 11 March 2024                                       S. Bhandari
                                                              ThoughtSpot
                                                                  E. Voit
                                                                B. Sulzen
@@ -16,7 +16,7 @@ Expires: 19 November 2022                                    S. Bhandari
                                                                      HPE
                                                              G. Fedorkow
                                                                  Juniper
-                                                             18 May 2022
+                                                        8 September 2023
 
 
    A YANG Data Model for Challenge-Response-based Remote Attestation
@@ -53,9 +53,9 @@ Note to Readers
 
 
 
-Birkholz, et al.        Expires 19 November 2022                [Page 1]
+Birkholz, et al.          Expires 11 March 2024                 [Page 1]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
 Status of This Memo
@@ -73,11 +73,11 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 November 2022.
+   This Internet-Draft will expire on 11 March 2024.
 
 Copyright Notice
 
-   Copyright (c) 2022 IETF Trust and the persons identified as the
+   Copyright (c) 2023 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Birkholz, et al.        Expires 19 November 2022                [Page 2]
+Birkholz, et al.          Expires 11 March 2024                 [Page 2]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
 1.  Introduction
@@ -165,9 +165,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022                [Page 3]
+Birkholz, et al.          Expires 11 March 2024                 [Page 3]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    individual TPM to specific measured component within the Composite
@@ -221,9 +221,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022                [Page 4]
+Birkholz, et al.          Expires 11 March 2024                 [Page 4]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
 2.1.1.3.1.  'tpm12-challenge-response-attestation'
@@ -277,9 +277,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022                [Page 5]
+Birkholz, et al.          Expires 11 March 2024                 [Page 5]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    +---x tpm20-challenge-response-attestation {taa:tpm20}?
@@ -333,9 +333,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022                [Page 6]
+Birkholz, et al.          Expires 11 March 2024                 [Page 6]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
  <rpc message-id="101" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
@@ -389,9 +389,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022                [Page 7]
+Birkholz, et al.          Expires 11 March 2024                 [Page 7]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
 2.1.1.4.  'log-retrieval'
@@ -445,9 +445,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022                [Page 8]
+Birkholz, et al.          Expires 11 March 2024                 [Page 8]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
                      |        +--ro signature?                 binary
@@ -501,9 +501,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022                [Page 9]
+Birkholz, et al.          Expires 11 March 2024                 [Page 9]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    +--rw tpms
@@ -557,9 +557,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 10]
+Birkholz, et al.          Expires 11 March 2024                [Page 10]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    <CODE BEGINS> file "ietf-tpm-remote-attestation@2022-05-17.yang"
@@ -613,9 +613,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 11]
+Birkholz, et al.          Expires 11 March 2024                [Page 11]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
         (https://www.rfc-editor.org/info/rfcXXXX); see the RFC
@@ -627,7 +627,7 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
         described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
         they appear in all capitals, as shown here.";
 
-     revision 2022-05-17 {
+     revision 2022-10-22 {
        description
          "Initial version";
        reference
@@ -669,9 +669,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 12]
+Birkholz, et al.          Expires 11 March 2024                [Page 12]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
      }
@@ -725,9 +725,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 13]
+Birkholz, et al.          Expires 11 March 2024                [Page 13]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
      identity attested_event_log_type {
@@ -781,9 +781,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 14]
+Birkholz, et al.          Expires 11 March 2024                [Page 14]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
      grouping tpm12-hash-algo {
@@ -837,9 +837,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 15]
+Birkholz, et al.          Expires 11 March 2024                [Page 15]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
          type pcr;
@@ -893,9 +893,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 16]
+Birkholz, et al.          Expires 11 March 2024                [Page 16]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
      grouping tpm-name {
@@ -949,9 +949,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 17]
+Birkholz, et al.          Expires 11 March 2024                [Page 17]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
          description
@@ -1005,9 +1005,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 18]
+Birkholz, et al.          Expires 11 March 2024                [Page 18]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
              type pcr;
@@ -1061,9 +1061,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 19]
+Birkholz, et al.          Expires 11 March 2024                [Page 19]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
             TCG_PCClient_PFP_r1p05_v23_pub.pdf  Section 10.4.1";
@@ -1117,9 +1117,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 20]
+Birkholz, et al.          Expires 11 March 2024                [Page 20]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
             that extended the PCRs in the order they
@@ -1173,9 +1173,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 21]
+Birkholz, et al.          Expires 11 March 2024                [Page 21]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
        leaf template-hash {
@@ -1229,9 +1229,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 22]
+Birkholz, et al.          Expires 11 March 2024                [Page 22]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
        description
@@ -1285,9 +1285,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 23]
+Birkholz, et al.          Expires 11 March 2024                [Page 23]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
        input {
@@ -1341,9 +1341,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 24]
+Birkholz, et al.          Expires 11 March 2024                [Page 24]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
          container tpm20-attestation-challenge {
@@ -1397,9 +1397,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 25]
+Birkholz, et al.          Expires 11 March 2024                [Page 25]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
              "Only log entries which meet all the selection criteria
@@ -1453,9 +1453,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 26]
+Birkholz, et al.          Expires 11 March 2024                [Page 26]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
                     be sent.";
@@ -1509,9 +1509,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 27]
+Birkholz, et al.          Expires 11 March 2024                [Page 27]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
             composite device that support TPM operations.";
@@ -1565,9 +1565,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 28]
+Birkholz, et al.          Expires 11 March 2024                [Page 28]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
              type boolean;
@@ -1621,9 +1621,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 29]
+Birkholz, et al.          Expires 11 March 2024                [Page 29]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
            }
@@ -1677,9 +1677,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 30]
+Birkholz, et al.          Expires 11 March 2024                [Page 30]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
                description
@@ -1729,15 +1729,16 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
                     associated within key within a TPM.";
                }
                leaf keystore-ref {
-                 if-feature "ks:asymmetric-keys";
+                 if-feature "ks:central-keystore-supported";
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 31]
+Birkholz, et al.          Expires 11 March 2024                [Page 31]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
+                 if-feature "ks:asymmetric-keys";
                  type leafref {
                    path "/ks:keystore/ks:asymmetric-keys/ks:asymmetric-key"
                       + "/ks:name";
@@ -1785,15 +1786,15 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
                  description
                    "Function supported by this certificate from within the
                     TPM.";
-               }
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 32]
+Birkholz, et al.          Expires 11 March 2024                [Page 32]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
+               }
              }
            }
          }
@@ -1841,15 +1842,15 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
            }
            description
              "Platform supported TPM20 hash algorithms.";
-         }
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 33]
+Birkholz, et al.          Expires 11 March 2024                [Page 33]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
+         }
        }
      }
    }
@@ -1900,10 +1901,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-
-Birkholz, et al.        Expires 19 November 2022               [Page 34]
+Birkholz, et al.          Expires 11 March 2024                [Page 34]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
 2.1.2.3.  YANG Module
@@ -1957,9 +1957,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 35]
+Birkholz, et al.          Expires 11 March 2024                [Page 35]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
      feature tpm12 {
@@ -2013,9 +2013,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 36]
+Birkholz, et al.          Expires 11 March 2024                [Page 36]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
        description
@@ -2069,9 +2069,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 37]
+Birkholz, et al.          Expires 11 March 2024                [Page 37]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
           TPM_ALGORITHM_ID values, Section 4.8";
@@ -2125,9 +2125,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 38]
+Birkholz, et al.          Expires 11 March 2024                [Page 38]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
           where protection is not required.";
@@ -2181,9 +2181,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 39]
+Birkholz, et al.          Expires 11 March 2024                [Page 39]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
        description
@@ -2237,9 +2237,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 40]
+Birkholz, et al.          Expires 11 March 2024                [Page 40]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
        base hash;
@@ -2293,9 +2293,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 41]
+Birkholz, et al.          Expires 11 March 2024                [Page 41]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
        reference
@@ -2349,9 +2349,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 42]
+Birkholz, et al.          Expires 11 March 2024                [Page 42]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
          "Signature algorithm using elliptic curve cryptography (ECC)";
@@ -2405,9 +2405,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 43]
+Birkholz, et al.          Expires 11 March 2024                [Page 43]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
        if-feature "tpm20";
@@ -2461,9 +2461,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 44]
+Birkholz, et al.          Expires 11 March 2024                [Page 44]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
      identity TPM_ALG_KDF1_SP800_108 {
@@ -2517,9 +2517,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 45]
+Birkholz, et al.          Expires 11 March 2024                [Page 45]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
        description
@@ -2573,9 +2573,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 46]
+Birkholz, et al.          Expires 11 March 2024                [Page 46]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
        reference
@@ -2629,9 +2629,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 47]
+Birkholz, et al.          Expires 11 March 2024                [Page 47]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
          "TCG-Algos:TCG Algorithm Registry Rev1.32  Table 3 and
@@ -2685,9 +2685,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 48]
+Birkholz, et al.          Expires 11 March 2024                [Page 48]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
        base signing;
@@ -2741,9 +2741,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 49]
+Birkholz, et al.          Expires 11 March 2024                [Page 49]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
       Registrant Contact:  The IESG.
@@ -2797,9 +2797,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 50]
+Birkholz, et al.          Expires 11 March 2024                [Page 50]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    Container '/rats-support-structures/attester-supported-algos':  'tpm1
@@ -2853,9 +2853,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 51]
+Birkholz, et al.          Expires 11 March 2024                [Page 51]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    For the YANG module ietf-tcg-algs.yang, please use care when
@@ -2886,32 +2886,32 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
    [I-D.ietf-netconf-keystore]
               Watsen, K., "A YANG Data Model for a Keystore", Work in
-              Progress, Internet-Draft, draft-ietf-netconf-keystore-24,
-              7 March 2022, <https://www.ietf.org/archive/id/draft-ietf-
-              netconf-keystore-24.txt>.
+              Progress, Internet-Draft, draft-ietf-netconf-keystore-28,
+              17 April 2023, <https://datatracker.ietf.org/doc/html/
+              draft-ietf-netconf-keystore-28>.
 
    [I-D.ietf-rats-architecture]
               Birkholz, H., Thaler, D., Richardson, M., Smith, N., and
-              W. Pan, "Remote Attestation Procedures Architecture", Work
-              in Progress, Internet-Draft, draft-ietf-rats-architecture-
-              15, 8 February 2022, <https://www.ietf.org/archive/id/
-              draft-ietf-rats-architecture-15.txt>.
+              W. Pan, "Remote ATtestation procedureS (RATS)
+              Architecture", Work in Progress, Internet-Draft, draft-
+              ietf-rats-architecture-22, 28 September 2022,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-rats-
+              architecture-22>.
 
    [I-D.ietf-rats-tpm-based-network-device-attest]
               Fedorkow, G., Voit, E., and J. Fitzgerald-McKay, "TPM-
               based Network Device Remote Integrity Verification", Work
               in Progress, Internet-Draft, draft-ietf-rats-tpm-based-
               network-device-attest-14, 22 March 2022,
-              <https://www.ietf.org/archive/id/draft-ietf-rats-tpm-
-              based-network-device-attest-14.txt>.
+              <https://datatracker.ietf.org/doc/html/draft-ietf-rats-
+              tpm-based-network-device-attest-14>.
 
 
 
 
-
-Birkholz, et al.        Expires 19 November 2022               [Page 52]
+Birkholz, et al.          Expires 11 March 2024                [Page 52]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    [IEEE-Std-1363-2000]
@@ -2965,9 +2965,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 53]
+Birkholz, et al.          Expires 11 March 2024                [Page 53]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    [NIST-SP800-108]
@@ -3021,9 +3021,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 54]
+Birkholz, et al.          Expires 11 March 2024                [Page 54]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    [RFC6241]  Enns, R., Ed., Bjorklund, M., Ed., Schoenwaelder, J., Ed.,
@@ -3077,9 +3077,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 55]
+Birkholz, et al.          Expires 11 March 2024                [Page 55]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    [RFC8446]  Rescorla, E., "The Transport Layer Security (TLS) Protocol
@@ -3133,9 +3133,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 56]
+Birkholz, et al.          Expires 11 March 2024                [Page 56]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
               (Secure Boot)", n.d.,
@@ -3148,9 +3148,9 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
               Birkholz, H., Eckel, M., Pan, W., and E. Voit, "Reference
               Interaction Models for Remote Attestation Procedures",
               Work in Progress, Internet-Draft, draft-ietf-rats-
-              reference-interaction-models-05, 26 January 2022,
-              <https://www.ietf.org/archive/id/draft-ietf-rats-
-              reference-interaction-models-05.txt>.
+              reference-interaction-models-07, 10 March 2023,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-rats-
+              reference-interaction-models-07>.
 
    [IMA-Kernel-Source]
               "Linux Integrity Measurement Architecture (IMA): Kernel
@@ -3189,9 +3189,9 @@ Appendix A.  Integrity Measurement Architecture (IMA)
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 57]
+Birkholz, et al.          Expires 11 March 2024                [Page 57]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    system runtime, in remote attestation procedures.  IMA acts in
@@ -3245,9 +3245,9 @@ Appendix B.  IMA for Network Equipment Boot Logs
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 58]
+Birkholz, et al.          Expires 11 March 2024                [Page 58]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    elsewhere in this document.
@@ -3301,9 +3301,9 @@ Authors' Addresses
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 59]
+Birkholz, et al.          Expires 11 March 2024                [Page 59]
 
-Internet-Draft            YANG-CHARRA for TPMs                  May 2022
+Internet-Draft            YANG-CHARRA for TPMs            September 2023
 
 
    Email: michael.eckel@sit.fraunhofer.de
@@ -3357,4 +3357,4 @@ Internet-Draft            YANG-CHARRA for TPMs                  May 2022
 
 
 
-Birkholz, et al.        Expires 19 November 2022               [Page 60]
+Birkholz, et al.          Expires 11 March 2024                [Page 60]

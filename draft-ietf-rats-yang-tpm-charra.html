@@ -16,26 +16,26 @@
 <meta content="
        This document defines YANG RPCs and a few configuration nodes required to retrieve attestation evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), or equivalent hardware implementations that include the protected capabilities as provided by TPMs as well as a corresponding software stack, included in the device components of the composite device the YANG server is running on. 
     " name="description">
-<meta content="xml2rfc 3.12.6" name="generator">
+<meta content="xml2rfc 3.12.10" name="generator">
 <meta content="Internet-Draft" name="keyword">
 <meta content="draft-ietf-rats-yang-tpm-charra-latest" name="ietf.draft">
 <!-- Generator version information:
-  xml2rfc 3.12.6
-    Python 3.9.7
+  xml2rfc 3.12.10
+    Python 3.10.4
     appdirs 1.4.4
-    ConfigArgParse 1.3
+    ConfigArgParse 1.5.3
     google-i18n-address 2.5.1
     html5lib 1.1
     intervaltree 3.1.0
     Jinja2 2.11.3
     kitchen 1.2.6
-    lxml 4.6.5
+    lxml 4.8.0
     MarkupSafe 2.0.1
     pycountry 20.7.3
-    pyflakes 2.3.1
-    PyYAML 5.4.1
-    requests 2.26.0
-    setuptools 52.0.0
+    pyflakes 2.4.0
+    PyYAML 6.0
+    requests 2.27.1
+    setuptools 59.4.0
     six 1.16.0
 -->
 <link href="draft-ietf-rats-yang-tpm-charra.xml" rel="alternate" type="application/rfc+xml">
@@ -826,11 +826,11 @@ address div.right {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">YANG-CHARRA for TPMs</td>
-<td class="right">May 2022</td>
+<td class="right">September 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Birkholz, et al.</td>
-<td class="center">Expires 19 November 2022</td>
+<td class="center">Expires 11 March 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -843,12 +843,12 @@ address div.right {
 <dd class="internet-draft">draft-ietf-rats-yang-tpm-charra-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2022-05-18" class="published">18 May 2022</time>
+<time datetime="2023-09-08" class="published">8 September 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2022-11-19">19 November 2022</time></dd>
+<dd class="expires"><time datetime="2024-03-11">11 March 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -920,7 +920,7 @@ address div.right {
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 19 November 2022.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 11 March 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -929,7 +929,7 @@ address div.right {
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2022 IETF Trust and the persons identified as the
+            Copyright (c) 2023 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1386,7 +1386,7 @@ module ietf-tpm-remote-attestation {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2022-05-17 {
+  revision 2022-10-22 {
     description
       "Initial version";
     reference
@@ -2337,6 +2337,7 @@ module ietf-tpm-remote-attestation {
                  associated within key within a TPM.";
             }
             leaf keystore-ref {
+              if-feature "ks:central-keystore-supported";
               if-feature "ks:asymmetric-keys";
               type leafref {
                 path "/ks:keystore/ks:asymmetric-keys/ks:asymmetric-key"
@@ -3364,15 +3365,15 @@ registry <span>[<a href="#yang-parameters" class="xref">yang-parameters</a>]</sp
 <dd class="break"></dd>
 <dt id="I-D.ietf-netconf-keystore">[I-D.ietf-netconf-keystore]</dt>
         <dd>
-<span class="refAuthor">Watsen, K.</span>, <span class="refTitle">"A YANG Data Model for a Keystore"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-netconf-keystore-24</span>, <time datetime="2022-03-07" class="refDate">7 March 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-netconf-keystore-24.txt">https://www.ietf.org/archive/id/draft-ietf-netconf-keystore-24.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Watsen, K.</span>, <span class="refTitle">"A YANG Data Model for a Keystore"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-netconf-keystore-28</span>, <time datetime="2023-04-17" class="refDate">17 April 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-netconf-keystore-28">https://datatracker.ietf.org/doc/html/draft-ietf-netconf-keystore-28</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-rats-architecture">[I-D.ietf-rats-architecture]</dt>
         <dd>
-<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Thaler, D.</span>, <span class="refAuthor">Richardson, M.</span>, <span class="refAuthor">Smith, N.</span>, and <span class="refAuthor">W. Pan</span>, <span class="refTitle">"Remote Attestation Procedures Architecture"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-architecture-15</span>, <time datetime="2022-02-08" class="refDate">8 February 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-rats-architecture-15.txt">https://www.ietf.org/archive/id/draft-ietf-rats-architecture-15.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Thaler, D.</span>, <span class="refAuthor">Richardson, M.</span>, <span class="refAuthor">Smith, N.</span>, and <span class="refAuthor">W. Pan</span>, <span class="refTitle">"Remote ATtestation procedureS (RATS) Architecture"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-architecture-22</span>, <time datetime="2022-09-28" class="refDate">28 September 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-architecture-22">https://datatracker.ietf.org/doc/html/draft-ietf-rats-architecture-22</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="I-D.ietf-rats-tpm-based-network-device-attest">[I-D.ietf-rats-tpm-based-network-device-attest]</dt>
         <dd>
-<span class="refAuthor">Fedorkow, G.</span>, <span class="refAuthor">Voit, E.</span>, and <span class="refAuthor">J. Fitzgerald-McKay</span>, <span class="refTitle">"TPM-based Network Device Remote Integrity Verification"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-tpm-based-network-device-attest-14</span>, <time datetime="2022-03-22" class="refDate">22 March 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-rats-tpm-based-network-device-attest-14.txt">https://www.ietf.org/archive/id/draft-ietf-rats-tpm-based-network-device-attest-14.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Fedorkow, G.</span>, <span class="refAuthor">Voit, E.</span>, and <span class="refAuthor">J. Fitzgerald-McKay</span>, <span class="refTitle">"TPM-based Network Device Remote Integrity Verification"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-tpm-based-network-device-attest-14</span>, <time datetime="2022-03-22" class="refDate">22 March 2022</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-tpm-based-network-device-attest-14">https://datatracker.ietf.org/doc/html/draft-ietf-rats-tpm-based-network-device-attest-14</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IEEE-Std-1363-2000">[IEEE-Std-1363-2000]</dt>
         <dd>
@@ -3539,7 +3540,7 @@ registry <span>[<a href="#yang-parameters" class="xref">yang-parameters</a>]</sp
 <dl class="references">
 <dt id="I-D.ietf-rats-reference-interaction-models">[I-D.ietf-rats-reference-interaction-models]</dt>
         <dd>
-<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Eckel, M.</span>, <span class="refAuthor">Pan, W.</span>, and <span class="refAuthor">E. Voit</span>, <span class="refTitle">"Reference Interaction Models for Remote Attestation Procedures"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-reference-interaction-models-05</span>, <time datetime="2022-01-26" class="refDate">26 January 2022</time>, <span>&lt;<a href="https://www.ietf.org/archive/id/draft-ietf-rats-reference-interaction-models-05.txt">https://www.ietf.org/archive/id/draft-ietf-rats-reference-interaction-models-05.txt</a>&gt;</span>. </dd>
+<span class="refAuthor">Birkholz, H.</span>, <span class="refAuthor">Eckel, M.</span>, <span class="refAuthor">Pan, W.</span>, and <span class="refAuthor">E. Voit</span>, <span class="refTitle">"Reference Interaction Models for Remote Attestation Procedures"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-rats-reference-interaction-models-07</span>, <time datetime="2023-03-10" class="refDate">10 March 2023</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-rats-reference-interaction-models-07">https://datatracker.ietf.org/doc/html/draft-ietf-rats-reference-interaction-models-07</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 <dt id="IMA-Kernel-Source">[IMA-Kernel-Source]</dt>
         <dd>
