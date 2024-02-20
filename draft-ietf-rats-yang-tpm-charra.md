@@ -86,9 +86,9 @@ normative:
   RFC8341:
   RFC8032:
   RFC8017:
+  RFC9334: rats-architecture
 
   I-D.ietf-netconf-keystore: ietf-keystore
-  I-D.ietf-rats-architecture: rats-architecture
   I-D.ietf-rats-tpm-based-network-device-attest: RIV
 
   TPM1.2:
@@ -235,7 +235,7 @@ informative:
 
 --- abstract
 
-This document defines YANG RPCs and a few configuration nodes required to retrieve attestation evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), or equivalent hardware implementations that include the protected capabilities as provided by TPMs as well as a corresponding software stack, included in the device components of the composite device the YANG server is running on.
+This document defines YANG RPCs and a few configuration nodes required to retrieve attestation Evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), or equivalent hardware implementations that include the protected capabilities as provided by TPMs as well as a corresponding software stack, included in the device components of the composite device the YANG server is running on.
 
 --- middle
 
@@ -253,7 +253,7 @@ Specific terms imported from {{TPM2.0-Key}} and used in this document include: E
 
 # The YANG Module for Basic Remote Attestation Procedures
 
-One or more TPMs MUST be embedded in a Composite Device that provides attestation evidence via the YANG module defined in this document. The ietf-tpm-remote-attestation YANG module enables a composite device to take on the role of an Attester, in accordance with the Remote Attestation Procedures (RATS) architecture {{-rats-architecture}}, and the corresponding challenge-response interaction model defined in the {{-rats-interaction-models}} document. A fresh nonce with an appropriate amount of entropy {{NIST-915121}} MUST be supplied by the YANG client in order to enable a proof-of-freshness with respect to the attestation Evidence provided by the Attester running the YANG datastore. Further, this nonce is used to prevent replay attacks. The method for communicating the relationship of each individual TPM to specific measured component within the Composite Device is out of the scope of this document.
+One or more TPMs MUST be embedded in a Composite Device that provides attestation Evidence via the YANG module defined in this document. The ietf-tpm-remote-attestation YANG module enables a composite device to take on the role of an Attester, in accordance with the Remote Attestation Procedures (RATS) architecture {{-rats-architecture}}, and the corresponding challenge-response interaction model defined in the {{-rats-interaction-models}} document. A fresh nonce with an appropriate amount of entropy {{NIST-915121}} MUST be supplied by the YANG client in order to enable a proof-of-freshness with respect to the attestation Evidence provided by the Attester running the YANG datastore. Further, this nonce is used to prevent replay attacks. The method for communicating the relationship of each individual TPM to specific measured component within the Composite Device is out of the scope of this document.
 
 ## YANG Modules
 
@@ -285,7 +285,7 @@ In the following, RPCs for both TPM 1.2 and TPM 2.0 attestation procedures are d
 
 ##### 'tpm12-challenge-response-attestation'
 
-This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 1.2 compliant cryptoprocessor. Where the feature 'mtpm' is active, and one or more 'certificate-name' is not provided, all TPM 1.2 compliant cryptoprocessors will respond.  A YANG tree diagram of this RPC is as follows:
+This RPC allows a Verifier to request signed TPM PCRs (*TPM Quote* operation) from a TPM 1.2 compliant cryptoprocessor. Where the feature 'mtpm' is active, and one or more 'certificate-name' is not provided, all TPM 1.2 compliant cryptoprocessors will respond. A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
 {::include-dedent tpm12-challenge-response-attestation.tree}
@@ -303,14 +303,14 @@ An example of an RPC challenge requesting PCRs 0-7 from a SHA-256 bank could loo
 
 ~~~
 <rpc message-id="101" xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
-  <tpm20-challenge-response-attestation>
+  <tpm20-attestation-challenge
       xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
     <certificate-name>
-      (identifier of a TPM signature key with which the Verifier is
+      (identifier of a TPM signature key with which the Attester is
       supposed to sign the attestation data)
     </certificate-name>
     <nonce>
-      0xe041307208d9f78f5b1bbecd19e2d152ad49de2fc5a7d8dbf769f6b8ffdeab9
+      0xe041307208d9f78f5b1bbecd19e2d152ad49de2fc5a7d8dbf769f6b8ffdeab91
     </nonce>
     <tpm20-pcr-selection>
       <tpm20-hash-algo
@@ -326,7 +326,7 @@ An example of an RPC challenge requesting PCRs 0-7 from a SHA-256 bank could loo
       <pcr-index>6</pcr-index>
       <pcr-index>7</pcr-index>
     </tpm20-pcr-selection>
-  </tpm20-challenge-response-attestation>
+  </tpm20-attestation-challenge>
 </rpc>
 ~~~
 
@@ -334,21 +334,21 @@ A successful response could be formatted as follows:
 
 ~~~
 <rpc-reply message-id="101"
-  xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
+    xmlns="urn:ietf:params:xml:ns:netconf:base:1.0">
   <tpm20-attestation-response
-    xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
+      xmlns="urn:ietf:params:xml:ns:yang:ietf-tpm-remote-attestation">
     <certificate-name
         xmlns="urn:ietf:params:xml:ns:yang:ietf-keystore">
-        (instance of Certificate name in the Keystore)
+      (instance of Certificate name in the Keystore)
     </certificate-name>
     <attestation-data>
-       (raw attestation data, i.e. the TPM quote; this includes
-       a composite digest of requested PCRs, the nonce,
-       and TPM 2.0 time information.)
+      (raw attestation data, i.e., the TPM quote; this includes,
+      among other information, a composite digest of requested PCRs,
+      the nonce, and TPM 2.0 clock information.)
     </attestation-data>
     <quote-signature>
-        (signature over attestation-data using the TPM key
-        identified by sig-key-id)
+      (signature over attestation-data using the TPM key
+      identified by sig-key-id)
     </quote-signature>
   </tpm20-attestation-response>
 </rpc-reply>
@@ -356,7 +356,7 @@ A successful response could be formatted as follows:
 
 #### 'log-retrieval'
 
-This RPC allows a Verifier to acquire the evidence which was extended into specific TPM PCRs. A YANG tree diagram of this RPC is as follows:
+This RPC allows a Verifier to acquire the Evidence which was extended into specific TPM PCRs. A YANG tree diagram of this RPC is as follows:
 
 ~~~ TREE
 {::include-dedent log-retrieval.tree}
@@ -368,7 +368,7 @@ This section provides a high level description of the data nodes containing the 
 
 Container 'rats-support-structures':
 
-: This houses the set of information relating to remote attestation for a device.  This includes specific device TPM(s), the compute nodes (such as line cards) on which the TPM(s) reside, and the algorithms supported across the platform.
+: This houses the set of information relating to remote attestation for a device. This includes specific device TPM(s), the compute nodes (such as line cards) on which the TPM(s) reside, and the algorithms supported across the platform.
 
 Container 'tpms':
 
@@ -395,14 +395,14 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 {: #ref-ietf-tpm-remote-attestation}
 
 ~~~ YANG
-<CODE BEGINS> file "ietf-tpm-remote-attestation@2022-10-22.yang"
+<CODE BEGINS> file "ietf-tpm-remote-attestation.yang"
 {::include-dedent ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
 
 ### 'ietf-tcg-algs'
 
-This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model.  Specific references to {{RFC2104}}, {{RFC8017}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, as well as {{ima}} and {{netequip-boot-log}} exist within the YANG Model.
+This document has encoded the TCG Algorithm definitions of {{TCG-Algos}}, revision 1.32. By including this full table as a separate YANG file within this document, it is possible for other YANG models to leverage the contents of this model. Specific references to {{RFC2104}}, {{RFC8017}}, {{ISO-IEC-9797-1}}, {{ISO-IEC-9797-2}}, {{ISO-IEC-10116}}, {{ISO-IEC-10118-3}}, {{ISO-IEC-14888-3}}, {{ISO-IEC-15946-1}}, {{ISO-IEC-18033-3}}, {{IEEE-Std-1363-2000}}, {{IEEE-Std-1363a-2004}}, {{NIST-PUB-FIPS-202}}, {{NIST-SP800-38C}}, {{NIST-SP800-38D}}, {{NIST-SP800-38F}}, {{NIST-SP800-56A}}, {{NIST-SP800-108}}, {{bios-log}}, as well as {{ima}} and {{netequip-boot-log}} exist within the YANG Model.
 
 #### Features
 
@@ -428,7 +428,7 @@ There are three types of identities in this model:
 <CODE ENDS>
 ~~~~
 
-Note that not all cryptographic functions are required for use by `ietf-tpm-remote-attestation.yang`. However the full definition of Table 3 of {{TCG-Algos}} will allow use by additional YANG specifications.
+Note that not all cryptographic functions are required for use by `ietf-tpm-remote-attestation.yang`. However, the full definition of Table 3 of {{TCG-Algos}} will allow use by additional YANG specifications.
 
 # IANA Considerations
 
@@ -483,19 +483,19 @@ Name:
 
 # Security Considerations
 
-The YANG module ietf-tpm-remote-attestation.yang specified in this document defines a schema for data that is designed to be accessed via network management protocols such as NETCONF {{RFC6241}} or RESTCONF {{RFC8040}}.  The lowest NETCONF layer is the secure transport layer, and the mandatory-to-implement secure transport is Secure Shell (SSH) {{RFC6242}}.  The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement secure transport is TLS {{RFC8446}}.
+The YANG module ietf-tpm-remote-attestation.yang specified in this document defines a schema for data that is designed to be accessed via network management protocols such as NETCONF {{RFC6241}} or RESTCONF {{RFC8040}}. The lowest NETCONF layer is the secure transport layer, and the mandatory-to-implement secure transport is Secure Shell (SSH) {{RFC6242}}. The lowest RESTCONF layer is HTTPS, and the mandatory-to-implement secure transport is TLS {{RFC8446}}.
 
-There are a number of data nodes defined in this YANG module that are writable/creatable/deletable (i.e., *config true*, which is the default).  These data nodes may be considered sensitive or vulnerable in some network environments.  Write operations (e.g., *edit-config*) to these data nodes without proper protection can have a negative effect on network operations.  These are the subtrees and data nodes as well as their sensitivity/vulnerability:
+There are a number of data nodes defined in this YANG module that are writable/creatable/deletable (i.e., *config true*, which is the default). These data nodes may be considered sensitive or vulnerable in some network environments. Write operations (e.g., *edit-config*) to these data nodes without proper protection can have a negative effect on network operations. These are the subtrees and data nodes as well as their sensitivity/vulnerability:
 
 Container '/rats-support-structures/attester-supported-algos':
 
-: 'tpm12-asymmetric-signing', 'tpm12-hash', 'tpm20-asymmetric-signing', and 'tpm20-hash'. All could be populated with algorithms that are not supported by the underlying physical TPM installed by the equipment vendor.  A vendor should restrict the ability to configure unsupported algorithms.
+: 'tpm12-asymmetric-signing', 'tpm12-hash', 'tpm20-asymmetric-signing', and 'tpm20-hash'. All could be populated with algorithms that are not supported by the underlying physical TPM installed by the equipment vendor. A vendor should restrict the ability to configure unsupported algorithms.
 
 Container: '/rats-support-structures/tpms':
 
 : 'name': Although shown as 'rw', it is system generated. Therefore, it should not be possible for an operator to add or remove a TPM from the configuration.
 
-: 'tpm20-pcr-bank': It is possible to configure PCRs for extraction which are not being extended by system software.  This could unnecessarily use TPM resources.
+: 'tpm20-pcr-bank': It is possible to configure PCRs for extraction which are not being extended by system software. This could unnecessarily use TPM resources.
 
 : 'certificates': It is possible to provision a certificate which does not correspond to an Attestation Identity Key (AIK) within the TPM 1.2, or an Attestation Key (AK) within the TPM 2.0 respectively. In such a case, calls to an RPC requesting this specific certificate could result in either no response or a response for an unexpected TPM.
 
@@ -509,12 +509,12 @@ RPC 'tpm20-challenge-response-attestation':
 
 RPC 'log-retrieval':
 
-: Requesting a large volume of logs from the attester could require significant system resources and create a denial of service.
+: Requesting a large volume of logs from the Attester could require significant system resources and create a denial of service.
 
 
-Information collected through the RPCs above could reveal that specific versions of software and configurations of endpoints that could identify vulnerabilities on those systems.  Therefore, RPCs should be protected by NACM {{RFC8341}} with a default setting of deny-all to limit the extraction of attestation data by only authorized Verifiers.
+Information collected through the RPCs above could reveal that specific versions of software and configurations of endpoints that could identify vulnerabilities on those systems. Therefore, RPCs should be protected by NACM {{RFC8341}} with a default setting of deny-all to limit the extraction of attestation data by only authorized Verifiers.
 
-For the YANG module ietf-tcg-algs.yang, please use care when selecting specific algorithms.  The introductory section of {{TCG-Algos}} highlights that some algorithms should be considered legacy, and recommends implementers and adopters diligently evaluate available information such as governmental, industrial, and academic research before selecting an algorithm for use.
+For the YANG module ietf-tcg-algs.yang, please use care when selecting specific algorithms. The introductory section of {{TCG-Algos}} highlights that some algorithms should be considered legacy, and recommends implementers and adopters diligently evaluate available information such as governmental, industrial, and academic research before selecting an algorithm for use.
 
 
 --- back
@@ -524,9 +524,9 @@ For the YANG module ietf-tcg-algs.yang, please use care when selecting specific 
 IMA extends the principles of Measured Boot {{TPM2.0-Arch}} and Secure Boot {{UEFI-Secure-Boot}} to the Linux operating system, applying it to operating system applications and files.
 IMA has been part of the Linux integrity subsystem of the Linux kernel since 2009 (kernel version 2.6.30). The IMA mechanism represented by the YANG module in this specification is rooted in the kernel version 5.16 {{IMA-Kernel-Source}}.
 IMA enables the protection of system integrity by collecting (commonly referred to as measuring) and storing measurements (called Claims in the context of IETF RATS) of files before execution so that these measurements can be used later, at system runtime, in remote attestation procedures.
-IMA acts in support of the appraisal of Evidence (which includes measurement Claims) by leveraging reference integrity measurements stored in extended file attributes.
+IMA acts in support of the appraisal of Evidence (which includes measurement Claims) by leveraging Reference Values stored in extended file attributes.
 
-In support of the appraisal of Evidence, IMA maintains an ordered list of measurements in kernel-space, the Stored Measurement Log (SML), for all files that have been measured before execution since the operating system was started.
+In support of the appraisal of Evidence, IMA maintains an ordered list (with no duplicates) of measurements in kernel-space, the Stored Measurement Log (SML), for all files that have been measured before execution since the operating system was started.
 Although IMA can be used without a TPM, it is typically used in conjunction with a TPM to anchor the integrity of the SML in a hardware-protected secure storage location, i.e., Platform Configuration Registers (PCRs) provided by TPMs.
 IMA provides the SML in both binary and ASCII representations in the Linux security file system *securityfs* (`/sys/kernel/security/ima/`).
 
@@ -535,14 +535,15 @@ Examples are file path, file hash, user ID, group ID, file signature, and extend
 IMA comes with a set of predefined template formats and also allows a custom format, i.e., a format consisting of template fields supported by IMA.
 Template usage is typically determined by boot arguments passed to the kernel.
 Alternatively, the format can also be hard-coded into custom kernels.
-IMA templates and fields are extensible in the kernel source code. As a result, more template fields can be added in the future.
+IMA templates and fields are extensible in the kernel source code.
+As a result, more template fields can be added in the future.
 
 IMA policies define which files are measured using the IMA policy language.
 Built-in policies can be passed as boot arguments to the kernel.
 Custom IMA policies can be defined once during runtime or be hard-coded into a custom kernel.
 If no policy is defined, no measurements are taken and IMA is effectively disabled.
 
-A comprehensive description of the content fields ins in native Linux IMA TLV format can be found in Table 16 of the Canonical Event Log (CEL) specification {{cel}}. The CEL specification also illustrates the use of templates to enable extended or customized IMA TLV formats in Section 5.1.6.
+A comprehensive description of the content fields in native Linux IMA TLV format can be found in Table 16 of the Canonical Event Log (CEL) specification {{cel}}. The CEL specification also illustrates the use of templates to enable extended or customized IMA TLV formats in Section 5.1.6.
 
 # IMA for Network Equipment Boot Logs {#netequip-boot-log}
 
@@ -553,10 +554,10 @@ Note that the format used for logging measurement of boot components in this sch
 During the boot process of the network device, i.e., from BIOS to the end of the operating system and user-space, all files executed can be measured and logged in the order of their execution.
 When the Verifier initiates a remote attestation process (e.g., challenge-response remote attestation as defined in this document), the network equipment takes on the role of an Attester and can convey to the Verifier Claims that comprise the measurement log as well as the corresponding PCR values (Evidence) of a TPM.
 
-The verifier can appraise the integrity (compliance with the Reference Values) of each executed file by comparing its measured value with the Reference Value.
-Based on the execution order, the Verifier can compute a PCR reference value (by replaying the log) and compare it to the Measurement Log Claims obtained in conjunction with the PCR Evidence to assess their trustworthiness with respect to an intended operational state.
+The Verifier can appraise the integrity (compliance with the Reference Values) of each executed file by comparing its measured value with the Reference Value.
+Based on the execution order, the Verifier can compute a PCR Reference Value (by replaying the log) and compare it to the Measurement Log Claims obtained in conjunction with the PCR Evidence to assess their trustworthiness with respect to an intended operational state.
 
-Network equipment usually executes multiple components in parallel.  This holds not only during the operating system loading phase, but also even during the BIOS boot phase.
+Network equipment usually executes multiple components in parallel. This holds not only during the operating system loading phase, but also even during the BIOS boot phase.
 With this measurement log mechanism, network equipment can take on the role of an Attester, proving to the Verifier the trustworthiness of its boot process.
 Using the measurement log, Verifiers can precisely identify mismatching log entries to infer potentially tampered components.
 

@@ -54,7 +54,7 @@ module ietf-tpm-remote-attestation {
      described in BCP 14 (RFC 2119) (RFC 8174) when, and only when,
      they appear in all capitals, as shown here.";
 
-  revision 2022-10-22 {
+  revision 2022-05-17 {
     description
       "Initial version";
     reference
@@ -312,12 +312,33 @@ module ietf-tpm-remote-attestation {
        measurements.  It is supplemented by unsigned Attester
        information.";
     uses node-uptime;
-    leaf TPM_QUOTE2 {
+    leaf pcr-data {
       type binary;
       description
-        "Result of a TPM1.2 Quote2 operation. This includes PCRs,
-         signatures, locality, the provided nonce and other data which
-         can be further parsed to appraise the Attester.";
+        "The value created and signed for the quote (type TPM_PCR_INFO_SHORT),
+         i.e., the 'pcrData' part of a TPM1.2 Quote2 operation result.";
+      reference
+        "TPM1.2-Commands:
+         TPM1.2 commands rev116 July 2007, Section 16.5
+         https://trustedcomputinggroup.org/wp-content/uploads
+         /TPM-Main-Part-3-Commands_v1.2_rev116_01032011.pdf";
+    }
+    leaf version-info {
+      type binary;
+      description
+        "The version info (type TPM_CAP_VERSION_INFO),
+         i.e., the 'versionInfo' part of a TPM1.2 Quote2 operation result.";
+      reference
+        "TPM1.2-Commands:
+         TPM1.2 commands rev116 July 2007, Section 16.5
+         https://trustedcomputinggroup.org/wp-content/uploads
+         /TPM-Main-Part-3-Commands_v1.2_rev116_01032011.pdf";
+    }
+    leaf sig {
+      type binary;
+      description
+        "The signed data blob, i.e., the signature
+         i.e., the 'sig' part of a TPM1.2 Quote2 operation result.";
       reference
         "TPM1.2-Commands:
          TPM1.2 commands rev116 July 2007, Section 16.5
@@ -331,12 +352,12 @@ module ietf-tpm-remote-attestation {
       "Contains an instance of TPM2 style signed cryptoprocessor
        measurements.  It is supplemented by unsigned Attester
        information.";
-    leaf TPMS_QUOTE_INFO {
+    leaf quote-data {
       type binary;
       mandatory true;
       description
         "A hash of the latest PCR values (and the hash algorithm used)
-         which have been returned from a Verifier for the selected PCRs
+         which have been returned from an Attester for the selected PCRs
          and Hash Algorithms.";
       reference
         "TPM2.0-Structures:
@@ -464,9 +485,9 @@ module ietf-tpm-remote-attestation {
       type binary;
       description
         "The event data.  This is a binary structure
-         of size 'event-size'. For more on what 
+         of size 'event-size'. For more on what
          might be recorded within this object
-         see [bios-log] Section 9 which details 
+         see [bios-log] Section 9 which details
          viable events which might be recorded.";
     }
   }
@@ -697,7 +718,7 @@ module ietf-tpm-remote-attestation {
       list tpm20-attestation-response {
         unique "certificate-name";
         description
-          "The binary output of TPM2b_Quote from one TPM of the
+          "The binary output of TPM2_Quote from one TPM of the
            node which identified by node-id. An TPMS_ATTEST structure
            including a length, encapsulated in a signature";
         uses certificate-name-ref {
@@ -718,17 +739,17 @@ module ietf-tpm-remote-attestation {
       uses log-identifier;
       list log-selector {
         description
-          "Only log entries which meet all the selection criteria 
+          "Only log entries which meet all the selection criteria
            provided are to be returned by the RPC output.";
         leaf-list name {
           type string;
           description
-            "Name of one or more unique TPMs on a device.  If this 
-             object exists, a selection should pull only the objects 
-             related to these TPM(s).  If it does not exist, all 
-             qualifying TPMs that are 'hardware-based' equals true 
-             on the device are selected. When this selection 
-             criteria is provided, it will be considered as a logical 
+            "Name of one or more unique TPMs on a device.  If this
+             object exists, a selection should pull only the objects
+             related to these TPM(s).  If it does not exist, all
+             qualifying TPMs that are 'hardware-based' equals true
+             on the device are selected. When this selection
+             criteria is provided, it will be considered as a logical
              AND with any other selection criteria provided.";
         }
         choice index-type {
@@ -921,7 +942,7 @@ module ietf-tpm-remote-attestation {
           }
         }
         leaf-list tpm12-pcrs {
-          when 
+          when
             "derived-from-or-self(../firmware-version, 'taa:tpm12')";
           if-feature "taa:tpm12";
           type pcr;
@@ -930,7 +951,7 @@ module ietf-tpm-remote-attestation {
              compliant cryptoprocessor.";
         }
         list tpm20-pcr-bank {
-          when 
+          when
             "derived-from-or-self(../firmware-version, 'taa:tpm20')";
           if-feature "taa:tpm20";
           key "tpm20-hash-algo";
