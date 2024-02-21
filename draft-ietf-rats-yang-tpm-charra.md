@@ -235,7 +235,7 @@ informative:
 
 --- abstract
 
-This document defines YANG RPCs and a few configuration nodes required to retrieve attestation Evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), or equivalent hardware implementations that include the protected capabilities as provided by TPMs as well as a corresponding software stack, included in the device components of the composite device the YANG server is running on.
+This document defines YANG Remote Procedure Calls (RPCs) and a few configuration nodes required to retrieve attestation evidence about integrity measurements from a device, following the operational context defined in TPM-based Network Device Remote Integrity Verification. Complementary measurement logs are also provided by the YANG RPCs, originating from one or more roots of trust for measurement (RTMs). The module defined requires at least one TPM 1.2 or TPM 2.0 as well as a corresponding TPM Software Stack (TSS), or equivalent hardware implementations that include the protected capabilities as provided by TPMs as well as a corresponding software stack, included in the device components of the composite device the YANG server is running on.
 
 --- middle
 
@@ -309,9 +309,9 @@ An example of an RPC challenge requesting PCRs 0-7 from a SHA-256 bank could loo
       (identifier of a TPM signature key with which the Attester is
       supposed to sign the attestation data)
     </certificate-name>
-    <nonce>
-      0xe041307208d9f78f5b1bbecd19e2d152ad49de2fc5a7d8dbf769f6b8ffdeab91
-    </nonce>
+    <nonce-value>
+      0xe041307208d9f78f5b1bbecd19e2d152ad49de2fc5a7d8dbf769f6b8ffdeab9
+    </nonce-value>
     <tpm20-pcr-selection>
       <tpm20-hash-algo
           xmlns="urn:ietf:params:xml:ns:yang:ietf-tcg-algs">
