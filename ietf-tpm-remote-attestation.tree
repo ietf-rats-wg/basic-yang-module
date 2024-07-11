@@ -37,7 +37,7 @@ module: ietf-tpm-remote-attestation
     |  +---w input
     |  |  +---w tpm12-attestation-challenge
     |  |     +---w pcr-index*          pcr
-    |  |     +---w nonce-value         binary
+    |  |     +---w nonce               binary
     |  |     +---w certificate-name*   certificate-name-ref {tpm:mtpm}?
     |  +--ro output
     |     +--ro tpm12-attestation-response* []
@@ -49,7 +49,7 @@ module: ietf-tpm-remote-attestation
     +---x tpm20-challenge-response-attestation {taa:tpm20}?
     |  +---w input
     |  |  +---w tpm20-attestation-challenge
-    |  |     +---w nonce-value            binary
+    |  |     +---w nonce                binary
     |  |     +---w tpm20-pcr-selection* []
     |  |     |  +---w tpm20-hash-algo?   identityref
     |  |     |  +---w pcr-index*         pcr
