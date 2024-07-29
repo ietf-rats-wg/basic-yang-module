@@ -395,7 +395,7 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 {: #ref-ietf-tpm-remote-attestation}
 
 ~~~ YANG
-<CODE BEGINS> file "ietf-tpm-remote-attestation.yang@22-05-17.yang"
+<CODE BEGINS> file "ietf-tpm-remote-attestation.yang@24-07-29.yang"
 {::include-dedent ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
