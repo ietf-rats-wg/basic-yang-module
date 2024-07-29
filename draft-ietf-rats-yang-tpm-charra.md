@@ -309,9 +309,9 @@ An example of an RPC challenge requesting PCRs 0-7 from a SHA-256 bank could loo
       (identifier of a TPM signature key with which the Attester is
       supposed to sign the attestation data)
     </certificate-name>
-    <nonce-value>
+    <nonce>
       0xe041307208d9f78f5b1bbecd19e2d152ad49de2fc5a7d8dbf769f6b8ffdeab9
-    </nonce-value>
+    </nonce>
     <tpm20-pcr-selection>
       <tpm20-hash-algo
           xmlns="urn:ietf:params:xml:ns:yang:ietf-tcg-algs">
@@ -395,7 +395,7 @@ container 'compute-nodes' - When there is more than one TPM supported, this cont
 {: #ref-ietf-tpm-remote-attestation}
 
 ~~~ YANG
-<CODE BEGINS> file "ietf-tpm-remote-attestation.yang"
+<CODE BEGINS> file "ietf-tpm-remote-attestation.yang@24-07-29.yang"
 {::include-dedent ietf-tpm-remote-attestation.yang}
 <CODE ENDS>
 ~~~
