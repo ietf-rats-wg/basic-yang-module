@@ -37,7 +37,7 @@ module: ietf-tpm-remote-attestation
     |  +---w input
     |  |  +---w tpm12-attestation-challenge
     |  |     +---w pcr-index*          pcr
-    |  |     +---w nonce-value         binary
+    |  |     +---w nonce               binary
     |  |     +---w certificate-name*   certificate-name-ref {tpm:mtpm}?
     |  +--ro output
     |     +--ro tpm12-attestation-response* []
